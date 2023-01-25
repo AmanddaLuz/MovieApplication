@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_home_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.amandaluz.movieapplication.view.home.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_favoriteFragment"
+            app:destination="@id/action_homeFragment_to_favoriteFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToSaveState="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.amandaluz.movieapplication.view.favorite.fragment.FavoriteFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_favorite" />
+
+</navigation>
