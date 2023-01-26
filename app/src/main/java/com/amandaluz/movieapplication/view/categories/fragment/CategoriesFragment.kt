@@ -17,6 +17,7 @@ import com.amandaluz.movieapplication.di.MovieComponent
 import com.amandaluz.movieapplication.util.addCacheMovies
 import com.amandaluz.movieapplication.util.getMovieCache
 import com.amandaluz.movieapplication.view.adapter.CategoryAdapter
+import com.amandaluz.movieapplication.view.adapter.CategoryItem
 import com.amandaluz.movieapplication.view.adapter.MovieAdapter
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.MovieResponse
@@ -29,6 +30,7 @@ class CategoriesFragment : Fragment() {
     private lateinit var binding: FragmentCategoriesBinding
     private lateinit var myAdapter: CategoryAdapter
     private var movieList = mutableListOf<Result>()
+    private var categoryList = mutableListOf<CategoryItem>()
     private val viewModel by viewModel<MovieViewModel>()
     private var page: Int = 1
 
@@ -66,6 +68,7 @@ class CategoriesFragment : Fragment() {
                     it.data?.let {response->
                         if (response.results != movieList){
                             movieList.addAll(response.results)
+                            categoryList.add(CategoryItem("Populares", response.results))//
                             myAdapter.notifyDataSetChanged()
                         }
                     }
@@ -78,6 +81,7 @@ class CategoriesFragment : Fragment() {
                 }
             }
         }
+        //TODO(fazer a chamada)
 
     }
 
@@ -92,7 +96,7 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        myAdapter = CategoryAdapter(movieList) { movie ->
+        myAdapter = CategoryAdapter(categoryList) { movie ->
 
         }
     }
