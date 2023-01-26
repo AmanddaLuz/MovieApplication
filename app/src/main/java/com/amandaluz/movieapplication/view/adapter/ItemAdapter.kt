@@ -32,18 +32,26 @@ class ItemAdapter(
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindView(movie: Result) {
-            binding.run {
+            if (movie.adult){
+                binding.run {
+                    val initPath = "https://image.tmdb.org/t/p/w500"
+                    val popularityRate = "Popularidade: ${movie.popularity.toInt()}"
+                    tvPopularityDateItem.text = popularityRate
+                    Glide.with(itemView)
+                        .load(initPath.plus(movie.poster_path))
+                        .centerCrop()
+                        .into(imageItem)
+                }
+
+                itemView.setOnClickListener {
+                    itemClick.invoke(movie)
+                }
+            }else{
                 val initPath = "https://image.tmdb.org/t/p/w500"
-                val popularityRate = "Popularidade: ${movie.popularity.toInt()}"
-                tvPopularityDateItem.text = popularityRate
                 Glide.with(itemView)
                     .load(initPath.plus(movie.poster_path))
                     .centerCrop()
-                    .into(imageItem)
-            }
-
-            itemView.setOnClickListener {
-                itemClick.invoke(movie)
+                    .into(binding.imageItem)
             }
         }
     }

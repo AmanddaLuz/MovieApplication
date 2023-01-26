@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/includeToolbar"
-        app:layout_constraintBottom_toTopOf="@id/label_connection">
+        app:layout_constraintBottom_toTopOf="@id/loading_fragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_home_fragment"
@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/label_connection"
+            app:layout_constraintBottom_toTopOf="@id/loading_fragment"
             tools:listitem="@layout/movie_item"
             tools:itemCount="20"
             android:orientation="vertical"
@@ -61,7 +61,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/swipe"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

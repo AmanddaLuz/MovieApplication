@@ -14,6 +14,7 @@ import com.amandaluz.core.util.State
 import com.amandaluz.core.util.State.Companion.error
 import com.amandaluz.core.util.State.Companion.loading
 import com.amandaluz.core.util.State.Companion.success
+import com.amandaluz.network.model.movie.MovieResponse
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.network.usecase.movieusecase.MovieUseCase
@@ -31,6 +32,9 @@ class MovieViewModel(
 
     private var _response = MutableLiveData<State<List<Result>>>()
     val response: LiveData<State<List<Result>>> = _response
+
+    private var _movies = MutableLiveData<State<MovieResponse>>()
+    val movies: LiveData<State<MovieResponse>> = _movies
 
     private var _responseTrailer = MutableLiveData<State<List<ResultTrailer>>>()
     val responseTrailer: LiveData<State<List<ResultTrailer>>> = _responseTrailer
@@ -57,15 +61,14 @@ class MovieViewModel(
     fun getPopularMoviesResponse(apikey: String, language: String, page: Int) {
         viewModelScope.launch {
             try {
-                _response.value = loading(true)
+
                 val movies = withContext(ioDispatcher) {
-                    getMovies.getPopularMovie(apikey, language, page)
+                    getMovies.getPopularMovieResponse(apikey, language, page)
                 }
-                _response.value = loading(false)
-                _response.value = success(movies)
+
+                _movies.value = success(movies)
             } catch (e: Exception) {
-                _response.value = error(e)
-                _response.value = loading(false)
+                _movies.value = error(e)
             }
         }
     }

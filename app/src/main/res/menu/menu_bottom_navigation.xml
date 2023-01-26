@@ -13,4 +13,10 @@
         android:enabled="true"
         android:icon="@drawable/ic_favorite_home"/>
 
+    <item
+        android:id="@+id/categoriesFragment"
+        android:title="@string/bottom_navigation_categories"
+        android:enabled="true"
+        android:icon="@drawable/ic_categories"/>
+
 </menu>

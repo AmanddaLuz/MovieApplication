@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 
 class CategoryAdapter(
 
-    private val moviesList: List<MovieResponse>,
+    private val moviesList: List<Result>,
     private val itemClick: ((item: Result) -> Unit)
 ) : RecyclerView.Adapter<CategoryAdapter.MyViewHolder>() {
 
@@ -26,7 +26,7 @@ class CategoryAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val movies = moviesList[position]
-        holder.bindView(movies)
+        holder.bindView(moviesList)
     }
 
     override fun getItemCount(): Int = moviesList.size
@@ -36,7 +36,7 @@ class CategoryAdapter(
         private val itemClick: (item: Result) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bindView(movie: MovieResponse) {
+        fun bindView(movie: List<Result>) {
             with(binding.rvHomeCategories) {
                 layoutManager = LinearLayoutManager(
                     context,
@@ -44,7 +44,7 @@ class CategoryAdapter(
                     false
                 )
                 setHasFixedSize (true)
-                adapter = ItemAdapter (movie.results){
+                adapter = ItemAdapter (movie){
                     itemClick.invoke(it)
                 }
             }
