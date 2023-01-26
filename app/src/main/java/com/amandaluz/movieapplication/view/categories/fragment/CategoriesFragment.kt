@@ -59,7 +59,7 @@ class CategoriesFragment : Fragment() {
                     }
                 }
                 Status.LOADING -> {
-                    isLoading(it.loading)
+
                 }
                 Status.ERROR -> {
                     toast("ERRO NO GET MOVIE")
@@ -67,4 +67,5 @@ class CategoriesFragment : Fragment() {
             }
         }
 
+    }
 }
