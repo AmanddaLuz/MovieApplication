@@ -142,15 +142,19 @@ class HomeFragment : Fragment() {
                     toast("NÃO TEM NADAAAAAAAAAAAAAAA")
                 }
             )
-            if (count == 0){
-                openDialogConnection({cacheOrResponse()}, {}, childFragmentManager)
-                count ++
-            } else{
-                openDialogError({cacheOrResponse()}, childFragmentManager)
-            }
+            setTypeError()
             setLabelTryAgain()
         }
         recycler()
+    }
+
+    private fun setTypeError() {
+        if (count == 0) {
+            openDialogConnection({ cacheOrResponse() }, {}, childFragmentManager)
+            count++
+        } else {
+            openDialogError({ cacheOrResponse() }, childFragmentManager)
+        }
     }
 
     private fun setLabelTryAgain() {
