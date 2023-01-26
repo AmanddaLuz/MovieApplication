@@ -70,7 +70,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun init(){
-        MovieComponent.inject()
+        MovieComponent.injectTrailer()
     }
 
     private fun checkConnection() {
