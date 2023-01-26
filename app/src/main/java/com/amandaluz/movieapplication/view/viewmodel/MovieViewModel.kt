@@ -17,6 +17,8 @@ import com.amandaluz.core.util.State.Companion.success
 import com.amandaluz.network.model.movie.MovieResponse
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
+import com.amandaluz.network.usecase.categoryusecase.toprate.TopRateUseCase
+import com.amandaluz.network.usecase.categoryusecase.upcoming.UpcomingUseCase
 import com.amandaluz.network.usecase.movieusecase.MovieUseCase
 import com.amandaluz.network.usecase.trailerusecase.TrailerUseCase
 import kotlinx.coroutines.CoroutineDispatcher
@@ -27,14 +29,19 @@ import kotlinx.coroutines.withContext
 class MovieViewModel(
     private val getMovies: MovieUseCase,
     private val getTrailer: TrailerUseCase,
+    private val getTopRate: TopRateUseCase,
+    private val getUpcoming: UpcomingUseCase,
     private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private var _response = MutableLiveData<State<List<Result>>>()
     val response: LiveData<State<List<Result>>> = _response
 
-    private var _movies = MutableLiveData<State<MovieResponse>>()
-    val movies: LiveData<State<MovieResponse>> = _movies
+    private var _rate = MutableLiveData<State<MovieResponse>>()
+    val rate: LiveData<State<MovieResponse>> = _rate
+
+    private var _coming = MutableLiveData<State<MovieResponse>>()
+    val coming: LiveData<State<MovieResponse>> = _coming
 
     private var _responseTrailer = MutableLiveData<State<List<ResultTrailer>>>()
     val responseTrailer: LiveData<State<List<ResultTrailer>>> = _responseTrailer
@@ -58,17 +65,32 @@ class MovieViewModel(
         }
     }
 
-    fun getPopularMoviesResponse(apikey: String, language: String, page: Int) {
+    fun getTopRate(page: Int) {
         viewModelScope.launch {
             try {
 
                 val movies = withContext(ioDispatcher) {
-                    getMovies.getPopularMovieResponse(apikey, language, page)
+                    getTopRate.getTopRate(page)
                 }
 
-                _movies.value = success(movies)
+                _rate.value = success(movies)
             } catch (e: Exception) {
-                _movies.value = error(e)
+                _rate.value = error(e)
+            }
+        }
+    }
+
+    fun getUpComing(page: Int) {
+        viewModelScope.launch {
+            try {
+
+                val movies = withContext(ioDispatcher) {
+                    getUpcoming.getUpcoming(page)
+                }
+
+                _coming.value = success(movies)
+            } catch (e: Exception) {
+                _coming.value = error(e)
             }
         }
     }

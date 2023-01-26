@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amandaluz.movieapplication.databinding.*
+import com.amandaluz.network.model.category.CategoryItem
 import com.amandaluz.network.model.movie.MovieResponse
 import com.amandaluz.network.model.movie.Result
 import com.bumptech.glide.Glide

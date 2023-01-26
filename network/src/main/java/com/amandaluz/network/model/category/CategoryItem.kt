@@ -1,4 +1,4 @@
-package com.amandaluz.movieapplication.view.adapter
+package com.amandaluz.network.model.category
 
 import com.amandaluz.network.model.movie.Result
 

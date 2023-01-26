@@ -4,30 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/splash_screen">
+    android:layout_height="wrap_content"
+    android:background="#00FFFFFF">
 
     <TextView
         android:id="@+id/rv_title_categories"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:padding="8dp"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toTopOf="@id/rv_title_categories"
         tools:text="Categories"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_home_categories"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rv_title_categories"
-        app:spanCount="2"
         tools:itemCount="20"
-        tools:listitem="@layout/movie_item" />
+        app:spanCount="2"
+        tools:listitem="@layout/category_item" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

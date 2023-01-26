@@ -2,16 +2,19 @@ package com.amandaluz.movieapplication.view.favorite.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.amandaluz.core.util.*
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentFavoriteBinding
-import com.amandaluz.movieapplication.di.TrailerComponent
-import com.amandaluz.movieapplication.util.*
+import com.amandaluz.movieapplication.di.MovieComponent
+import com.amandaluz.movieapplication.util.addCacheFavorites
+import com.amandaluz.movieapplication.util.getFavoritesCache
+import com.amandaluz.movieapplication.util.verifyCacheFavorites
+import com.amandaluz.movieapplication.util.verifyCacheImageButton
 import com.amandaluz.movieapplication.view.adapter.MovieAdapter
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
@@ -67,7 +70,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun init(){
-        TrailerComponent.inject()
+        MovieComponent.inject()
     }
 
     private fun checkConnection() {

@@ -9,11 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.amandaluz.core.util.*
 import com.amandaluz.core.util.recyclerview.GridRecycler
-import com.amandaluz.core.util.Status
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentHomeBinding
 import com.amandaluz.movieapplication.di.MovieComponent
-import com.amandaluz.movieapplication.di.TrailerComponent
 import com.amandaluz.movieapplication.util.*
 import com.amandaluz.movieapplication.view.adapter.MovieAdapter
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
@@ -50,7 +48,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         MovieComponent.inject()
-        TrailerComponent.inject()
         init()
         cacheOrResponse()
     }
@@ -131,7 +128,13 @@ class HomeFragment : Fragment() {
     private fun cacheOrResponse() {
         hasConnection()
         if (hasInternet(context)) {
-            movieResponse = getMovieCache()
+            verifyCacheMovies(
+                { movieResponse = getMovieCache() },
+                {
+                    movieResponse = listOf()
+                    toast("NÃO TEM NADAAAAAAAAAAAAAAA")
+                }
+            )
             getPopularMovie()
         }
         else {

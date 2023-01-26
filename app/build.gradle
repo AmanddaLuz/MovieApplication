@@ -55,6 +55,7 @@ dependencies {
     implementation project(path: ':core')
     implementation project(path: ':ui')
     implementation project(path: ':hawk')
+    implementation project(path: ':di')
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'

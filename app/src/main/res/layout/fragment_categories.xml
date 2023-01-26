@@ -24,27 +24,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/label_connection"
-            tools:listitem="@layout/movie_item"
+            tools:listitem="@layout/category_item"
             tools:itemCount="20"
+            app:spanCount="3"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/label_empty_list"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Você ainda não possui favoritos!"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:background="@drawable/background_toolbar"
-        android:gravity="center"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/label_connection"
@@ -60,12 +47,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-<!--    <include
-        android:id="@+id/includeToolbar"
-        layout="@layout/toolbar_favorites"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
