@@ -1,5 +1,6 @@
 package com.amandaluz.movieapplication.di
 
+import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewModel
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.repository.categoryrepository.toprate.TopRateRepository
 import com.amandaluz.network.repository.categoryrepository.toprate.TopRateRepositoryImpl
@@ -24,11 +25,11 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 
-object MovieComponent: KoinComponent {
+object CategoryComponent: KoinComponent {
 
     private val viewModel = module {
         viewModel {
-            MovieViewModel(get(), get(), get())
+            CategoriesViewModel(get(), get(), get(), get(), get())
         }
     }
 
@@ -62,6 +63,30 @@ object MovieComponent: KoinComponent {
         }
     }
 
+    private val rateUseCase = module {
+        single<TopRateUseCase> {
+            TopRateUseCaseImpl(get())
+        }
+    }
+
+    private val rateRepository = module {
+        single<TopRateRepository> {
+            TopRateRepositoryImpl(get())
+        }
+    }
+
+    private val upcomingUseCase = module {
+        single<UpcomingUseCase> {
+            UpcomingUseCaseImpl(get())
+        }
+    }
+
+    private val upcomingRepository = module {
+        single<UpcomingRepository> {
+            UpcomingRepositoryImpl(get())
+        }
+    }
+
     private val dispatcherModule = module {
         single{
             return@single Dispatchers.IO
@@ -72,23 +97,16 @@ object MovieComponent: KoinComponent {
         getModulesHome()
     )
 
-    fun injectTrailer() = loadKoinModules(
-        favoriteModules()
-    )
-
     fun getModulesHome() = listOf(
         viewModel,
         movieRepository,
         movieUseCase,
         trailerRepository,
         trailerUseCase,
-        dispatcherModule,
-        serviceConnector
-    )
-
-    fun favoriteModules() = listOf(
-        trailerUseCase,
-        trailerRepository,
+        rateRepository,
+        rateUseCase,
+        upcomingRepository,
+        upcomingUseCase,
         dispatcherModule,
         serviceConnector
     )

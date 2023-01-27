@@ -10,8 +10,10 @@ import androidx.lifecycle.Lifecycle
 import com.amandaluz.core.util.*
 import com.amandaluz.core.util.recyclerview.LinearRecycler
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
+import com.amandaluz.movieapplication.di.CategoryComponent
 import com.amandaluz.movieapplication.di.MovieComponent
 import com.amandaluz.movieapplication.view.adapter.CategoryAdapter
+import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewModel
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.category.CategoryItem
 import com.amandaluz.network.model.movie.Result
@@ -22,7 +24,7 @@ class CategoriesFragment : Fragment() {
     private lateinit var binding: FragmentCategoriesBinding
     private lateinit var myAdapter: CategoryAdapter
     private var categoryList = mutableListOf<CategoryItem>()
-    private val viewModel by viewModel<MovieViewModel>()
+    private val viewModel by viewModel<CategoriesViewModel>()
     private var page: Int = 1
 
     override fun onCreateView(
@@ -40,7 +42,7 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun init() {
-        MovieComponent.inject()
+        CategoryComponent.inject()
         getResponseMovie()
         observeVMEvents()
         recycler()

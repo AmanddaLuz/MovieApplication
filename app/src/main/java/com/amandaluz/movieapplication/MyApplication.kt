@@ -3,6 +3,7 @@ package com.amandaluz.movieapplication
 import android.app.Application
 import androidx.viewbinding.BuildConfig
 import com.amandaluz.hawk.ModuleHawk
+import com.amandaluz.movieapplication.di.CategoryComponent
 import com.amandaluz.movieapplication.di.MovieComponent
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -24,6 +25,7 @@ class MyApplication: Application() {
             androidContext(this@MyApplication)
             modules(MovieComponent.getModulesHome())
             modules(MovieComponent.favoriteModules())
+            modules(CategoryComponent.getModulesHome())
         }
     }
 }
