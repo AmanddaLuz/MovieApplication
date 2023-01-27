@@ -88,6 +88,7 @@ class CategoriesFragment : Fragment() {
                 }
                 Status.LOADING -> {
                     toast("MOVIE RESPONSE")
+
                 }
                 Status.ERROR -> {
                     toast("ERRO NO GET MOVIE RESPONSE")
@@ -139,4 +140,5 @@ class CategoriesFragment : Fragment() {
         getResponseMovie()
     }
 
+    }
 }

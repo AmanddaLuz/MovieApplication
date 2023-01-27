@@ -108,8 +108,3 @@ fun getFavoritesCache(): List<Result> {
     val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
     return movieCache.get(MovieKeys.FAVORITES)
 }
-
-fun deleteFavoritesCache() {
-    val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
-    return movieCache.delete(MovieKeys.FAVORITES)
-}
