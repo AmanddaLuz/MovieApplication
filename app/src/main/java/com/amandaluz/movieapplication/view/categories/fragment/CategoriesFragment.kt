@@ -58,8 +58,8 @@ class CategoriesFragment : Fragment() {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
             when (it.status) {
                 Status.SUCCESS -> {
-                    it.data?.let {response->
-                        if (response != categoryList){
+                    it.data?.let { response ->
+                        if (response != categoryList) {
 
                             categoryList.add(CategoryItem("Populares", response))
                             myAdapter.notifyDataSetChanged()
@@ -78,8 +78,8 @@ class CategoriesFragment : Fragment() {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
             when (it.status) {
                 Status.SUCCESS -> {
-                    it.data?.let {response->
-                        if (response.results != categoryList){
+                    it.data?.let { response ->
+                        if (response.results != categoryList) {
 
                             categoryList.add(CategoryItem("Top Rates", response.results))
                             myAdapter.notifyDataSetChanged()
@@ -99,8 +99,8 @@ class CategoriesFragment : Fragment() {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
             when (it.status) {
                 Status.SUCCESS -> {
-                    it.data?.let {response->
-                        if (response.results != categoryList){
+                    it.data?.let { response ->
+                        if (response.results != categoryList) {
 
                             categoryList.add(CategoryItem("UpComings", response.results))
                             myAdapter.notifyDataSetChanged()
@@ -140,5 +140,4 @@ class CategoriesFragment : Fragment() {
         getResponseMovie()
     }
 
-    }
 }

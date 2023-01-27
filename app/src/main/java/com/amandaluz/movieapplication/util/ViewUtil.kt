@@ -1,9 +1,12 @@
 package com.amandaluz.movieapplication.util
 
+import android.content.Context
 import androidx.fragment.app.FragmentManager
+import com.amandaluz.core.util.linkPathNull
 import com.amandaluz.hawk.ModuleHawk
 import com.amandaluz.hawk.MovieKeys
 import com.amandaluz.hawk.movierepository.MovieCacheRepositoryImpl
+import com.amandaluz.movieapplication.R
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.BottomSheetDetail
@@ -108,3 +111,16 @@ fun getFavoritesCache(): List<Result> {
     val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
     return movieCache.get(MovieKeys.FAVORITES)
 }
+
+fun deleteFavoritesCache() {
+    val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
+    return movieCache.delete(MovieKeys.FAVORITES)
+}
+
+fun validatePoster(movie: Result) =
+    if (movie.poster_path.isNullOrEmpty()) linkPathNull()
+    else movie.poster_path
+
+fun validateDescription(description: String, context: Context) =
+    if (description.isNullOrEmpty()) context.getString(R.string.label_indisponible)
+    else description

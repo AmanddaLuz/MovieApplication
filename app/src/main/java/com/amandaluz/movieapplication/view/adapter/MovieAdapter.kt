@@ -34,10 +34,12 @@ class MovieAdapter(
         fun bindView(movie: Result) {
             binding.run {
                 val initPath = "https://image.tmdb.org/t/p/w500"
+                val pathNull = "https://www.unideanellemani.it/wp-content/uploads/2020/01/placeholder-1024x683.png"
                 val popularityRate = "Popularidade: ${movie.popularity.toInt()}"
                 tvPopularityDateItem.text = popularityRate
+
                 Glide.with(itemView)
-                    .load(initPath.plus(movie.poster_path))
+                    .load(validateImagePoster(movie, pathNull, initPath))
                     .centerCrop()
                     .into(imageItem)
             }
@@ -46,5 +48,12 @@ class MovieAdapter(
                 itemClick.invoke(movie)
             }
         }
+
+        private fun validateImagePoster(
+            movie: Result,
+            pathNull: String,
+            initPath: String
+        ) = if (movie.poster_path.isNullOrEmpty()) pathNull
+        else initPath.plus(movie.poster_path)
     }
 }

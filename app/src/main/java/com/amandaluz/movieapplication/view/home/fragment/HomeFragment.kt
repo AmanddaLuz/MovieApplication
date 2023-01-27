@@ -105,7 +105,7 @@ class HomeFragment : Fragment() {
                     isLoading(it.loading)
                 }
                 Status.ERROR -> {
-                    toast("ERRO NO GET MOVIE")
+                    toast(getString(R.string.toast_error))
                 }
             }
         }
@@ -119,7 +119,7 @@ class HomeFragment : Fragment() {
                 }
                 Status.LOADING -> {}
                 Status.ERROR -> {
-                        toast(getString(R.string.toast_error))
+                    toast(getString(R.string.toast_error))
                 }
             }
         }
@@ -128,16 +128,14 @@ class HomeFragment : Fragment() {
     private fun cacheOrResponse() {
         hasConnection()
         if (hasInternet(context)) {
-            verifyCacheMovies(
-                { movieResponse = getMovieCache() },
+            verifyCacheMovies({ movieResponse = getMovieCache() },
                 {
                     movieResponse = listOf()
                     toast("NÃO TEM NADAAAAAAAAAAAAAAA")
                 }
             )
             getPopularMovie()
-        }
-        else {
+        } else {
             verifyCacheMovies(
                 { movieResponse = getMovieCache() },
                 {
@@ -245,12 +243,12 @@ class HomeFragment : Fragment() {
 
     private fun callBottomSheet(movie: Result) {
         val bottomSheetDetail = BottomSheetDetail()
-        bottomSheetDetail.viewTargetDetail(movie.poster_path)
-        bottomSheetDetail.viewTargetPoster(movie.poster_path)
-        bottomSheetDetail.setTitle(movie.title)
+        bottomSheetDetail.viewTargetPoster(validatePoster(movie))
+        bottomSheetDetail.viewTargetDetail(validatePoster(movie))
+        bottomSheetDetail.setTitle(validateDescription(movie.title, requireContext()))
         bottomSheetDetail.setNota("Nota: ${movie.vote_average}")
         bottomSheetDetail.setDescription("Votos: ${movie.vote_count}")
-        bottomSheetDetail.setDetail(movie.overview)
+        bottomSheetDetail.setDetail(validateDescription(movie.overview, requireContext()))
         bottomSheetDetail.buttonCloseAction { it.dismiss() }
         bottomSheetDetail.buttonConfirmAction {
             checkOpenTrailer(movie)
