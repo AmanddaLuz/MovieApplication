@@ -20,4 +20,11 @@
     <string name="welcome">Bem vindo ao primeiro acesso!</string>
     <string name="label_no_connection">Sem conexão com a internet</string>
     <string name="no_favorites">Você ainda não possui favoritos!</string>
+    <string name="average">\"Nota: \"</string>
+    <string name="votes">\"Votos: \"</string>
+    <string name="category_populary">Populares</string>
+    <string name="category_top_rates">Top Rates</string>
+    <string name="category_upcoming">UpComings</string>
+    <string name="poster_film">poster_film</string>
+    <string name="search">Search</string>
 </resources>

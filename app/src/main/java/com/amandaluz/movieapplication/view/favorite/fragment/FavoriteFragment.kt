@@ -120,9 +120,9 @@ class FavoriteFragment : Fragment() {
     private fun setAdapter() {
         setLabelNoFavorites()
         getCache()
-        myAdapter = MovieAdapter(favoriteListSave) {
+        myAdapter = MovieAdapter(favoriteListSave) { movie ->
             checkConnection()
-            callBottomSheet(it)
+            callBottomSheet(movie)
         }
     }
 

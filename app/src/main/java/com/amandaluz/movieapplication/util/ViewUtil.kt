@@ -24,8 +24,14 @@ fun callBottomSheet(
     bottomSheetDetail.viewTargetPoster(validatePoster(movie))
     bottomSheetDetail.viewTargetDetail(validatePoster(movie))
     bottomSheetDetail.setTitle(validateDescription(movie.title, context))
-    bottomSheetDetail.setNota("Nota: ${movie.vote_average}")
-    bottomSheetDetail.setDescription("Votos: ${movie.vote_count}")
+    bottomSheetDetail.setNota(buildString {
+        append(context.getString(R.string.average))
+        append(movie.vote_average)
+    })
+    bottomSheetDetail.setDescription(buildString {
+        append(context.getString(R.string.votes))
+        append(movie.vote_count)
+    })
     bottomSheetDetail.setDetail(validateDescription(movie.overview, context))
     bottomSheetDetail.buttonCloseAction { it.dismiss() }
     bottomSheetDetail.buttonConfirmAction {
@@ -39,7 +45,7 @@ fun callBottomSheet(
     bottomSheetDetail.show(manager, tag)
 }
 
-fun getTrailerKey(isConnection: Boolean, trailerList: List<ResultTrailer>,trailerResponse: List<ResultTrailer> ): String? {
+fun getHomeTrailerKey(isConnection: Boolean, trailerList: List<ResultTrailer>, trailerResponse: List<ResultTrailer> ): String? {
     return if (isConnection) {
         var key: String? = null
         trailerList.forEach {

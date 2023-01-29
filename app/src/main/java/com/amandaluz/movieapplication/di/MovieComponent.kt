@@ -1,19 +1,11 @@
 package com.amandaluz.movieapplication.di
 
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
-import com.amandaluz.network.repository.categoryrepository.toprate.TopRateRepository
-import com.amandaluz.network.repository.categoryrepository.toprate.TopRateRepositoryImpl
-import com.amandaluz.network.repository.categoryrepository.upcoming.UpcomingRepository
-import com.amandaluz.network.repository.categoryrepository.upcoming.UpcomingRepositoryImpl
 import com.amandaluz.network.repository.movierepository.MovieRepository
 import com.amandaluz.network.repository.movierepository.MovieRepositoryImpl
 import com.amandaluz.network.repository.trailerrepository.TrailerRepository
 import com.amandaluz.network.repository.trailerrepository.TrailerRepositoryImpl
 import com.amandaluz.network.service.ApiService
-import com.amandaluz.network.usecase.categoryusecase.toprate.TopRateUseCase
-import com.amandaluz.network.usecase.categoryusecase.toprate.TopRateUseCaseImpl
-import com.amandaluz.network.usecase.categoryusecase.upcoming.UpcomingUseCase
-import com.amandaluz.network.usecase.categoryusecase.upcoming.UpcomingUseCaseImpl
 import com.amandaluz.network.usecase.movieusecase.MovieUseCase
 import com.amandaluz.network.usecase.movieusecase.MovieUseCaseImpl
 import com.amandaluz.network.usecase.trailerusecase.TrailerUseCase

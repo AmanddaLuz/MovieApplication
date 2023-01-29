@@ -10,13 +10,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.amandaluz.core.R
 import com.amandaluz.ui.customView.ConfirmDialog
 
 fun openNewTabWindow(urls: String, context: Context) {
     val uris = Uri.parse(urls)
     val intents = Intent(Intent.ACTION_VIEW, uris)
     val b = Bundle()
-    b.putBoolean("new_window", true)
+    b.putBoolean(context.getString(R.string.window_youtube), true)
     intents.putExtras(b)
     context.startActivity(intents)
 }
@@ -73,6 +74,8 @@ fun openDialogError(yes: () -> Unit, manager: FragmentManager) {
         }
     }.show(manager, "Connection")
 }
+
+fun popularity() = "Popularidade: "
 
 fun RecyclerView.animateList() {
     val animationController: LayoutAnimationController =

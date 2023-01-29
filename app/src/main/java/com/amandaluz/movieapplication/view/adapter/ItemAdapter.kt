@@ -3,8 +3,9 @@ package com.amandaluz.movieapplication.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.amandaluz.core.util.initPath
+import com.amandaluz.core.util.linkPathNull
 import com.amandaluz.movieapplication.databinding.CategoryItemBinding
-import com.amandaluz.movieapplication.databinding.MovieItemBinding
 import com.amandaluz.network.model.movie.Result
 import com.bumptech.glide.Glide
 
@@ -33,26 +34,24 @@ class ItemAdapter(
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindView(movie: Result) {
-            if (movie.adult){
-                binding.run {
-                    val initPath = "https://image.tmdb.org/t/p/w500"
-                    val popularityRate = "Popularidade: ${movie.popularity.toInt()}"
-                    Glide.with(itemView)
-                        .load(initPath.plus(movie.poster_path))
-                        .centerCrop()
-                        .into(imageItem)
-                }
-
-                itemView.setOnClickListener {
-                    itemClick.invoke(movie)
-                }
-            }else{
-                val initPath = "https://image.tmdb.org/t/p/w500"
+            binding.run {
+                val initPath = initPath()
+                val pathNull = linkPathNull()
                 Glide.with(itemView)
-                    .load(initPath.plus(movie.poster_path))
+                    .load(initPath.plus(validateImagePoster(movie, pathNull, initPath)))
                     .centerCrop()
-                    .into(binding.imageItem)
+                    .into(imageItem)
+            }
+
+            itemView.setOnClickListener {
+                itemClick.invoke(movie)
             }
         }
+        private fun validateImagePoster(
+            movie: Result,
+            pathNull: String,
+            initPath: String
+        ) = if (movie.poster_path.isNullOrEmpty()) pathNull
+        else initPath.plus(movie.poster_path)
     }
 }

@@ -3,7 +3,6 @@ package com.amandaluz.network.usecase.categoryusecase.upcoming
 import com.amandaluz.core.util.apikey
 import com.amandaluz.core.util.language
 import com.amandaluz.network.model.movie.MovieResponse
-import com.amandaluz.network.repository.categoryrepository.toprate.TopRateRepository
 import com.amandaluz.network.repository.categoryrepository.upcoming.UpcomingRepository
 import timber.log.Timber
 

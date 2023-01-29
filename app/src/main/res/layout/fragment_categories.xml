@@ -28,8 +28,7 @@
             tools:itemCount="20"
             app:spanCount="3"
             android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -37,7 +36,7 @@
         android:id="@+id/label_connection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Sem conexão com a internet"
+        android:text="@string/label_no_connection"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
         android:textColor="@color/white"
@@ -46,6 +45,16 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/loading_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/swipe"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

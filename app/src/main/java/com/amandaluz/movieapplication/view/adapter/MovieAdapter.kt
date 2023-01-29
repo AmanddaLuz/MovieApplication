@@ -3,6 +3,9 @@ package com.amandaluz.movieapplication.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.amandaluz.core.util.initPath
+import com.amandaluz.core.util.linkPathNull
+import com.amandaluz.core.util.popularity
 import com.amandaluz.movieapplication.databinding.MovieItemBinding
 import com.amandaluz.network.model.movie.Result
 import com.bumptech.glide.Glide
@@ -33,9 +36,9 @@ class MovieAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bindView(movie: Result) {
             binding.run {
-                val initPath = "https://image.tmdb.org/t/p/w500"
-                val pathNull = "https://www.unideanellemani.it/wp-content/uploads/2020/01/placeholder-1024x683.png"
-                val popularityRate = "Popularidade: ${movie.popularity.toInt()}"
+                val initPath = initPath()
+                val pathNull = linkPathNull()
+                val popularityRate = "${popularity()}${movie.popularity.toInt()}"
                 tvPopularityDateItem.text = popularityRate
 
                 Glide.with(itemView)

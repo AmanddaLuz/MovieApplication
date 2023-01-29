@@ -184,12 +184,16 @@ class HomeFragment : Fragment() {
     private fun setResponseTrailer(response: List<ResultTrailer>) {
         if (response != trailerList && response.isNotEmpty()) {
             trailerList.addAll(response)
-            addCacheTrailer(trailerResult = trailerList)
-            trailerResponse = getTrailerCache()
+            actionTrailerMovie()
             goToYoutube()
         } else {
             toast(getString(R.string.toast_indisponible_trailer))
         }
+    }
+
+    private fun actionTrailerMovie() {
+        addCacheTrailer(trailerResult = trailerList)
+        trailerResponse = getTrailerCache()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -197,16 +201,20 @@ class HomeFragment : Fragment() {
         binding.labelConnection.visibility = View.GONE
         if (responseMovie != movieList) {
             movieList.addAll(responseMovie)
-            addCacheMovies(moviesResult = movieList)
-            movieResponse = getMovieCache()
+            actionCacheMovie()
             myAdapter.notifyDataSetChanged()
         }
+    }
+
+    private fun actionCacheMovie() {
+        addCacheMovies(moviesResult = movieList)
+        movieResponse = getMovieCache()
     }
 
     private fun goToYoutube() {
         openNewTabWindow(
             "${goToYoutubeUrl()}${
-                getTrailerKey(
+                getHomeTrailerKey(
                     isConnect,
                     trailerList,
                     trailerResponse
@@ -232,17 +240,21 @@ class HomeFragment : Fragment() {
         ) { movie ->
             hasConnection()
             setReloadView()
-            callBottomSheet(
-                bottomSheetDetail,
-                movie,
-                requireContext(),
-                { checkOpenTrailer(movie) },
-                { verifyAddOrRemove(movie, bottomSheetDetail) },
-                verifyImageButton(movie, favoriteList),
-                childFragmentManager,
-                getString(R.string.create_bottom_sheet)
-            )
+            callBottomSheet(movie)
         }
+    }
+
+    private fun callBottomSheet(movie: Result) {
+        callBottomSheet(
+            bottomSheetDetail,
+            movie,
+            requireContext(),
+            { checkOpenTrailer(movie) },
+            { verifyAddOrRemove(movie, bottomSheetDetail) },
+            verifyImageButton(movie, favoriteList),
+            childFragmentManager,
+            getString(R.string.create_bottom_sheet)
+        )
     }
 
     private fun endlessGridRecycler() = GridRecycler {
@@ -278,8 +290,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun isLoading(it: Boolean) {
-        if (it) {
+    private fun isLoading(loading: Boolean) {
+        if (loading) {
             setLoading()
         } else {
             closeLoading()

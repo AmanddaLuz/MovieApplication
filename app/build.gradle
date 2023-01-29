@@ -41,7 +41,7 @@ ext{
     retrofitVersion = '2.9.0'
     googleGsonVersion = '2.8.0'
     okHttpVersion = '4.10.0'
-    lifecycleVersion = '2.5.1'
+    lifecycleVersion = '2.2.0'
     coroutinesVersion = '1.6.4'
     nav_version = '2.5.3'
     glide_version = '4.14.2'
@@ -61,15 +61,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // Architectural Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"

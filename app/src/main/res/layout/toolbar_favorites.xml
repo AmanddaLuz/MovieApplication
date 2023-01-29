@@ -15,7 +15,7 @@
         android:id="@+id/tv_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Favoritos"
+        android:text="@string/bottom_navigation_favorites"
         android:textColor="@color/white"
         android:textSize="28sp"
         android:padding="8dp"
