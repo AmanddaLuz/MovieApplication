@@ -11,29 +11,32 @@ import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.BottomSheetDetail
 
-fun bottomSheetDetail(
-    manager: FragmentManager,
+fun callBottomSheet(
+    bottomSheetDetail: BottomSheetDetail,
     movie: Result,
-    hasInternet: () -> Unit,
-    favorite: () -> Unit,
-    checked: Boolean
+    context: Context,
+    buttonConfirm: () -> Unit,
+    buttonFavorite: () -> Unit,
+    imageButton: Int,
+    manager: FragmentManager,
+    tag: String
 ) {
-    val bottomSheetDetail = BottomSheetDetail()
-    bottomSheetDetail.show(manager, "BOTTOM_SHEET - DETAIL")
-    bottomSheetDetail.viewTargetDetail(movie.poster_path)
-    bottomSheetDetail.viewTargetPoster(movie.poster_path)
-    bottomSheetDetail.setTitle("Nota: ${movie.vote_average}")
+    bottomSheetDetail.viewTargetPoster(validatePoster(movie))
+    bottomSheetDetail.viewTargetDetail(validatePoster(movie))
+    bottomSheetDetail.setTitle(validateDescription(movie.title, context))
+    bottomSheetDetail.setNota("Nota: ${movie.vote_average}")
     bottomSheetDetail.setDescription("Votos: ${movie.vote_count}")
-    bottomSheetDetail.setDetail(movie.overview)
+    bottomSheetDetail.setDetail(validateDescription(movie.overview, context))
     bottomSheetDetail.buttonCloseAction { it.dismiss() }
     bottomSheetDetail.buttonConfirmAction {
-        hasInternet.invoke()
+        buttonConfirm.invoke()
         it.dismiss()
     }
     bottomSheetDetail.buttonFavoriteAction {
-        favorite.invoke()
-        bottomSheetDetail.isFavorite(checked)
+        buttonFavorite.invoke()
     }
+    bottomSheetDetail.setImageButton(imageButton/*verifyImageButton(movie, favoriteList)*/)
+    bottomSheetDetail.show(manager, tag)
 }
 
 fun getTrailerKey(isConnection: Boolean, trailerList: List<ResultTrailer>,trailerResponse: List<ResultTrailer> ): String? {
@@ -110,11 +113,6 @@ fun addCacheFavorites(moviesResult: List<Result>) {
 fun getFavoritesCache(): List<Result> {
     val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
     return movieCache.get(MovieKeys.FAVORITES)
-}
-
-fun deleteFavoritesCache() {
-    val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
-    return movieCache.delete(MovieKeys.FAVORITES)
 }
 
 fun validatePoster(movie: Result) =

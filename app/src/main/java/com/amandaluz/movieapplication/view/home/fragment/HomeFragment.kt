@@ -25,6 +25,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var myAdapter: MovieAdapter
+    private val bottomSheetDetail = BottomSheetDetail()
     private var movieList = mutableListOf<Result>()
     private var trailerList = mutableListOf<ResultTrailer>()
     private var favoriteList = mutableListOf<Result>()
@@ -128,25 +129,25 @@ class HomeFragment : Fragment() {
     private fun cacheOrResponse() {
         hasConnection()
         if (hasInternet(context)) {
-            verifyCacheMovies({ movieResponse = getMovieCache() },
-                {
-                    movieResponse = listOf()
-                    toast("NÃO TEM NADAAAAAAAAAAAAAAA")
-                }
-            )
+            getCache()
             getPopularMovie()
         } else {
-            verifyCacheMovies(
-                { movieResponse = getMovieCache() },
-                {
-                    movieResponse = listOf()
-                    toast("NÃO TEM NADAAAAAAAAAAAAAAA")
-                }
-            )
+            getCache()
             setTypeError()
-            setLabelTryAgain()
+            setReloadView()
         }
         recycler()
+    }
+
+    private fun getCache() {
+        verifyCacheMovies({
+            movieResponse = getMovieCache()
+        },
+            {
+                movieResponse = listOf()
+                toast(getString(R.string.welcome))
+            }
+        )
     }
 
     private fun setTypeError() {
@@ -158,7 +159,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setLabelTryAgain() {
+    private fun setReloadView() {
         hasConnection()
         if (isConnect) {
             binding.labelConnection.visibility = View.GONE
@@ -166,12 +167,16 @@ class HomeFragment : Fragment() {
         } else {
             binding.labelConnection.visibility = View.VISIBLE
             isLoading(false)
-            binding.run {
-                labelConnection.text = getString(R.string.try_again)
-                labelConnection.visibility = View.VISIBLE
-                labelConnection.setOnClickListener {
-                    cacheOrResponse()
-                }
+            setLabelTryAgain()
+        }
+    }
+
+    private fun setLabelTryAgain() {
+        binding.run {
+            labelConnection.text = getString(R.string.try_again)
+            labelConnection.visibility = View.VISIBLE
+            labelConnection.setOnClickListener {
+                cacheOrResponse()
             }
         }
     }
@@ -226,8 +231,17 @@ class HomeFragment : Fragment() {
             else movieResponse
         ) { movie ->
             hasConnection()
-            setLabelTryAgain()
-            callBottomSheet(movie)
+            setReloadView()
+            callBottomSheet(
+                bottomSheetDetail,
+                movie,
+                requireContext(),
+                { checkOpenTrailer(movie) },
+                { verifyAddOrRemove(movie, bottomSheetDetail) },
+                verifyImageButton(movie, favoriteList),
+                childFragmentManager,
+                getString(R.string.create_bottom_sheet)
+            )
         }
     }
 
@@ -238,27 +252,7 @@ class HomeFragment : Fragment() {
             binding.labelConnection.visibility = View.GONE
             getPopularMovie()
         }
-        setLabelTryAgain()
-    }
-
-    private fun callBottomSheet(movie: Result) {
-        val bottomSheetDetail = BottomSheetDetail()
-        bottomSheetDetail.viewTargetPoster(validatePoster(movie))
-        bottomSheetDetail.viewTargetDetail(validatePoster(movie))
-        bottomSheetDetail.setTitle(validateDescription(movie.title, requireContext()))
-        bottomSheetDetail.setNota("Nota: ${movie.vote_average}")
-        bottomSheetDetail.setDescription("Votos: ${movie.vote_count}")
-        bottomSheetDetail.setDetail(validateDescription(movie.overview, requireContext()))
-        bottomSheetDetail.buttonCloseAction { it.dismiss() }
-        bottomSheetDetail.buttonConfirmAction {
-            checkOpenTrailer(movie)
-            it.dismiss()
-        }
-        bottomSheetDetail.buttonFavoriteAction {
-            verifyAddOrRemove(movie, bottomSheetDetail)
-        }
-        bottomSheetDetail.setImageButton(verifyImageButton(movie, favoriteList))
-        bottomSheetDetail.show(childFragmentManager, getString(R.string.create_bottom_sheet))
+        setReloadView()
     }
 
     private fun checkOpenTrailer(movie: Result) {

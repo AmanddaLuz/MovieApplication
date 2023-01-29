@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Movie Application</string>
     <string name="bottom_navigation_home">Home</string>
     <string name="bottom_navigation_favorites">Favoritos</string>
@@ -17,4 +17,7 @@
     <string name="check_connection">CONNECTION</string>
     <string name="create_bottom_sheet">BOTTOM_SHEET_DETAIL</string>
     <string name="label_indisponible">Indisponível</string>
+    <string name="welcome">Bem vindo ao primeiro acesso!</string>
+    <string name="label_no_connection">Sem conexão com a internet</string>
+    <string name="no_favorites">Você ainda não possui favoritos!</string>
 </resources>

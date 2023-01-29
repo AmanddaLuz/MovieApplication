@@ -11,10 +11,7 @@ import com.amandaluz.core.util.*
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentFavoriteBinding
 import com.amandaluz.movieapplication.di.MovieComponent
-import com.amandaluz.movieapplication.util.addCacheFavorites
-import com.amandaluz.movieapplication.util.getFavoritesCache
-import com.amandaluz.movieapplication.util.verifyCacheFavorites
-import com.amandaluz.movieapplication.util.verifyCacheImageButton
+import com.amandaluz.movieapplication.util.*
 import com.amandaluz.movieapplication.view.adapter.MovieAdapter
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
@@ -25,11 +22,11 @@ import timber.log.Timber
 
 class FavoriteFragment : Fragment() {
 
-    private var favoriteList: List<Result> = listOf()
     private var favoriteListSave = mutableListOf<Result>()
     private var trailerList = mutableListOf<ResultTrailer>()
     private lateinit var binding: FragmentFavoriteBinding
     private lateinit var myAdapter: MovieAdapter
+    private val bottomSheetDetail = BottomSheetDetail()
     private var isConnect: Boolean = false
     private val viewModel by viewModel<MovieViewModel>()
 
@@ -64,12 +61,12 @@ class FavoriteFragment : Fragment() {
         }
     }
 
-    private fun isConnection(isConnection: Boolean){
+    private fun checkLabelConnection(isConnection: Boolean) {
         if (isConnection) binding.labelConnection.visibility = View.GONE
         else binding.labelConnection.visibility = View.VISIBLE
     }
 
-    private fun init(){
+    private fun init() {
         MovieComponent.injectTrailer()
     }
 
@@ -77,11 +74,11 @@ class FavoriteFragment : Fragment() {
         viewModel.hasInternet(context)
     }
 
-    private fun observeVMEvents(){
-        viewModel.isConnected.observe(viewLifecycleOwner){
-            Timber.tag("CONNECTION").i(it.toString())
+    private fun observeVMEvents() {
+        viewModel.isConnected.observe(viewLifecycleOwner) {
+            Timber.tag(getString(R.string.check_connection)).i(it.toString())
             isConnect = it
-            isConnection(it)
+            checkLabelConnection(it)
         }
         viewModel.responseTrailer.observe(viewLifecycleOwner) {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
@@ -93,7 +90,7 @@ class FavoriteFragment : Fragment() {
                 }
                 Status.LOADING -> {}
                 Status.ERROR -> {
-                    openDialogNoConnection({},{}, childFragmentManager)
+                    openDialogNoConnection({}, {}, childFragmentManager)
                 }
             }
         }
@@ -112,7 +109,7 @@ class FavoriteFragment : Fragment() {
         openNewTabWindow("${goToYoutubeUrl()}${getTrailerKey()}", requireContext())
     }
 
-    private fun getTrailerKey(): String?{
+    private fun getTrailerKey(): String? {
         var key: String? = null
         trailerList.forEach {
             key = it.key
@@ -122,13 +119,17 @@ class FavoriteFragment : Fragment() {
 
     private fun setAdapter() {
         setLabelNoFavorites()
-        verifyCacheFavorites(
-            { favoriteListSave = getFavoritesCache() as MutableList<Result> },
-            { setLabelNoFavorites() })
+        getCache()
         myAdapter = MovieAdapter(favoriteListSave) {
             checkConnection()
             callBottomSheet(it)
         }
+    }
+
+    private fun getCache() {
+        verifyCacheFavorites(
+            { favoriteListSave = getFavoritesCache() as MutableList<Result> },
+            { setLabelNoFavorites() })
     }
 
     private fun setRecycler() {
@@ -142,26 +143,21 @@ class FavoriteFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun callBottomSheet(movie: Result) {
-        val bottomSheetDetail = BottomSheetDetail()
-        bottomSheetDetail.viewTargetDetail(movie.poster_path)
-        bottomSheetDetail.viewTargetPoster(movie.poster_path)
-        bottomSheetDetail.setTitle(movie.title)
-        bottomSheetDetail.setNota("Nota: ${movie.vote_average}")
-        bottomSheetDetail.setDescription("Votos: ${movie.vote_count}")
-        bottomSheetDetail.setDetail(movie.overview)
-        bottomSheetDetail.buttonCloseAction { it.dismiss() }
-        bottomSheetDetail.buttonConfirmAction {
-            getTrailer(movie)
-            it.dismiss()
-        }
-        bottomSheetDetail.buttonFavoriteAction {
-            removeFavorite(movie)
-            bottomSheetDetail.isFavorite(false)
-            myAdapter.notifyDataSetChanged()
-            it.dismiss()
-        }
-        bottomSheetDetail.setImageButton(verifyCacheImageButton())
-        bottomSheetDetail.show(childFragmentManager, "BOTTOM_SHEET - DETAIL")
+        callBottomSheet(
+            bottomSheetDetail,
+            movie,
+            requireContext(),
+            { getTrailer(movie) },
+            {
+                removeFavorite(movie)
+                bottomSheetDetail.isFavorite(false)
+                myAdapter.notifyDataSetChanged()
+                bottomSheetDetail.dismiss()
+            },
+            verifyCacheImageButton(),
+            childFragmentManager,
+            getString(R.string.create_bottom_sheet)
+        )
     }
 
     private fun getTrailer(movie: Result) {

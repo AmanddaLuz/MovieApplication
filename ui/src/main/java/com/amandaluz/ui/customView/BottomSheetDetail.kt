@@ -1,6 +1,5 @@
 package com.amandaluz.ui.customView
 
-import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.amandaluz.ui.R
 import com.amandaluz.ui.databinding.BottomSheetDetailBinding
