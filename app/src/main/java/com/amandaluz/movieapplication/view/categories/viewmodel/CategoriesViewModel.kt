@@ -54,10 +54,8 @@ class CategoriesViewModel(
                 val movies = withContext(ioDispatcher) {
                     getMovies.getPopularMovie(apikey, language, page)
                 }
-                _response.value = loading(false)
                 _response.value = success(movies)
             } catch (e: Exception) {
-                _response.value = error(e)
                 _response.value = loading(false)
             }
         }
@@ -70,9 +68,10 @@ class CategoriesViewModel(
                 val movies = withContext(ioDispatcher) {
                     getTopRate.getTopRate(page)
                 }
-
+                _response.value = loading(false)
                 _rate.value = success(movies)
             } catch (e: Exception) {
+                _response.value = loading(false)
                 _rate.value = error(e)
             }
         }
@@ -85,9 +84,9 @@ class CategoriesViewModel(
                 val movies = withContext(ioDispatcher) {
                     getUpcoming.getUpcoming(page)
                 }
-
                 _coming.value = success(movies)
             } catch (e: Exception) {
+                _response.value = loading(false)
                 _coming.value = error(e)
             }
         }

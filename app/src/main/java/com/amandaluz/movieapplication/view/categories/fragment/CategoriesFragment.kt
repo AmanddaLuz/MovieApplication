@@ -9,14 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.amandaluz.core.util.*
 import com.amandaluz.core.util.recyclerview.LinearRecycler
+import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
 import com.amandaluz.movieapplication.di.CategoryComponent
-import com.amandaluz.movieapplication.di.MovieComponent
 import com.amandaluz.movieapplication.view.adapter.CategoryAdapter
 import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewModel
-import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.category.CategoryItem
-import com.amandaluz.network.model.movie.Result
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoriesFragment : Fragment() {
@@ -50,8 +48,14 @@ class CategoriesFragment : Fragment() {
 
     private fun getResponseMovie() {
         viewModel.getPopularMovies(apikey(), language(), page)
-        viewModel.getTopRate(page)
+    }
+
+    private fun getUpcoming(){
         viewModel.getUpComing(page)
+    }
+
+    private fun getTopRate(){
+        viewModel.getTopRate(page)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -63,37 +67,14 @@ class CategoriesFragment : Fragment() {
                     it.data?.let { response ->
                         if (response != categoryList) {
 
-                            categoryList.add(CategoryItem("Populares", response))
-                            myAdapter.notifyDataSetChanged()
+                            categoryList.add(CategoryItem(getString(R.string.category_populary), response))
+                            getUpcoming()
                         }
                     }
                 }
-                Status.LOADING -> {
-                    toast("MOVIE RESPONSE")
-                }
+                Status.LOADING -> { isLoading(it.loading) }
                 Status.ERROR -> {
-                    toast("ERRO NO GET MOVIE RESPONSE")
-                }
-            }
-        }
-        viewModel.rate.observe(viewLifecycleOwner) {
-            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
-            when (it.status) {
-                Status.SUCCESS -> {
-                    it.data?.let { response ->
-                        if (response.results != categoryList) {
-
-                            categoryList.add(CategoryItem("Top Rates", response.results))
-                            myAdapter.notifyDataSetChanged()
-                        }
-                    }
-                }
-                Status.LOADING -> {
-                    toast("MOVIE RESPONSE")
-
-                }
-                Status.ERROR -> {
-                    toast("ERRO NO GET MOVIE RESPONSE")
+                    toast(getString(R.string.toast_error))
                 }
             }
         }
@@ -104,21 +85,38 @@ class CategoriesFragment : Fragment() {
                     it.data?.let { response ->
                         if (response.results != categoryList) {
 
-                            categoryList.add(CategoryItem("UpComings", response.results))
+                            categoryList.add(CategoryItem(getString(R.string.category_upcoming), response.results))
+                            getTopRate()
+                        }
+                    }
+                }
+                Status.LOADING -> { }
+                Status.ERROR -> {
+                    toast(getString(R.string.toast_error))
+                }
+            }
+        }
+        viewModel.rate.observe(viewLifecycleOwner) {
+            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { response ->
+                        if (response.results != categoryList) {
+
+                            categoryList.add(CategoryItem(getString(R.string.category_top_rates), response.results))
                             myAdapter.notifyDataSetChanged()
                         }
                     }
                 }
                 Status.LOADING -> {
-                    toast("MOVIE RESPONSE")
+                    isLoading(it.loading)
+
                 }
                 Status.ERROR -> {
-                    toast("ERRO NO GET MOVIE RESPONSE")
+                    toast(getString(R.string.toast_error))
                 }
             }
         }
-
-
     }
 
     private fun recycler() {
@@ -133,13 +131,29 @@ class CategoriesFragment : Fragment() {
 
     private fun setAdapter() {
         myAdapter = CategoryAdapter(categoryList) { movie ->
-
+            toast(movie.title)
         }
     }
 
     private fun endlessGridRecycler() = LinearRecycler {
         page += 1
         getResponseMovie()
+    }
+
+    private fun isLoading(loading: Boolean) {
+        if (loading) {
+            setLoading()
+        } else {
+            closeLoading()
+        }
+    }
+
+    private fun closeLoading() {
+        binding.loadingFragment.visibility = View.GONE
+    }
+
+    private fun setLoading() {
+        binding.loadingFragment.visibility = View.VISIBLE
     }
 
 }

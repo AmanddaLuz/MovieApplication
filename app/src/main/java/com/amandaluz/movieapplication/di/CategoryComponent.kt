@@ -1,7 +1,6 @@
 package com.amandaluz.movieapplication.di
 
 import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewModel
-import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.repository.categoryrepository.toprate.TopRateRepository
 import com.amandaluz.network.repository.categoryrepository.toprate.TopRateRepositoryImpl
 import com.amandaluz.network.repository.categoryrepository.upcoming.UpcomingRepository
