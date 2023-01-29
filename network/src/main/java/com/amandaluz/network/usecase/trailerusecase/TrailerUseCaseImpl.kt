@@ -2,7 +2,6 @@ package com.amandaluz.network.usecase.trailerusecase
 
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.network.repository.trailerrepository.TrailerRepository
-import timber.log.Timber
 
 class TrailerUseCaseImpl(
     private val repository: TrailerRepository
@@ -12,11 +11,9 @@ class TrailerUseCaseImpl(
         val response = repository.getTrailer(apikey, language, movieId)
         return when (response.code()) {
             200 -> response.body()?.results ?: throw Exception()
+            in 400..500 -> throw Exception("HttpError")
             else -> {
-                Timber.tag(
-                    "GET_TRAILER_RESPONSE:${response.code()} - ${response.errorBody()}"
-                )
-                throw IllegalArgumentException()
+                throw Exception("No content")
             }
         }
     }
