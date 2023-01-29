@@ -168,7 +168,5 @@ class MovieViewModelTest {
     private fun moveId(movie: Result) = movie.id
     private val movieList = listOf(result)
     private val trailerList = listOf(resultTrailer)
-    private fun isConnect() = true
-    private fun noConnet() = false
     private val exception = Exception()
 }
