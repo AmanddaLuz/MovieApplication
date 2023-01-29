@@ -8,13 +8,13 @@ class TrailerUseCaseImpl(
     private val repository: TrailerRepository
 ) : TrailerUseCase {
 
-    override suspend fun getTrailerMovie(apikey: String, language: String, movieId: Int): List<ResultTrailer>? {
+    override suspend fun getTrailerMovie(apikey: String, language: String, movieId: Int): List<ResultTrailer> {
         val response = repository.getTrailer(apikey, language, movieId)
         return when (response.code()) {
-            200 -> response.body()?.results
+            200 -> response.body()?.results ?: throw Exception()
             else -> {
                 Timber.tag(
-                    "GET_MOVIE_RESPONSE:${response.code()} - ${response.errorBody()}"
+                    "GET_TRAILER_RESPONSE:${response.code()} - ${response.errorBody()}"
                 )
                 throw IllegalArgumentException()
             }

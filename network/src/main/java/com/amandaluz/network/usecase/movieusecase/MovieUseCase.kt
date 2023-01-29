@@ -1,6 +1,5 @@
 package com.amandaluz.network.usecase.movieusecase
 
-import com.amandaluz.network.model.movie.MovieResponse
 import com.amandaluz.network.model.movie.Result
 
 interface MovieUseCase {

@@ -55,11 +55,14 @@ class MovieViewModel(
     fun getTrailerMovies(apikey: String, language: String, movieId: Int) {
         viewModelScope.launch {
             try {
+                _response.value = loading(true)
                 val trailer = withContext(ioDispatcher) {
                     getTrailer.getTrailerMovie(apikey, language, movieId)
                 }
+                _response.value = loading(false)
                 _responseTrailer.value = success(trailer)
             } catch (e: Exception) {
+                _response.value = loading(false)
                 _responseTrailer.value = error(e)
             }
         }
