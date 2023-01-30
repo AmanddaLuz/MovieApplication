@@ -8,6 +8,7 @@ import com.amandaluz.core.util.State
 import com.amandaluz.core.util.State.Companion.error
 import com.amandaluz.core.util.State.Companion.loading
 import com.amandaluz.core.util.State.Companion.success
+import com.amandaluz.core.util.apikey
 import com.amandaluz.network.model.movie.MovieResponse
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
@@ -58,7 +59,7 @@ class CategoriesViewModel(
             try {
 
                 val movies = withContext(ioDispatcher) {
-                    getTopRate.getTopRate(page)
+                    getTopRate.getTopRate(apikey(), page)
                 }
                 _response.value = loading(false)
                 _rate.value = success(movies)
@@ -69,12 +70,12 @@ class CategoriesViewModel(
         }
     }
 
-    fun getUpComing(page: Int) {
+    fun getUpComing(apikey: String, page: Int) {
         viewModelScope.launch {
             try {
 
                 val movies = withContext(ioDispatcher) {
-                    getUpcoming.getUpcoming(page)
+                    getUpcoming.getUpcoming(apikey ,page)
                 }
                 _coming.value = success(movies)
             } catch (e: Exception) {

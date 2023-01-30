@@ -12,7 +12,6 @@ import com.amandaluz.core.util.recyclerview.LinearRecycler
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
 import com.amandaluz.movieapplication.di.CategoryComponent
-import com.amandaluz.movieapplication.di.MovieComponent
 import com.amandaluz.movieapplication.util.addCacheTrailer
 import com.amandaluz.movieapplication.util.getHomeTrailerKey
 import com.amandaluz.movieapplication.util.getTrailerCache
@@ -88,7 +87,7 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun getUpcoming(){
-        viewModel.getUpComing(page)
+        viewModel.getUpComing(apikey(), page)
     }
 
     private fun getTopRate(){

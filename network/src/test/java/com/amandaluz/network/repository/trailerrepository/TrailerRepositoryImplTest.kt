@@ -18,7 +18,7 @@ class TrailerRepositoryImplTest{
     private var trailerRepository: TrailerRepository = TrailerRepositoryImpl(api)
 
     @Test
-    fun `should success response when called`(): Unit = runBlocking {
+    fun `should success response when trailerRepository is called`(): Unit = runBlocking {
         val expected: Response<TrailerResponse> = Response.success(200, TrailerResponse(1, listOf()))
 
         //Arrange
@@ -32,27 +32,27 @@ class TrailerRepositoryImplTest{
     }
 
     @Test
-    fun `should error response when called`(): Unit = runBlocking {
+    fun `should error response when trailerRepository is called`(): Unit = runBlocking {
         val expectedError = Response.error<TrailerResponse>(400, "".toResponseBody())
         //Arrange
-        `when`(api.getTrailerMovies(1, "", language())).thenReturn(expectedError)
+        `when`(api.getTrailerMovies(1, "", "")).thenReturn(expectedError)
 
         //Act
-        val result = trailerRepository.getTrailer("", language(), 1)
+        val result = trailerRepository.getTrailer("", "", 1)
 
         //Assert
         Truth.assertThat(result).isEqualTo(expectedError)
     }
 
     @Test(expected = Exception::class)
-    fun `should return exception when called`(): Unit = runBlocking {
+    fun `should return exception when trailerRepository is called`(): Unit = runBlocking {
         val exception = Exception()
 
         //Arrange
-        `when`(api.getPopularMovies("", language(), 1)).thenThrow(exception)
+        `when`(api.getPopularMovies("", "", 1)).thenThrow(exception)
 
         //Act
-        val result = trailerRepository.getTrailer("", language(), 1)
+        val result = trailerRepository.getTrailer("", "", 1)
 
         //Assert
         Truth.assertThat(result).isEqualTo(exception)
