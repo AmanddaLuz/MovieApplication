@@ -55,7 +55,7 @@ class TrailerUseCaseImplTest{
     @Test(expected = Exception::class)
     fun `should exception when getTrailerMovie then throw HttpError `() = runTest {
         val mockResponse: Response<TrailerResponse> = Response.error(400, "".toResponseBody())
-        val expected = Exception("HttpError")
+        val expected = Exception("HttpError_trailerMovie")
 
         //Arrange
         `when`(mockResponse.code()).thenReturn(400, 500)

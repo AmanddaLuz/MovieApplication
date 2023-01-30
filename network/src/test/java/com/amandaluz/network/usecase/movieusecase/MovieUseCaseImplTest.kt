@@ -54,7 +54,7 @@ class MovieUseCaseImplTest{
     @Test(expected = Exception::class)
     fun `should exception when getPopularMovie then throw HttpError `() = runTest {
         val mockResponse: Response<MovieResponse> = Response.error(400, "".toResponseBody())
-        val expected = Exception("HttpError")
+        val expected = Exception("HttpError_popularMovie")
 
         //Arrange
         `when`(mockResponse.code()).thenReturn(400, 500)
