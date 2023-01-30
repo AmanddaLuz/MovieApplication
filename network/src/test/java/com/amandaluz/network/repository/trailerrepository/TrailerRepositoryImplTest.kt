@@ -1,49 +1,44 @@
-package com.amandaluz.network.repository.movierepository
+package com.amandaluz.network.repository.trailerrepository
 
 import com.amandaluz.core.util.language
-import com.amandaluz.network.model.movie.MovieResponse
+import com.amandaluz.network.model.trailer.TrailerResponse
 import com.amandaluz.network.service.MovieApi
 import com.google.common.truth.Truth
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
-class MovieRepositoryImplTest{
+class TrailerRepositoryImplTest{
     private val api = mock(MovieApi::class.java)
-    private lateinit var movieRepository: MovieRepository
-
-    @Before
-    fun setup() {
-        movieRepository = MovieRepositoryImpl(api)
-    }
+    private var trailerRepository: TrailerRepository = TrailerRepositoryImpl(api)
 
     @Test
     fun `should success response when called`(): Unit = runBlocking {
+        val expected: Response<TrailerResponse> = Response.success(200, TrailerResponse(1, listOf()))
+
         //Arrange
-        val expected: Response<MovieResponse> = Response.success(200, MovieResponse(1, listOf(), 1, 1))
-        `when`(api.getPopularMovies("", "", 1)).thenReturn(expected)
+        `when`(api.getTrailerMovies(1, "", language())).thenReturn(expected)
 
         //Act
-        val result = movieRepository.getMovie("", "", 1)
+        val result = trailerRepository.getTrailer("", language(), 1)
 
         //Assert
         Truth.assertThat(result).isEqualTo(expected)
     }
 
-
     @Test
     fun `should error response when called`(): Unit = runBlocking {
+        val expectedError = Response.error<TrailerResponse>(400, "".toResponseBody())
         //Arrange
-        val expectedError = Response.error<MovieResponse>(400, "".toResponseBody())
-        `when`(api.getPopularMovies("", language(), 1)).thenReturn(expectedError)
+        `when`(api.getTrailerMovies(1, "", language())).thenReturn(expectedError)
 
         //Act
-        val result = movieRepository.getMovie("", language(), 1)
+        val result = trailerRepository.getTrailer("", language(), 1)
 
         //Assert
         Truth.assertThat(result).isEqualTo(expectedError)
@@ -57,10 +52,9 @@ class MovieRepositoryImplTest{
         `when`(api.getPopularMovies("", language(), 1)).thenThrow(exception)
 
         //Act
-        val result = movieRepository.getMovie("", language(), 1)
+        val result = trailerRepository.getTrailer("", language(), 1)
 
         //Assert
         Truth.assertThat(result).isEqualTo(exception)
     }
-
 }

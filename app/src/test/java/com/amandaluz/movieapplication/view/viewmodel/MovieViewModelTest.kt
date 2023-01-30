@@ -1,10 +1,6 @@
 package com.amandaluz.movieapplication.view.viewmodel
 
 import android.content.Context
-
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.amandaluz.core.util.State
@@ -13,7 +9,6 @@ import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.network.usecase.movieusecase.MovieUseCase
 import com.amandaluz.network.usecase.trailerusecase.TrailerUseCase
-import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -42,9 +37,6 @@ class MovieViewModelTest {
     private val viewModel = MovieViewModel(getMoviesUseCase, getTrailerUseCase, ioDispatcher)
 
     private val context = mock(Context::class.java)
-    private val mockConnectivityManager = mock(ConnectivityManager::class.java)
-    private val mockNetwork = mock(Network::class.java)
-    private val mockConnection = mock(NetworkCapabilities::class.java)
 
     private val movieObserver = mock(Observer::class.java) as Observer<State<List<Result>>>
     private val trailerObserver = mock(Observer::class.java) as Observer<State<List<ResultTrailer>>>
@@ -60,21 +52,28 @@ class MovieViewModelTest {
         Dispatchers.resetMain()
     }
 
-    @Test(expected = MockitoException::class)
-    fun `should liveData return true when hasConnection is called`() = runTest {
+    @Test
+    fun `should liveData return false when hasConnection is called`() = runTest {
         //Arrange
         viewModel.isConnected.observeForever(connectionObserver)
-        /*`when`(context.getSystemService(CONNECTIVITY_SERVICE)).thenReturn(mockConnectivityManager)
-        `when`(mockConnectivityManager.activeNetwork).thenReturn(mockNetwork)
-        `when`(mockConnectivityManager.getNetworkCapabilities(mockNetwork)).thenReturn(mockConnection)*/
 
         //Act
         viewModel.hasInternet(context)
-        val result = viewModel.isConnected.value
+
+        //Assert
+        verify(connectionObserver).onChanged(false)
+    }
+
+    @Test
+    fun `should liveData return true when hasConnection is called`() = runTest {
+        //Arrange
+        viewModel.isConnected.observeForever(connectionObserver)
+
+        //Act
+        viewModel.hasInternet(context)
 
         //Assert
         verify(connectionObserver).onChanged(true)
-        //assertEquals(true, result)
     }
 
     @Test
@@ -109,17 +108,16 @@ class MovieViewModelTest {
 
     @Test
     fun `should return trailerList when getTrailerMovie is called`() = runTest {
-        val list = trailerList
         //Arrange
         viewModel.responseTrailer.observeForever(trailerObserver)
-        `when`(getTrailerUseCase.getTrailerMovie("", "", 1)).thenReturn(trailerList)
+        `when`(getTrailerUseCase.getTrailerMovie("", language(), 1)).thenReturn(trailerList)
 
         //Act
-        viewModel.getTrailerMovies("", "", 1)
+        viewModel.getTrailerMovies("", language(), 1)
 
         //Assert
-        //verify(trailerObserver).onChanged(State.success(trailerList))
-        assertEquals(list, viewModel.responseTrailer.value)
+        verify(trailerObserver).onChanged(State.success(trailerList))
+        //assertEquals(list, viewModel.responseTrailer.value)
     }
 
     @Test(expected = MockitoException::class)
