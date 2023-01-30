@@ -13,7 +13,7 @@ class MovieUseCaseImpl(
         return when (response.code()) {
             200 -> response.body()?.results ?: throw Exception()
             204 -> throw Exception("No_content")
-            in 400..500 -> throw Exception("HttpError")
+            in 400..500 -> throw Exception("HttpError_popularMovie")
             else -> {
                 throw IllegalArgumentException()
             }
