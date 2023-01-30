@@ -45,10 +45,18 @@ class FavoriteFragment : Fragment() {
         setRecycler()
         init()
     }
+    private fun init() {
+        MovieComponent.injectTrailer()
+    }
 
     override fun onStart() {
         super.onStart()
         swipeRefresh()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        MovieComponent.unloadTrailer()
     }
 
     private fun swipeRefresh() {
@@ -62,10 +70,6 @@ class FavoriteFragment : Fragment() {
     private fun checkLabelConnection() {
         if (hasInternet(context)) binding.labelConnection.visibility = View.GONE
         else binding.labelConnection.visibility = View.VISIBLE
-    }
-
-    private fun init() {
-        MovieComponent.injectTrailer()
     }
 
     private fun observeVMEvents() {

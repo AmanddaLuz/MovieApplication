@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.loadKoinModules
+import org.koin.core.context.unloadKoinModules
 import org.koin.dsl.module
 
 object MovieComponent: KoinComponent {
@@ -64,7 +65,15 @@ object MovieComponent: KoinComponent {
         getModulesHome()
     )
 
-    fun injectTrailer() = loadKoinModules(
+    fun unload(){
+        getModulesHome()
+    }
+
+    fun injectTrailer() = unloadKoinModules(
+        favoriteModules()
+    )
+
+    fun unloadTrailer() = unloadKoinModules(
         favoriteModules()
     )
 
@@ -79,6 +88,7 @@ object MovieComponent: KoinComponent {
     )
 
     fun favoriteModules() = listOf(
+        viewModel,
         trailerUseCase,
         trailerRepository,
         dispatcherModule,

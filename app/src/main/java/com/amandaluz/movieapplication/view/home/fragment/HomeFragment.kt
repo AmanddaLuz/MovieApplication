@@ -57,6 +57,11 @@ class HomeFragment : Fragment() {
         swipeRefresh()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        MovieComponent.unload()
+    }
+
     private fun swipeRefresh() {
         binding.swipe.setOnRefreshListener {
             cacheOrResponse()
