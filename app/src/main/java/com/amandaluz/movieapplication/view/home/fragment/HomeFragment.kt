@@ -2,9 +2,9 @@ package com.amandaluz.movieapplication.view.home.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.amandaluz.core.util.*
@@ -14,10 +14,12 @@ import com.amandaluz.movieapplication.databinding.FragmentHomeBinding
 import com.amandaluz.movieapplication.di.MovieComponent
 import com.amandaluz.movieapplication.util.*
 import com.amandaluz.movieapplication.view.adapter.MovieAdapter
+import com.amandaluz.movieapplication.view.home.activity.HomeActivity
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.BottomSheetDetail
+import com.amandaluz.ui.customView.SearchViewListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -33,6 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var trailerResponse: List<ResultTrailer>
     private var page: Int = 1
     private val viewModel by viewModel<MovieViewModel>()
+    private var isExists = false
     private var checkItem: Boolean = false
     private var count = 0
 
@@ -49,6 +52,7 @@ class HomeFragment : Fragment() {
 
         MovieComponent.inject()
         init()
+        setupToolbar()
         cacheOrResponse()
     }
 
@@ -77,6 +81,59 @@ class HomeFragment : Fragment() {
     private fun getPopularMovie() {
         viewModel.getPopularMovies(apikey(), language(), page)
     }
+
+    private fun searchMovies(nameMovie: String) {
+        viewModel.searchMovie(nameMovie)
+    }
+
+    private fun setupToolbar() = with(activity as HomeActivity) {
+        setSupportActionBar(binding.includeToolbar.toolbarLayout)
+        title = null
+        if (!isExists) {
+            setMenu()
+        }
+    }
+
+    private fun setMenu() {
+        activity?.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_toolbar, menu)
+                setSearchView(menu)
+                isExists = true
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return false
+            }
+        })
+    }
+
+    private fun setSearchView(menu: Menu) {
+        val search = menu.findItem(R.id.search)
+        val searchView = search.actionView as SearchView
+        searchView.queryHint = "Search for movies"
+
+        searchView.setOnQueryTextListener(setupTextListener)
+        onCloseSearchViewAction(searchView)
+    }
+
+    private val setupTextListener = SearchViewListener(
+        searchOnSubmit = {
+            if (it.isNotEmpty()) {
+                searchMovies(it)
+            }
+        }
+    )
+
+    private fun onCloseSearchViewAction(searchView: SearchView) {
+        searchView.setOnCloseListener {
+            if (isSearch) {
+                getPopularMovie()
+            }
+            return@setOnCloseListener false
+        }
+    }
+
 
     private fun verifyFavoriteCache() {
         verifyCacheFavorites({ favoriteList = getFavoritesCache() as MutableList<Result> }, {

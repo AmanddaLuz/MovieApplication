@@ -12,6 +12,7 @@ import com.amandaluz.core.util.recyclerview.LinearRecycler
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
 import com.amandaluz.movieapplication.di.CategoryComponent
+import com.amandaluz.movieapplication.di.MovieComponent
 import com.amandaluz.movieapplication.util.addCacheTrailer
 import com.amandaluz.movieapplication.util.getHomeTrailerKey
 import com.amandaluz.movieapplication.util.getTrailerCache
@@ -63,6 +64,23 @@ class CategoriesFragment : Fragment() {
         getResponseMovie()
         observeVMEvents()
         recycler()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        swipeRefresh()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        CategoryComponent.unload()
+    }
+
+    private fun swipeRefresh() {
+        binding.swipe.setOnRefreshListener {
+            checkConnection()
+            binding.swipe.isRefreshing = false
+        }
     }
 
     private fun getResponseMovie() {
@@ -205,7 +223,7 @@ class CategoriesFragment : Fragment() {
             { if (hasInternet(context)) getTrailer(movie)
             else toast(getString(R.string.connection_trailer))},
             {
-
+                toast(getString(R.string.indisponible_feature))
             },
             com.amandaluz.ui.R.drawable.ic_stars_rating,
             childFragmentManager,

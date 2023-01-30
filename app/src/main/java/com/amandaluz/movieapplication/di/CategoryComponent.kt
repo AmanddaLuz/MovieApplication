@@ -21,6 +21,7 @@ import com.amandaluz.network.usecase.trailerusecase.TrailerUseCaseImpl
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.component.KoinComponent
+import org.koin.core.context.GlobalContext.unloadKoinModules
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 
@@ -93,6 +94,10 @@ object CategoryComponent: KoinComponent {
     }
 
     fun inject() = loadKoinModules(
+        getModulesHome()
+    )
+
+    fun unload() = unloadKoinModules(
         getModulesHome()
     )
 
