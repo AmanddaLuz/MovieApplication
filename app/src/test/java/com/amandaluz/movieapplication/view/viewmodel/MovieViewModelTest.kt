@@ -42,6 +42,8 @@ class MovieViewModelTest {
     private val trailerObserver = mock(Observer::class.java) as Observer<State<List<ResultTrailer>>>
     private val connectionObserver = mock(Observer::class.java) as Observer<Boolean>
 
+    private val exception = Exception()
+
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
@@ -53,31 +55,9 @@ class MovieViewModelTest {
     }
 
     @Test
-    fun `should liveData return false when hasConnection is called`() = runTest {
-        //Arrange
-        viewModel.isConnected.observeForever(connectionObserver)
-
-        //Act
-        viewModel.hasInternet(context)
-
-        //Assert
-        verify(connectionObserver).onChanged(false)
-    }
-
-    @Test
-    fun `should liveData return true when hasConnection is called`() = runTest {
-        //Arrange
-        viewModel.isConnected.observeForever(connectionObserver)
-
-        //Act
-        viewModel.hasInternet(context)
-
-        //Assert
-        verify(connectionObserver).onChanged(true)
-    }
-
-    @Test
     fun `should return movieList when getPopularMovie is called`() = runTest {
+        val movieList = listOf(result)
+
         //Arrange
         viewModel.response.observeForever(movieObserver)
         `when`(getMoviesUseCase.getPopularMovie("", language(), 1)).thenReturn(movieList)
@@ -110,21 +90,24 @@ class MovieViewModelTest {
     fun `should return trailerList when getTrailerMovie is called`() = runTest {
         //Arrange
         viewModel.responseTrailer.observeForever(trailerObserver)
-        `when`(getTrailerUseCase.getTrailerMovie("", language(), 1)).thenReturn(trailerList)
+        `when`(getTrailerUseCase.getTrailerMovie("", "", 1)).thenReturn(listOf(resultTrailer))
 
         //Act
-        viewModel.getTrailerMovies("", language(), 1)
+        viewModel.getTrailerMovies("", "", 1)
+        val result = getTrailerUseCase.getTrailerMovie("", "", 1)
+
 
         //Assert
-        verify(trailerObserver).onChanged(State.success(trailerList))
-        //assertEquals(list, viewModel.responseTrailer.value)
+        verify(trailerObserver).onChanged(State.loading(true))
+        verify(trailerObserver).onChanged(State.success(result))
+        verify(trailerObserver).onChanged(State.loading(false))
     }
 
     @Test(expected = MockitoException::class)
     fun `should throw an exception when getPopularMovie is called`() = runTest {
         //Arrange
         viewModel.responseTrailer.observeForever(trailerObserver)
-        `when`(getTrailerUseCase.getTrailerMovie("", language(), moveId(result))).thenThrow(exception)
+        `when`(getTrailerUseCase.getTrailerMovie("", language(), 1)).thenThrow(exception)
 
         //Act
         viewModel.getTrailerMovies("", language(), 297761)
@@ -163,8 +146,16 @@ class MovieViewModelTest {
         type = ""
     )
 
-    private fun moveId(movie: Result) = movie.id
-    private val movieList = listOf(result)
-    private val trailerList = listOf(resultTrailer)
-    private val exception = Exception()
+    @Test
+    fun `should liveData return false when hasConnection is called`() = runTest {
+        //Arrange
+        viewModel.isConnected.observeForever(connectionObserver)
+
+        //Act
+        viewModel.hasInternet(context)
+
+        //Assert
+        verify(connectionObserver).onChanged(false)
+    }
+
 }
