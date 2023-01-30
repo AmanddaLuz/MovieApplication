@@ -19,7 +19,6 @@ import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.BottomSheetDetail
-import com.amandaluz.ui.customView.SearchViewListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -36,6 +35,7 @@ class HomeFragment : Fragment() {
     private var page: Int = 1
     private val viewModel by viewModel<MovieViewModel>()
     private var isExists = false
+    private var isSearch = false
     private var checkItem: Boolean = false
     private var count = 0
 
@@ -81,59 +81,6 @@ class HomeFragment : Fragment() {
     private fun getPopularMovie() {
         viewModel.getPopularMovies(apikey(), language(), page)
     }
-
-    private fun searchMovies(nameMovie: String) {
-        viewModel.searchMovie(nameMovie)
-    }
-
-    private fun setupToolbar() = with(activity as HomeActivity) {
-        setSupportActionBar(binding.includeToolbar.toolbarLayout)
-        title = null
-        if (!isExists) {
-            setMenu()
-        }
-    }
-
-    private fun setMenu() {
-        activity?.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_toolbar, menu)
-                setSearchView(menu)
-                isExists = true
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return false
-            }
-        })
-    }
-
-    private fun setSearchView(menu: Menu) {
-        val search = menu.findItem(R.id.search)
-        val searchView = search.actionView as SearchView
-        searchView.queryHint = "Search for movies"
-
-        searchView.setOnQueryTextListener(setupTextListener)
-        onCloseSearchViewAction(searchView)
-    }
-
-    private val setupTextListener = SearchViewListener(
-        searchOnSubmit = {
-            if (it.isNotEmpty()) {
-                searchMovies(it)
-            }
-        }
-    )
-
-    private fun onCloseSearchViewAction(searchView: SearchView) {
-        searchView.setOnCloseListener {
-            if (isSearch) {
-                getPopularMovie()
-            }
-            return@setOnCloseListener false
-        }
-    }
-
 
     private fun verifyFavoriteCache() {
         verifyCacheFavorites({ favoriteList = getFavoritesCache() as MutableList<Result> }, {
@@ -352,4 +299,58 @@ class HomeFragment : Fragment() {
     private fun setLoading() {
         binding.loadingFragment.visibility = View.VISIBLE
     }
+
+    private fun setupToolbar() = with(activity as HomeActivity) {
+        setSupportActionBar(binding.includeToolbar.toolbarLayout)
+        title = null
+        if (!isExists) {
+            setMenu()
+        }
+    }
+
+    private fun setMenu() {
+        activity?.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_toolbar, menu)
+                setSearchView(menu)
+                isExists = true
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return false
+            }
+        })
+    }
+
+    private fun setSearchView(menu: Menu) {
+        val search = menu.findItem(R.id.search)
+        val searchView = search.actionView as SearchView
+        searchView.queryHint = getString(R.string.hint_pesquisar)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+            override fun onQueryTextChange(newText: String?): Boolean {
+                when (newText) {
+                    "" -> {
+
+                    }
+                    else -> {
+                        toast(getString(R.string.indisponible_feature))
+                    }
+                }
+                return false
+            }
+        })
+        onCloseSearchViewAction(searchView)
+    }
+
+    private fun onCloseSearchViewAction(searchView: SearchView) {
+        searchView.setOnCloseListener {
+            if (isSearch) {
+                getPopularMovie()
+            }
+            return@setOnCloseListener false
+        }
+    }
+
 }

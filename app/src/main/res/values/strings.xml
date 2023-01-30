@@ -28,4 +28,5 @@
     <string name="poster_film">poster_film</string>
     <string name="search">Search</string>
     <string name="indisponible_feature">Feature em desenvolvimento!</string>
+    <string name="hint_pesquisar">Pesquisar…</string>
 </resources>
