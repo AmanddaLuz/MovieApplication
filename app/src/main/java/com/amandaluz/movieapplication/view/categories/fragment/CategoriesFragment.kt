@@ -12,15 +12,24 @@ import com.amandaluz.core.util.recyclerview.LinearRecycler
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
 import com.amandaluz.movieapplication.di.CategoryComponent
+import com.amandaluz.movieapplication.util.addCacheTrailer
+import com.amandaluz.movieapplication.util.getHomeTrailerKey
+import com.amandaluz.movieapplication.util.getTrailerCache
 import com.amandaluz.movieapplication.view.adapter.CategoryAdapter
 import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewModel
 import com.amandaluz.network.model.category.CategoryItem
+import com.amandaluz.network.model.movie.Result
+import com.amandaluz.network.model.trailer.ResultTrailer
+import com.amandaluz.ui.customView.BottomSheetDetail
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoriesFragment : Fragment() {
 
     private lateinit var binding: FragmentCategoriesBinding
     private lateinit var myAdapter: CategoryAdapter
+    private val bottomSheetDetail = BottomSheetDetail()
+    private var trailerList = mutableListOf<ResultTrailer>()
+    private lateinit var trailerResponse: List<ResultTrailer>
     private var categoryList = mutableListOf<CategoryItem>()
     private val viewModel by viewModel<CategoriesViewModel>()
     private var page: Int = 1
@@ -127,6 +136,47 @@ class CategoriesFragment : Fragment() {
                 }
             }
         }
+        viewModel.responseTrailer.observe(viewLifecycleOwner) {
+            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { response ->
+                        setResponseTrailer(response)
+                    }
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    toast(getString(R.string.toast_error))
+                }
+            }
+        }
+    }
+
+    private fun setResponseTrailer(response: List<ResultTrailer>) {
+        if (response != trailerList && response.isNotEmpty()) {
+            trailerList.addAll(response)
+            actionTrailerMovie()
+            goToYoutube()
+        } else {
+            toast(getString(R.string.toast_indisponible_trailer))
+        }
+    }
+
+    private fun actionTrailerMovie() {
+        addCacheTrailer(trailerResult = trailerList)
+        trailerResponse = getTrailerCache()
+    }
+
+    private fun goToYoutube() {
+        openNewTabWindow(
+            "${goToYoutubeUrl()}${
+                getHomeTrailerKey(
+                    hasInternet(context),
+                    trailerList,
+                    trailerResponse
+                )
+            }", requireContext()
+        )
     }
 
     private fun recycler() {
@@ -142,7 +192,29 @@ class CategoriesFragment : Fragment() {
     private fun setAdapter() {
         myAdapter = CategoryAdapter(categoryList) { movie ->
             toast(movie.title)
+            callBottomSheet(movie)
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun callBottomSheet(movie: Result) {
+        com.amandaluz.movieapplication.util.callBottomSheet(
+            bottomSheetDetail,
+            movie,
+            requireContext(),
+            { if (hasInternet(context)) getTrailer(movie)
+            else toast(getString(R.string.connection_trailer))},
+            {
+
+            },
+            com.amandaluz.ui.R.drawable.ic_stars_rating,
+            childFragmentManager,
+            getString(R.string.create_bottom_sheet)
+        )
+    }
+
+    private fun getTrailer(movie: Result) {
+        viewModel.getTrailerMovies(apikey(), language(), movie.id)
     }
 
     private fun endlessGridRecycler() = LinearRecycler {

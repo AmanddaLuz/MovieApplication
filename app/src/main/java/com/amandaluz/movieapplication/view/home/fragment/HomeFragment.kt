@@ -208,7 +208,7 @@ class HomeFragment : Fragment() {
         openNewTabWindow(
             "${goToYoutubeUrl()}${
                 getHomeTrailerKey(
-                    hasInternet(context)/*isConnect*/,
+                    hasInternet(context),
                     trailerList,
                     trailerResponse
                 )

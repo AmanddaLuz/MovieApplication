@@ -148,7 +148,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_trailer"
-        android:layout_width="320dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
@@ -173,8 +173,9 @@
         tools:src="@drawable/ic_favorite_button_selected"
         app:srcCompat="@drawable/ic_favorite_button_unselected"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/btn_trailer"
         app:layout_constraintStart_toEndOf="@id/btn_trailer"
+        app:layout_constraintTop_toTopOf="@id/btn_trailer"
         android:contentDescription="@string/star_who_favorite_the_movie" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
