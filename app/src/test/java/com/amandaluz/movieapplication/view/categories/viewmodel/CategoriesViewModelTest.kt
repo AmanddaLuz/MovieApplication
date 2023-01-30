@@ -5,9 +5,11 @@ import androidx.lifecycle.Observer
 import com.amandaluz.core.util.State
 import com.amandaluz.network.model.movie.MovieResponse
 import com.amandaluz.network.model.movie.Result
+import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.network.usecase.categoryusecase.toprate.TopRateUseCase
 import com.amandaluz.network.usecase.categoryusecase.upcoming.UpcomingUseCase
 import com.amandaluz.network.usecase.movieusecase.MovieUseCase
+import com.amandaluz.network.usecase.trailerusecase.TrailerUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -31,13 +33,17 @@ class CategoriesViewModelTest {
     private val getMoviesUseCase = mock(MovieUseCase::class.java)
     private val getTopRateUseCase = mock(TopRateUseCase::class.java)
     private val getUpComingUseCase = mock(UpcomingUseCase::class.java)
+    private val getTrailerUseCase = mock(TrailerUseCase::class.java)
+
+    private val ioDispatcher = Dispatchers.IO
 
     private val viewModel =
-        CategoriesViewModel(getMoviesUseCase, getTopRateUseCase, getUpComingUseCase, dispatcher)
+        CategoriesViewModel(getMoviesUseCase, getTopRateUseCase, getUpComingUseCase, getTrailerUseCase, ioDispatcher)
 
     private val movieObserver = mock(Observer::class.java) as Observer<State<List<Result>>>
     private val rateObserver = mock(Observer::class.java) as Observer<State<MovieResponse>>
     private val upcomingObserver = mock(Observer::class.java) as Observer<State<MovieResponse>>
+    private val trailerObserver = mock(Observer::class.java) as Observer<State<List<ResultTrailer>>>
 
     private val exception = Exception()
 
@@ -147,6 +153,36 @@ class CategoriesViewModelTest {
         verify(rateObserver).onChanged(State.error(exception))
     }
 
+    @Test
+    fun `should return trailerList when getTrailerMovie is called`() = runTest {
+        //Arrange
+        viewModel.responseTrailer.observeForever(trailerObserver)
+        `when`(getTrailerUseCase.getTrailerMovie("", "", 1)).thenReturn(listOf(resultTrailer))
+
+        //Act
+        viewModel.getTrailerMovies("", "", 1)
+        val result = getTrailerUseCase.getTrailerMovie("", "", 1)
+
+
+        //Assert
+        verify(trailerObserver).onChanged(State.loading(true))
+        verify(trailerObserver).onChanged(State.success(result))
+        verify(trailerObserver).onChanged(State.loading(false))
+    }
+
+    @Test(expected = MockitoException::class)
+    fun `should throw an exception when getPopularMovie is called`() = runTest {
+        //Arrange
+        viewModel.responseTrailer.observeForever(trailerObserver)
+        `when`(getTrailerUseCase.getTrailerMovie("", "", 1)).thenThrow(exception)
+
+        //Act
+        viewModel.getTrailerMovies("", "", 297761)
+
+        //Assert
+        verify(trailerObserver).onChanged(State.error(exception))
+    }
+
     private val result = Result(
         id = 297761,
         adult = false,
@@ -162,5 +198,18 @@ class CategoriesViewModelTest {
         original_title = "",
         video = false,
         vote_count = 0
+    )
+
+    private val resultTrailer = ResultTrailer(
+        id = "",
+        iso_639_1 = "",
+        iso_3166_1 = "",
+        key = "",
+        name = "",
+        official = true,
+        published_at = "",
+        site = "",
+        size = 1080,
+        type = ""
     )
 }
