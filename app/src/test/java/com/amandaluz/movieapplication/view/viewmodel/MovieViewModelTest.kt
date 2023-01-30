@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.amandaluz.core.util.State
-import com.amandaluz.core.util.language
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.network.usecase.movieusecase.MovieUseCase
@@ -60,14 +59,15 @@ class MovieViewModelTest {
 
         //Arrange
         viewModel.response.observeForever(movieObserver)
-        `when`(getMoviesUseCase.getPopularMovie("", language(), 1)).thenReturn(movieList)
+        `when`(getMoviesUseCase.getPopularMovie("", "", 1)).thenReturn(movieList)
 
         //Act
-        viewModel.getPopularMovies("", language(), 1)
+        viewModel.getPopularMovies("", "", 1)
+        val result = getMoviesUseCase.getPopularMovie("", "", 1)
 
         //Assert
         verify(movieObserver).onChanged(State.loading(true))
-        verify(movieObserver).onChanged(State.success(movieList))
+        verify(movieObserver).onChanged(State.success(result))
         verify(movieObserver).onChanged(State.loading(false))
     }
 
@@ -75,10 +75,10 @@ class MovieViewModelTest {
     fun `should return an exception when getPopularMovie is called`() = runTest {
         //Arrange
 
-        `when`(getMoviesUseCase.getPopularMovie("", language(), 1)).thenThrow(exception)
+        `when`(getMoviesUseCase.getPopularMovie("", "", 1)).thenThrow(exception)
 
         //Act
-        viewModel.getPopularMovies("", language(), 1)
+        viewModel.getPopularMovies("", "", 1)
 
         //Assert
         verify(movieObserver).onChanged(State.loading(true))
@@ -107,10 +107,10 @@ class MovieViewModelTest {
     fun `should throw an exception when getPopularMovie is called`() = runTest {
         //Arrange
         viewModel.responseTrailer.observeForever(trailerObserver)
-        `when`(getTrailerUseCase.getTrailerMovie("", language(), 1)).thenThrow(exception)
+        `when`(getTrailerUseCase.getTrailerMovie("", "", 1)).thenThrow(exception)
 
         //Act
-        viewModel.getTrailerMovies("", language(), 297761)
+        viewModel.getTrailerMovies("", "", 297761)
 
         //Assert
         verify(trailerObserver).onChanged(State.error(exception))
