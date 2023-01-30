@@ -18,7 +18,6 @@ import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.BottomSheetDetail
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class FavoriteFragment : Fragment() {
 
@@ -27,7 +26,6 @@ class FavoriteFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteBinding
     private lateinit var myAdapter: MovieAdapter
     private val bottomSheetDetail = BottomSheetDetail()
-    private var isConnect: Boolean = false
     private val viewModel by viewModel<MovieViewModel>()
 
     override fun onCreateView(
@@ -41,7 +39,7 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkConnection()
+        checkLabelConnection()
         observeVMEvents()
         setAdapter()
         setRecycler()
@@ -55,14 +53,14 @@ class FavoriteFragment : Fragment() {
 
     private fun swipeRefresh() {
         binding.swipe.setOnRefreshListener {
-            checkConnection()
+            checkLabelConnection()
             setRecycler()
             binding.swipe.isRefreshing = false
         }
     }
 
-    private fun checkLabelConnection(isConnection: Boolean) {
-        if (isConnection) binding.labelConnection.visibility = View.GONE
+    private fun checkLabelConnection() {
+        if (hasInternet(context)) binding.labelConnection.visibility = View.GONE
         else binding.labelConnection.visibility = View.VISIBLE
     }
 
@@ -70,16 +68,7 @@ class FavoriteFragment : Fragment() {
         MovieComponent.injectTrailer()
     }
 
-    private fun checkConnection() {
-        viewModel.hasInternet(context)
-    }
-
     private fun observeVMEvents() {
-        viewModel.isConnected.observe(viewLifecycleOwner) {
-            Timber.tag(getString(R.string.check_connection)).i(it.toString())
-            isConnect = it
-            checkLabelConnection(it)
-        }
         viewModel.responseTrailer.observe(viewLifecycleOwner) {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
             when (it.status) {
@@ -121,7 +110,6 @@ class FavoriteFragment : Fragment() {
         setLabelNoFavorites()
         getCache()
         myAdapter = MovieAdapter(favoriteListSave) { movie ->
-            checkConnection()
             callBottomSheet(movie)
         }
     }

@@ -34,7 +34,6 @@ class HomeFragment : Fragment() {
     private var page: Int = 1
     private val viewModel by viewModel<MovieViewModel>()
     private var checkItem: Boolean = false
-    private var isConnect: Boolean = false
     private var count = 0
 
     override fun onCreateView(
@@ -66,13 +65,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun init() {
-        hasConnection()
         observeVMEvents()
         verifyFavoriteCache()
-    }
-
-    private fun hasConnection() {
-        viewModel.hasInternet(context)
     }
 
     private fun getPopularMovie() {
@@ -90,10 +84,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeVMEvents() {
-        viewModel.isConnected.observe(viewLifecycleOwner) {
-            Timber.tag(getString(R.string.check_connection)).i(it.toString())
-            isConnect = it
-        }
         viewModel.response.observe(viewLifecycleOwner) {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
             when (it.status) {
@@ -127,9 +117,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun cacheOrResponse() {
-        hasConnection()
         if (hasInternet(context)) {
-            getCache()
             getPopularMovie()
         } else {
             getCache()
@@ -156,12 +144,12 @@ class HomeFragment : Fragment() {
             count++
         } else {
             openDialogError({ cacheOrResponse() }, childFragmentManager)
+            count = 0
         }
     }
 
     private fun setReloadView() {
-        hasConnection()
-        if (isConnect) {
+        if (hasInternet(context)) {
             binding.labelConnection.visibility = View.GONE
             binding.swipe.isRefreshing = false
         } else {
@@ -215,7 +203,7 @@ class HomeFragment : Fragment() {
         openNewTabWindow(
             "${goToYoutubeUrl()}${
                 getHomeTrailerKey(
-                    isConnect,
+                    hasInternet(context)/*isConnect*/,
                     trailerList,
                     trailerResponse
                 )
@@ -235,10 +223,9 @@ class HomeFragment : Fragment() {
 
     private fun setAdapter() {
         myAdapter = MovieAdapter(
-            if (isConnect) movieList
+            if (hasInternet(context)) movieList
             else movieResponse
         ) { movie ->
-            hasConnection()
             setReloadView()
             callBottomSheet(movie)
         }
@@ -259,8 +246,7 @@ class HomeFragment : Fragment() {
 
     private fun endlessGridRecycler() = GridRecycler {
         page += 1
-        hasConnection()
-        if (isConnect) {
+        if (hasInternet(context)) {
             binding.labelConnection.visibility = View.GONE
             getPopularMovie()
         }
@@ -268,8 +254,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkOpenTrailer(movie: Result) {
-        hasConnection()
-        if (isConnect) viewModel.getTrailerMovies(apikey(), language(), movie.id)
+        if (hasInternet(context)) viewModel.getTrailerMovies(apikey(), language(), movie.id)
         else toast(getString(R.string.connection_trailer))
     }
 

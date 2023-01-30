@@ -39,7 +39,7 @@ class MovieAdapter(
                 val initPath = initPath()
                 val pathNull = linkPathNull()
                 val popularityRate = "${popularity()}${movie.popularity.toInt()}"
-                tvPopularityDateItem.text = popularityRate
+                tvPopularityItem.text = popularityRate
 
                 Glide.with(itemView)
                     .load(validateImagePoster(movie, pathNull, initPath))

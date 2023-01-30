@@ -41,7 +41,7 @@ fun callBottomSheet(
     bottomSheetDetail.buttonFavoriteAction {
         buttonFavorite.invoke()
     }
-    bottomSheetDetail.setImageButton(imageButton/*verifyImageButton(movie, favoriteList)*/)
+    bottomSheetDetail.setImageButton(imageButton)
     bottomSheetDetail.show(manager, tag)
 }
 
@@ -104,7 +104,7 @@ fun verifyCacheImageButton(): Int {
 }
 
 fun verifyImageButton(movie: Result, list: MutableList<Result>): Int {
-    return if (list != null && list.contains(movie)) {
+    return if (list.contains(movie)) {
         com.amandaluz.ui.R.drawable.ic_favorite_button_selected
     } else {
         com.amandaluz.ui.R.drawable.ic_favorite_button_unselected

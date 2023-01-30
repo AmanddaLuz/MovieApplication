@@ -1,9 +1,5 @@
 package com.amandaluz.movieapplication.view.viewmodel
 
-import android.content.Context
-import android.content.Context.CONNECTIVITY_SERVICE
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,9 +28,6 @@ class MovieViewModel(
 
     private var _responseTrailer = MutableLiveData<State<List<ResultTrailer>>>()
     val responseTrailer: LiveData<State<List<ResultTrailer>>> = _responseTrailer
-
-    private val _isConnected = MutableLiveData<Boolean>()
-    val isConnected: LiveData<Boolean> = _isConnected
 
     fun getPopularMovies(apikey: String, language: String, page: Int) {
         viewModelScope.launch {
@@ -65,19 +58,6 @@ class MovieViewModel(
                 _responseTrailer.value = loading(false)
                 _responseTrailer.value = error(e)
             }
-        }
-    }
-
-    fun hasInternet(context: Context?){
-        val connectivityManager = context?.getSystemService(CONNECTIVITY_SERVICE) as? ConnectivityManager
-        val network = connectivityManager?.activeNetwork
-        val connection = connectivityManager?.getNetworkCapabilities(network)
-
-        viewModelScope.launch {
-            _isConnected.value = connection != null && (
-                    connection.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || connection.hasTransport(
-                        NetworkCapabilities.TRANSPORT_CELLULAR)
-                    )
         }
     }
 }

@@ -62,8 +62,8 @@ fun openDialogError(yes: () -> Unit, manager: FragmentManager) {
     ConfirmDialog(
         "Instabilidade",
         "Ocorreu um erro! Tente novamente em alguns instantes",
-        "Tentar novamente",
-        "Cancelar"
+        "",
+        "Fechar"
     ).apply {
         setListener {
             yes.invoke()
@@ -81,10 +81,6 @@ fun RecyclerView.animateList() {
     val animationController: LayoutAnimationController =
         AnimationUtils.loadLayoutAnimation(context, com.amandaluz.ui.R.anim.layout_animation)
     this.layoutAnimation = animationController
-}
-
-fun Context.toast(message: String) {
-    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
 fun Fragment.toast(message: String) {

@@ -1,6 +1,5 @@
 package com.amandaluz.movieapplication.view.viewmodel
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.amandaluz.core.util.State
@@ -35,11 +34,8 @@ class MovieViewModelTest {
 
     private val viewModel = MovieViewModel(getMoviesUseCase, getTrailerUseCase, ioDispatcher)
 
-    private val context = mock(Context::class.java)
-
     private val movieObserver = mock(Observer::class.java) as Observer<State<List<Result>>>
     private val trailerObserver = mock(Observer::class.java) as Observer<State<List<ResultTrailer>>>
-    private val connectionObserver = mock(Observer::class.java) as Observer<Boolean>
 
     private val exception = Exception()
 
@@ -145,17 +141,4 @@ class MovieViewModelTest {
         size = 1080,
         type = ""
     )
-
-    @Test
-    fun `should liveData return false when hasConnection is called`() = runTest {
-        //Arrange
-        viewModel.isConnected.observeForever(connectionObserver)
-
-        //Act
-        viewModel.hasInternet(context)
-
-        //Assert
-        verify(connectionObserver).onChanged(false)
-    }
-
 }

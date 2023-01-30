@@ -36,7 +36,17 @@ class CategoriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
+        checkConnection()
+    }
+
+    private fun checkConnection(){
+        if (hasInternet(context)){
+            binding.labelConnection.visibility = View.GONE
+            init()
+        }
+        else{
+            binding.labelConnection.visibility = View.VISIBLE
+        }
     }
 
     private fun init() {
@@ -68,8 +78,8 @@ class CategoriesFragment : Fragment() {
                         if (response != categoryList) {
 
                             categoryList.add(CategoryItem(getString(R.string.category_populary), response))
-                            getUpcoming()
                         }
+                        getUpcoming()
                     }
                 }
                 Status.LOADING -> { isLoading(it.loading) }
@@ -86,8 +96,8 @@ class CategoriesFragment : Fragment() {
                         if (response.results != categoryList) {
 
                             categoryList.add(CategoryItem(getString(R.string.category_upcoming), response.results))
-                            getTopRate()
                         }
+                        getTopRate()
                     }
                 }
                 Status.LOADING -> { }
