@@ -95,11 +95,11 @@ class CategoriesViewModelTest {
         //Arrange
         viewModel.response.observeForever(movieObserver)
         viewModel.rate.observeForever(rateObserver)
-        `when`(getTopRateUseCase.getTopRate(1)).thenReturn(response)
+        `when`(getTopRateUseCase.getTopRate("",1)).thenReturn(response)
 
         //Act
         viewModel.getTopRate(1)
-        val result = getTopRateUseCase.getTopRate(1)
+        val result = getTopRateUseCase.getTopRate("",1)
 
 
         //Assert
@@ -112,7 +112,7 @@ class CategoriesViewModelTest {
         //Arrange
         viewModel.response.observeForever(movieObserver)
         viewModel.rate.observeForever(rateObserver)
-        `when`(getTopRateUseCase.getTopRate(1)).thenThrow(exception)
+        `when`(getTopRateUseCase.getTopRate("",1)).thenThrow(exception)
 
         //Act
         viewModel.getTopRate(1)
@@ -128,11 +128,11 @@ class CategoriesViewModelTest {
         //Arrange
         viewModel.response.observeForever(movieObserver)
         viewModel.coming.observeForever(upcomingObserver)
-        `when`(getUpComingUseCase.getUpcoming(1)).thenReturn(response)
+        `when`(getUpComingUseCase.getUpcoming("",1)).thenReturn(response)
 
         //Act
-        viewModel.getUpComing(1)
-        val result = getUpComingUseCase.getUpcoming(1)
+        viewModel.getUpComing("",1)
+        val result = getUpComingUseCase.getUpcoming("",1)
 
         //Assert
         verify(upcomingObserver).onChanged(State.success(result))
@@ -143,10 +143,10 @@ class CategoriesViewModelTest {
         //Arrange
         viewModel.response.observeForever(movieObserver)
         viewModel.coming.observeForever(upcomingObserver)
-        `when`(getUpComingUseCase.getUpcoming(1)).thenThrow(exception)
+        `when`(getUpComingUseCase.getUpcoming("",1)).thenThrow(exception)
 
         //Act
-        viewModel.getUpComing(1)
+        viewModel.getUpComing("",1)
 
         //Assert
         verify(movieObserver).onChanged(State.loading(false))

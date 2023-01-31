@@ -7,9 +7,7 @@ import retrofit2.HttpException
 class SearchMoviesUseCaseImpl(private val repository: SearchRepository) :
     SearchMoviesUseCase {
     override suspend fun getSearch(apikey: String, language: String, page: Int, query: String): List<Result> {
-
-        val response =
-            repository.getSearch(apikey, language, page, query)
+        val response = repository.getSearch(apikey, language, page, query)
 
         return when (response.code()) {
             200 -> response.body()?.results ?: throw Exception("No_content")

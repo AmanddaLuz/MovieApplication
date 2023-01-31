@@ -3,9 +3,11 @@ package com.amandaluz.movieapplication.view.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.amandaluz.core.util.State
+import com.amandaluz.core.util.language
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.network.usecase.movieusecase.MovieUseCase
+import com.amandaluz.network.usecase.searchusecase.SearchMoviesUseCase
 import com.amandaluz.network.usecase.trailerusecase.TrailerUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,13 +31,15 @@ class MovieViewModelTest {
     private val dispatcher = UnconfinedTestDispatcher()
     private val getMoviesUseCase = mock(MovieUseCase::class.java)
     private val getTrailerUseCase = mock(TrailerUseCase::class.java)
+    private val searchUseCase = mock(SearchMoviesUseCase::class.java)
 
     private val ioDispatcher = Dispatchers.IO
 
-    private val viewModel = MovieViewModel(getMoviesUseCase, getTrailerUseCase, ioDispatcher)
+    private val viewModel = MovieViewModel(getMoviesUseCase, getTrailerUseCase, searchUseCase, ioDispatcher)
 
     private val movieObserver = mock(Observer::class.java) as Observer<State<List<Result>>>
     private val trailerObserver = mock(Observer::class.java) as Observer<State<List<ResultTrailer>>>
+    private val searchObserver = mock(Observer::class.java) as Observer<State<List<Result>>>
 
     private val exception = Exception()
 
@@ -100,7 +104,7 @@ class MovieViewModelTest {
     }
 
     @Test(expected = MockitoException::class)
-    fun `should throw an exception when getPopularMovie is called`() = runTest {
+    fun `should throw an exception when getTrailerMovie is called`() = runTest {
         //Arrange
         viewModel.responseTrailer.observeForever(trailerObserver)
         `when`(getTrailerUseCase.getTrailerMovie("", "", 1)).thenThrow(exception)
@@ -110,6 +114,39 @@ class MovieViewModelTest {
 
         //Assert
         verify(trailerObserver).onChanged(State.error(exception))
+    }
+
+    @Test
+    fun `should return movieList when searchMovie is called`() = runTest {
+        val movieList = listOf(result)
+
+        //Arrange
+        viewModel.search.observeForever(searchObserver)
+        `when`(searchUseCase.getSearch("", "", 1, "")).thenReturn(listOf(result))
+
+        //Act
+        viewModel.searchMovie("", "", 1)
+        val result = searchUseCase.getSearch("", language(), 1, "")
+
+        //Assert
+        verify(searchObserver).onChanged(State.loading(true))
+        verify(searchObserver).onChanged(State.success(result))
+        verify(searchObserver).onChanged(State.loading(false))
+    }
+
+    @Test(expected = MockitoException::class)
+    fun `should return an exception when searchMovie is called`() = runTest {
+        //Arrange
+
+        `when`(searchUseCase.getSearch("", "", 1, "")).thenThrow(exception)
+
+        //Act
+        viewModel.searchMovie("", "", 1)
+
+        //Assert
+        verify(searchObserver).onChanged(State.loading(true))
+        verify(searchObserver).onChanged(State.error(exception))
+        verify(searchObserver).onChanged(State.loading(false))
     }
 
     private val result = Result(
