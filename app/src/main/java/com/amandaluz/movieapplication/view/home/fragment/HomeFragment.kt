@@ -28,6 +28,7 @@ class HomeFragment : Fragment() {
     private lateinit var myAdapter: MovieAdapter
     private val bottomSheetDetail = BottomSheetDetail()
     private var movieList = mutableListOf<Result>()
+    private var searchList = mutableListOf<Result>()
     private var trailerList = mutableListOf<ResultTrailer>()
     private var favoriteList = mutableListOf<Result>()
     private lateinit var movieResponse: List<Result>
@@ -123,6 +124,27 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+        viewModel.search.observe(viewLifecycleOwner) {
+            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
+            when (it.status) {
+                Status.SUCCESS -> {
+                    it.data?.let { response ->
+                        setResponseSearch(response)
+                        recycler()
+                    }
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {}
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setResponseSearch(response: List<Result>) {
+        isSearch = true
+        searchList.clear()
+        searchList.addAll(response)
+        myAdapter.notifyDataSetChanged()
     }
 
     private fun cacheOrResponse() {
@@ -196,6 +218,7 @@ class HomeFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun setResponseMovie(responseMovie: List<Result>) {
         binding.labelConnection.visibility = View.GONE
+        if (isSearch) movieList.clear()
         if (responseMovie != movieList) {
             movieList.addAll(responseMovie)
             actionCacheMovie()
@@ -232,12 +255,14 @@ class HomeFragment : Fragment() {
 
     private fun setAdapter() {
         myAdapter = MovieAdapter(
-            if (hasInternet(context)) movieList
+            if (hasInternet(context) && isSearch) searchList
+            else if (hasInternet(context) && !isSearch) movieList
             else movieResponse
         ) { movie ->
             setReloadView()
             callBottomSheet(movie)
         }
+        isSearch = false
     }
 
     private fun callBottomSheet(movie: Result) {
@@ -300,6 +325,10 @@ class HomeFragment : Fragment() {
         binding.loadingFragment.visibility = View.VISIBLE
     }
 
+    private fun searchMovies(name: String) {
+        viewModel.searchMovie(apikey(), name, page)
+    }
+
     private fun setupToolbar() = with(activity as HomeActivity) {
         setSupportActionBar(binding.includeToolbar.toolbarLayout)
         title = null
@@ -329,14 +358,18 @@ class HomeFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false
-            override fun onQueryTextChange(newText: String?): Boolean {
-                when (newText) {
-                    "" -> {
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (hasInternet(context)){
+                    when (newText) {
+                        "" -> {
 
+                        }
+                        else -> {
+                            searchMovies(newText)
+                        }
                     }
-                    else -> {
-                        toast(getString(R.string.indisponible_feature))
-                    }
+                }else{
+                    toast(getString(R.string.connection_trailer))
                 }
                 return false
             }
