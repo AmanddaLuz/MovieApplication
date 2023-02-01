@@ -35,6 +35,7 @@ class CategoryAdapter(
         fun bindView(movie: CategoryItem) = with(binding){
             rvTitleCategories.text = movie.title
             rvHomeCategories.apply {
+                animate()
                 layoutManager = LinearLayoutManager(
                     context,
                     LinearLayoutManager.HORIZONTAL,

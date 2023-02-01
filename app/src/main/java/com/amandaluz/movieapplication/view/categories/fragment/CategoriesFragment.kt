@@ -109,7 +109,7 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun getTopRate(){
-        viewModel.getTopRate(page)
+        viewModel.getTopRate(API_KEY, page)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -144,7 +144,7 @@ class CategoriesFragment : Fragment() {
                         getTopRate()
                     }
                 }
-                Status.LOADING -> { }
+                Status.LOADING -> { isLoading(it.loading) }
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
                 }
@@ -162,10 +162,7 @@ class CategoriesFragment : Fragment() {
                         }
                     }
                 }
-                Status.LOADING -> {
-                    isLoading(it.loading)
-
-                }
+                Status.LOADING -> { isLoading(it.loading) }
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
                 }

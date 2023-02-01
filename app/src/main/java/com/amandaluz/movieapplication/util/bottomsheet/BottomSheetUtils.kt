@@ -20,31 +20,37 @@ fun callBottomSheet(
     manager: FragmentManager,
     tag: String
 ) {
-    bottomSheetDetail.viewTargetPoster(validatePoster(movie))
-    bottomSheetDetail.viewTargetDetail(validatePoster(movie))
-    bottomSheetDetail.setTitle(validateDescription(movie.title, context))
-    bottomSheetDetail.setNota(buildString {
-        append(context.getString(R.string.average))
-        append(movie.vote_average)
-    })
-    bottomSheetDetail.setDescription(buildString {
-        append(context.getString(R.string.votes))
-        append(movie.vote_count)
-    })
-    bottomSheetDetail.setDetail(validateDescription(movie.overview, context))
-    bottomSheetDetail.buttonCloseAction { it.dismiss() }
-    bottomSheetDetail.buttonConfirmAction {
-        buttonConfirm.invoke()
-        it.dismiss()
+    bottomSheetDetail.apply {
+        viewTargetPoster(validatePoster(movie))
+        viewTargetDetail(validatePoster(movie))
+        setTitle(validateDescription(movie.title, context))
+        setNota(buildString {
+            append(context.getString(R.string.average))
+            append(movie.vote_average)
+        })
+        setDescription(buildString {
+            append(context.getString(R.string.votes))
+            append(movie.vote_count)
+        })
+        setDetail(validateDescription(movie.overview, context))
+        buttonCloseAction { it.dismiss() }
+        buttonConfirmAction {
+            buttonConfirm.invoke()
+            it.dismiss()
+        }
+        buttonFavoriteAction {
+            buttonFavorite.invoke()
+        }
+        setImageButton(imageButton)
+        show(manager, tag)
     }
-    bottomSheetDetail.buttonFavoriteAction {
-        buttonFavorite.invoke()
-    }
-    bottomSheetDetail.setImageButton(imageButton)
-    bottomSheetDetail.show(manager, tag)
 }
 
-fun getHomeTrailerKey(isConnection: Boolean, trailerList: List<ResultTrailer>, trailerResponse: List<ResultTrailer> ): String? {
+fun getHomeTrailerKey(
+    isConnection: Boolean,
+    trailerList: List<ResultTrailer>,
+    trailerResponse: List<ResultTrailer>
+): String? {
     return if (isConnection) {
         var key: String? = null
         trailerList.forEach {

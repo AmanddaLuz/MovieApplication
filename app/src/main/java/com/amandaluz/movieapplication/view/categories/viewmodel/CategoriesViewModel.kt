@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.amandaluz.core.BuildConfig.API_KEY
 import com.amandaluz.core.util.State
 import com.amandaluz.core.util.State.Companion.error
 import com.amandaluz.core.util.State.Companion.loading
@@ -48,23 +47,24 @@ class CategoriesViewModel(
                     getMovies.getPopularMovie(apikey, language, page)
                 }
                 _response.value = success(movies)
+                _response.value = loading(false)
             } catch (e: Exception) {
                 _response.value = loading(false)
             }
         }
     }
 
-    fun getTopRate(page: Int) {
+    fun getTopRate(apikey: String, page: Int) {
         viewModelScope.launch {
             try {
-
+                _rate.value = loading(true)
                 val movies = withContext(ioDispatcher) {
-                    getTopRate.getTopRate(API_KEY, page)
+                    getTopRate.getTopRate(apikey, page)
                 }
-                _response.value = loading(false)
+                _rate.value = loading(false)
                 _rate.value = success(movies)
             } catch (e: Exception) {
-                _response.value = loading(false)
+                _rate.value = loading(false)
                 _rate.value = error(e)
             }
         }
@@ -73,10 +73,11 @@ class CategoriesViewModel(
     fun getUpComing(apikey: String, page: Int) {
         viewModelScope.launch {
             try {
-
+                _coming.value = loading(true)
                 val movies = withContext(ioDispatcher) {
                     getUpcoming.getUpcoming(apikey ,page)
                 }
+                _coming.value = loading(false)
                 _coming.value = success(movies)
             } catch (e: Exception) {
                 _response.value = loading(false)

@@ -10,7 +10,7 @@
     <string name="toast_indisponible_trailer">Trailer indisponíel!</string>
     <string name="toast_indisponible_movie">Lista de filmes indisponível\n por falta de rede!</string>
     <string name="toast_error">Algo deu errado, Tente novamente!</string>
-    <string name="try_again">Tentar novamente</string>
+    <string name="try_again">Você está offline. Tentar novamente</string>
     <string name="connection_trailer">Verifique sua conexão com a internet!</string>
     <string name="first_access">First_Access!</string>
     <string name="no_favorites_yet">Você ainda não possui favoritos!</string>
