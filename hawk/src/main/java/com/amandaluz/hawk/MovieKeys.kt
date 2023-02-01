@@ -5,4 +5,5 @@ object MovieKeys {
     const val MOVIES = "MOVIES_LIST"
     const val TRAILERS = "TRAILERS_LIST"
     const val FAVORITES = "FAVORITES_LIST"
+    const val CATEGORIES = "CATEGORIES_LIST"
 }

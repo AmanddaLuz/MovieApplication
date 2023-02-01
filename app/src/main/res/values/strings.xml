@@ -31,4 +31,5 @@
     <string name="hint_pesquisar">Pesquisar…</string>
     <string name="popularity">\"Popularidade: \"</string>
     <string name="list_films">lista de filmes</string>
+    <string name="no_cache_categories_yet">Hum… que pena! Você está sem conexão no seu primeiro acesso.</string>
 </resources>

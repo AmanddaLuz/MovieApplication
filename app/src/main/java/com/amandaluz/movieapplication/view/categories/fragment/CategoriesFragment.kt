@@ -19,8 +19,7 @@ import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
 import com.amandaluz.movieapplication.di.CategoryComponent
 import com.amandaluz.movieapplication.util.bottomsheet.getHomeTrailerKey
-import com.amandaluz.movieapplication.util.cache.addCacheTrailer
-import com.amandaluz.movieapplication.util.cache.getTrailerCache
+import com.amandaluz.movieapplication.util.cache.*
 import com.amandaluz.movieapplication.view.adapter.CategoryAdapter
 import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewModel
 import com.amandaluz.network.model.category.CategoryItem
@@ -57,10 +56,22 @@ class CategoriesFragment : Fragment() {
 
     private fun checkConnection(){
         if (hasInternet(context)){
-            binding.labelConnection.visibility = View.GONE
             init()
         }
         else{
+            verifyCategoriesMovies({categoryList =
+                getCategoriesCache() as MutableList<CategoryItem>
+            }, {binding.labelEmptyList.visibility = View.VISIBLE})
+            recycler()
+        }
+        setLabels()
+    }
+
+    private fun setLabels(){
+        if (hasInternet(context)){
+            binding.labelConnection.visibility = View.GONE
+            binding.labelEmptyList.visibility = View.GONE
+        }else{
             binding.labelConnection.visibility = View.VISIBLE
         }
     }
@@ -109,8 +120,8 @@ class CategoriesFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
                         if (response != categoryList) {
-
                             categoryList.add(CategoryItem(getString(R.string.category_populary), response))
+                            addCategoriesMovies(categoryList)
                         }
                         getUpcoming()
                     }
@@ -127,8 +138,8 @@ class CategoriesFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
                         if (response.results != categoryList) {
-
                             categoryList.add(CategoryItem(getString(R.string.category_upcoming), response.results))
+                            addCategoriesMovies(categoryList)
                         }
                         getTopRate()
                     }
@@ -145,8 +156,8 @@ class CategoriesFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
                         if (response.results != categoryList) {
-
                             categoryList.add(CategoryItem(getString(R.string.category_top_rates), response.results))
+                            addCategoriesMovies(categoryList)
                             myAdapter.notifyDataSetChanged()
                         }
                     }
@@ -215,7 +226,7 @@ class CategoriesFragment : Fragment() {
 
     private fun setAdapter() {
         myAdapter = CategoryAdapter(categoryList) { movie ->
-            toast(movie.title)
+            setLabels()
             callBottomSheet(movie)
         }
     }
