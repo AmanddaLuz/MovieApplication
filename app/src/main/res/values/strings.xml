@@ -29,4 +29,6 @@
     <string name="search">Search</string>
     <string name="indisponible_feature">Feature em desenvolvimento!</string>
     <string name="hint_pesquisar">Pesquisar…</string>
+    <string name="popularity">\"Popularidade: \"</string>
+    <string name="list_films">lista de filmes</string>
 </resources>
