@@ -1,4 +1,4 @@
-package com.amandaluz.core.util.recyclerview
+package com.amandaluz.ui.recyclerview
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView

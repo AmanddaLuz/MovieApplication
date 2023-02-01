@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.amandaluz.core.BuildConfig.API_KEY
 import com.amandaluz.core.util.State
 import com.amandaluz.core.util.State.Companion.error
 import com.amandaluz.core.util.State.Companion.loading
 import com.amandaluz.core.util.State.Companion.success
-import com.amandaluz.core.util.apikey
 import com.amandaluz.network.model.movie.MovieResponse
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
@@ -59,7 +59,7 @@ class CategoriesViewModel(
             try {
 
                 val movies = withContext(ioDispatcher) {
-                    getTopRate.getTopRate(apikey(), page)
+                    getTopRate.getTopRate(API_KEY, page)
                 }
                 _response.value = loading(false)
                 _rate.value = success(movies)

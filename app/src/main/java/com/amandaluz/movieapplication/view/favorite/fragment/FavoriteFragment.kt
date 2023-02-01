@@ -7,11 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import com.amandaluz.core.BuildConfig.API_KEY
 import com.amandaluz.core.util.*
+import com.amandaluz.core.util.connection.hasInternet
+import com.amandaluz.core.util.dialog.openDialogNoConnection
+import com.amandaluz.core.util.extensions.toast
+import com.amandaluz.core.util.openlink.openNewTabWindow
+import com.amandaluz.core.util.recycler.animateList
+import com.amandaluz.core.util.url.goToYoutubeUrl
+import com.amandaluz.core.util.url.language
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentFavoriteBinding
 import com.amandaluz.movieapplication.di.MovieComponent
 import com.amandaluz.movieapplication.util.*
+import com.amandaluz.movieapplication.util.bottomsheet.verifyCacheImageButton
+import com.amandaluz.movieapplication.util.cache.addCacheFavorites
+import com.amandaluz.movieapplication.util.cache.getFavoritesCache
+import com.amandaluz.movieapplication.util.cache.verifyCacheFavorites
 import com.amandaluz.movieapplication.view.adapter.MovieAdapter
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
@@ -83,7 +95,7 @@ class FavoriteFragment : Fragment() {
                 }
                 Status.LOADING -> {}
                 Status.ERROR -> {
-                    openDialogNoConnection({}, {}, childFragmentManager)
+                    requireContext().openDialogNoConnection({}, {}, childFragmentManager)
                 }
             }
         }
@@ -135,7 +147,7 @@ class FavoriteFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun callBottomSheet(movie: Result) {
-        callBottomSheet(
+        com.amandaluz.movieapplication.util.bottomsheet.callBottomSheet(
             bottomSheetDetail,
             movie,
             requireContext(),
@@ -153,7 +165,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun getTrailer(movie: Result) {
-        viewModel.getTrailerMovies(apikey(), language(), movie.id)
+        viewModel.getTrailerMovies(API_KEY, language(), movie.id)
     }
 
     private fun removeFavorite(movie: Result) {

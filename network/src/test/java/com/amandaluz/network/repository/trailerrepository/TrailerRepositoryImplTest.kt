@@ -1,6 +1,6 @@
 package com.amandaluz.network.repository.trailerrepository
 
-import com.amandaluz.core.util.language
+import com.amandaluz.core.util.url.language
 import com.amandaluz.network.model.trailer.TrailerResponse
 import com.amandaluz.network.service.MovieApi
 import com.google.common.truth.Truth

@@ -1,4 +1,4 @@
-package com.amandaluz.core.util
+package com.amandaluz.core.util.connection
 
 import android.content.Context
 import android.net.ConnectivityManager

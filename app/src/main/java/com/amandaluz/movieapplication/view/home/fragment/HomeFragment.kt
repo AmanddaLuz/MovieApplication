@@ -7,18 +7,28 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import com.amandaluz.core.BuildConfig.API_KEY
 import com.amandaluz.core.util.*
-import com.amandaluz.core.util.recyclerview.GridRecycler
+import com.amandaluz.core.util.connection.hasInternet
+import com.amandaluz.core.util.dialog.*
+import com.amandaluz.core.util.extensions.toast
+import com.amandaluz.core.util.openlink.openNewTabWindow
+import com.amandaluz.core.util.recycler.animateList
+import com.amandaluz.core.util.url.goToYoutubeUrl
+import com.amandaluz.core.util.url.language
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentHomeBinding
 import com.amandaluz.movieapplication.di.MovieComponent
 import com.amandaluz.movieapplication.util.*
+import com.amandaluz.movieapplication.util.bottomsheet.*
+import com.amandaluz.movieapplication.util.cache.*
 import com.amandaluz.movieapplication.view.adapter.MovieAdapter
 import com.amandaluz.movieapplication.view.home.activity.HomeActivity
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.BottomSheetDetail
+import com.amandaluz.ui.recyclerview.GridRecycler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -80,7 +90,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getPopularMovie() {
-        viewModel.getPopularMovies(apikey(), language(), page)
+        viewModel.getPopularMovies(API_KEY, language(), page)
     }
 
     private fun verifyFavoriteCache() {
@@ -171,10 +181,10 @@ class HomeFragment : Fragment() {
 
     private fun setTypeError() {
         if (count == 0) {
-            openDialogConnection({ cacheOrResponse() }, {}, childFragmentManager)
+            requireContext().openDialogConnection({ cacheOrResponse() }, {}, childFragmentManager)
             count++
         } else {
-            openDialogError({ cacheOrResponse() }, childFragmentManager)
+            requireContext().openDialogError({ cacheOrResponse() }, childFragmentManager)
             count = 0
         }
     }
@@ -288,7 +298,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkOpenTrailer(movie: Result) {
-        if (hasInternet(context)) viewModel.getTrailerMovies(apikey(), language(), movie.id)
+        if (hasInternet(context)) viewModel.getTrailerMovies(API_KEY, language(), movie.id)
         else toast(getString(R.string.connection_trailer))
     }
 
@@ -326,7 +336,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun searchMovies(name: String) {
-        viewModel.searchMovie(apikey(), name, page)
+        viewModel.searchMovie(API_KEY, name, page)
     }
 
     private fun setupToolbar() = with(activity as HomeActivity) {

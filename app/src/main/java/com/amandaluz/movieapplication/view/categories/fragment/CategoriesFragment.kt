@@ -7,20 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import com.amandaluz.core.BuildConfig.API_KEY
 import com.amandaluz.core.util.*
-import com.amandaluz.core.util.recyclerview.LinearRecycler
+import com.amandaluz.core.util.connection.hasInternet
+import com.amandaluz.core.util.extensions.toast
+import com.amandaluz.core.util.openlink.openNewTabWindow
+import com.amandaluz.core.util.recycler.animateList
+import com.amandaluz.core.util.url.goToYoutubeUrl
+import com.amandaluz.core.util.url.language
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
 import com.amandaluz.movieapplication.di.CategoryComponent
-import com.amandaluz.movieapplication.util.addCacheTrailer
-import com.amandaluz.movieapplication.util.getHomeTrailerKey
-import com.amandaluz.movieapplication.util.getTrailerCache
+import com.amandaluz.movieapplication.util.bottomsheet.getHomeTrailerKey
+import com.amandaluz.movieapplication.util.cache.addCacheTrailer
+import com.amandaluz.movieapplication.util.cache.getTrailerCache
 import com.amandaluz.movieapplication.view.adapter.CategoryAdapter
 import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewModel
 import com.amandaluz.network.model.category.CategoryItem
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.BottomSheetDetail
+import com.amandaluz.ui.recyclerview.LinearRecycler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoriesFragment : Fragment() {
@@ -83,11 +90,11 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun getResponseMovie() {
-        viewModel.getPopularMovies(apikey(), language(), page)
+        viewModel.getPopularMovies(API_KEY, language(), page)
     }
 
     private fun getUpcoming(){
-        viewModel.getUpComing(apikey(), page)
+        viewModel.getUpComing(API_KEY, page)
     }
 
     private fun getTopRate(){
@@ -215,12 +222,14 @@ class CategoriesFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun callBottomSheet(movie: Result) {
-        com.amandaluz.movieapplication.util.callBottomSheet(
+        com.amandaluz.movieapplication.util.bottomsheet.callBottomSheet(
             bottomSheetDetail,
             movie,
             requireContext(),
-            { if (hasInternet(context)) getTrailer(movie)
-            else toast(getString(R.string.connection_trailer))},
+            {
+                if (hasInternet(context)) getTrailer(movie)
+                else toast(getString(R.string.connection_trailer))
+            },
             {
                 toast(getString(R.string.indisponible_feature))
             },
@@ -231,7 +240,7 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun getTrailer(movie: Result) {
-        viewModel.getTrailerMovies(apikey(), language(), movie.id)
+        viewModel.getTrailerMovies(API_KEY, language(), movie.id)
     }
 
     private fun endlessGridRecycler() = LinearRecycler {

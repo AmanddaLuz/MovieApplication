@@ -1,6 +1,6 @@
 package com.amandaluz.network.usecase.movieusecase
 
-import com.amandaluz.core.util.language
+import com.amandaluz.core.util.url.language
 import com.amandaluz.network.model.movie.MovieResponse
 import com.amandaluz.network.repository.movierepository.MovieRepository
 import com.google.common.truth.Truth

@@ -3,7 +3,7 @@ package com.amandaluz.movieapplication.view.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.amandaluz.core.util.State
-import com.amandaluz.core.util.language
+import com.amandaluz.core.util.url.language
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.network.usecase.movieusecase.MovieUseCase

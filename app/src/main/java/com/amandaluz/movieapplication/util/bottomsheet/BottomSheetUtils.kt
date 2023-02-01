@@ -1,11 +1,10 @@
-package com.amandaluz.movieapplication.util
+package com.amandaluz.movieapplication.util.bottomsheet
 
 import android.content.Context
 import androidx.fragment.app.FragmentManager
-import com.amandaluz.core.util.linkPathNull
+import com.amandaluz.core.util.url.linkPathNull
 import com.amandaluz.hawk.ModuleHawk
 import com.amandaluz.hawk.MovieKeys
-import com.amandaluz.hawk.movierepository.MovieCacheRepositoryImpl
 import com.amandaluz.movieapplication.R
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
@@ -61,40 +60,6 @@ fun getHomeTrailerKey(isConnection: Boolean, trailerList: List<ResultTrailer>, t
     }
 }
 
-fun verifyCacheMovies(yes: () -> Unit, no: () -> Unit) {
-    if (ModuleHawk.contains(MovieKeys.MOVIES)) {
-        yes.invoke()
-    } else
-        no.invoke()
-}
-
-fun addCacheMovies(moviesResult: List<Result>) {
-    val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
-    movieCache.add(MovieKeys.MOVIES, moviesResult)
-}
-
-fun addCacheTrailer(trailerResult: List<ResultTrailer>) {
-    val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
-    movieCache.add(MovieKeys.TRAILERS, trailerResult)
-}
-
-fun getMovieCache(): List<Result> {
-    val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
-    return movieCache.get(MovieKeys.MOVIES)
-}
-
-fun getTrailerCache(): List<ResultTrailer> {
-    val trailerCache = MovieCacheRepositoryImpl(ModuleHawk)
-    return trailerCache.get(MovieKeys.TRAILERS)
-}
-
-fun verifyCacheFavorites(yes: () -> Unit, no: () -> Unit) {
-    if (ModuleHawk.contains(MovieKeys.FAVORITES)) {
-        yes.invoke()
-    } else
-        no.invoke()
-}
-
 fun verifyCacheImageButton(): Int {
     return if (ModuleHawk.contains(MovieKeys.FAVORITES)) {
         com.amandaluz.ui.R.drawable.ic_favorite_button_selected
@@ -109,16 +74,6 @@ fun verifyImageButton(movie: Result, list: MutableList<Result>): Int {
     } else {
         com.amandaluz.ui.R.drawable.ic_favorite_button_unselected
     }
-}
-
-fun addCacheFavorites(moviesResult: List<Result>) {
-    val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
-    movieCache.add(MovieKeys.FAVORITES, moviesResult)
-}
-
-fun getFavoritesCache(): List<Result> {
-    val movieCache = MovieCacheRepositoryImpl(ModuleHawk)
-    return movieCache.get(MovieKeys.FAVORITES)
 }
 
 fun validatePoster(movie: Result) =

@@ -1,6 +1,6 @@
 package com.amandaluz.network.usecase.trailerusecase
 
-import com.amandaluz.core.util.language
+import com.amandaluz.core.util.url.language
 import com.amandaluz.network.model.trailer.TrailerResponse
 import com.amandaluz.network.repository.trailerrepository.TrailerRepository
 import com.google.common.truth.Truth
