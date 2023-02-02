@@ -78,7 +78,7 @@ class CategoriesViewModelTest {
     @Test(expected = MockitoException::class)
     fun `should return an exception when getPopularMovie is called`() = runTest {
         //Arrange
-
+        viewModel.response.observeForever(movieObserver)
         `when`(getMoviesUseCase.getPopularMovie("", "", 1)).thenThrow(exception)
 
         //Act
