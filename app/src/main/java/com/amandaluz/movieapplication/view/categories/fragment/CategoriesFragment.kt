@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import com.amandaluz.core.BuildConfig.API_KEY
 import com.amandaluz.core.util.*
 import com.amandaluz.core.util.connection.hasInternet
@@ -25,7 +26,7 @@ import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewMo
 import com.amandaluz.network.model.category.CategoryItem
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
-import com.amandaluz.ui.customView.BottomSheetDetail
+import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
 import com.amandaluz.ui.recyclerview.LinearRecycler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -239,7 +240,8 @@ class CategoriesFragment : Fragment() {
                 else toast(getString(R.string.connection_trailer))
             },
             {
-                toast(getString(R.string.indisponible_feature))
+                findNavController().navigate(R.id.action_categoriesFragment_to_ratingFragment)
+                //toast(getString(R.string.indisponible_feature))
             },
             com.amandaluz.ui.R.drawable.ic_stars_rating,
             childFragmentManager,

@@ -29,6 +29,14 @@
     <fragment
         android:id="@+id/categoriesFragment"
         android:name="com.amandaluz.movieapplication.view.categories.fragment.CategoriesFragment"
-        android:label="CategoriesFragment" />
+        android:label="CategoriesFragment" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_ratingFragment"
+            app:destination="@id/ratingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="com.amandaluz.movieapplication.view.rating.RatingFragment"
+        android:label="RatingFragment" />
 
 </navigation>

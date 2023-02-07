@@ -8,7 +8,7 @@ import com.amandaluz.hawk.MovieKeys
 import com.amandaluz.movieapplication.R
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
-import com.amandaluz.ui.customView.BottomSheetDetail
+import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
 
 fun callBottomSheet(
     bottomSheetDetail: BottomSheetDetail,

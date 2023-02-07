@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="red">#BF0808</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="transparent">#00F8F6F6</color>
+    <color name="background_jinkan">#0E224F</color>
+    <color name="transparent">#000E224F</color>
+    <color name="arrow">#134563</color>
 
 </resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/background_jinkan"
+    android:layout_height="match_parent">
+
+    <com.amandaluz.ui.customView.flipper.LoginFlipper
+        android:id="@+id/flipper"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:elevation="2dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/dots" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/next_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_next"
+        android:elevation="2dp"
+        android:visibility="gone"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="@id/flipper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/flipper"
+        android:contentDescription="@string/next_button"/>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/previous_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_previous"
+        android:elevation="2dp"
+        android:visibility="gone"
+        android:background="@color/transparent"
+        app:layout_constraintTop_toTopOf="@id/flipper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/flipper"
+        android:contentDescription="@string/previous_button"/>
+
+    <com.amandaluz.ui.customView.dots.CustomDots
+        android:id="@+id/dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_advance"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_advance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/btn_advance"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_shape_outlined"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

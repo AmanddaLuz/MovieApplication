@@ -6,4 +6,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="trailer">Trailer</string>
     <string name="star_who_favorite_the_movie">Star who favorite the movie</string>
+    <string name="dot">&#8226;</string>
+    <string name="btn_advance">Avançar</string>
+    <string name="image_description">Image</string>
 </resources>

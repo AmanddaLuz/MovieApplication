@@ -28,7 +28,7 @@ import com.amandaluz.movieapplication.view.adapter.MovieAdapter
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
-import com.amandaluz.ui.customView.BottomSheetDetail
+import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : Fragment() {

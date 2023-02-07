@@ -3,4 +3,19 @@
     <declare-styleable name="LoadingButton">
         <attr name="text" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomDots">
+        <attr name="dotSize" format="dimension" />
+        <attr name="dotColorSelected" format="color|reference" />
+        <attr name="dotColorUnSelected" format="color|reference" />
+    </declare-styleable>
+
+    <!-- Custom Dots Line -->
+    <declare-styleable name="CustomDotsLine">
+        <attr name="dotSizeLine" format="dimension" />
+        <attr name="dotSelectedLine" format="color|reference" />
+        <attr name="dotUnSelectedLine" format="color|reference" />
+        <attr name="dotLineBlueLine" format="color|reference" />
+        <attr name="dotLineWhiteLine" format="color|reference" />
+    </declare-styleable>
 </resources>
