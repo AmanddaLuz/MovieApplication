@@ -240,8 +240,9 @@ class CategoriesFragment : Fragment() {
                 else toast(getString(R.string.connection_trailer))
             },
             {
-                findNavController().navigate(R.id.action_categoriesFragment_to_ratingFragment)
-                //toast(getString(R.string.indisponible_feature))
+                findNavController().navigate(R.id.action_categoriesFragment_to_ratingFragment, Bundle().apply {
+                    putParcelable("MOVIE", movie)
+                })
             },
             com.amandaluz.ui.R.drawable.ic_stars_rating,
             childFragmentManager,

@@ -3,31 +3,42 @@ package com.amandaluz.movieapplication.view.rating
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.GestureDetector
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.amandaluz.movieapplication.databinding.FragmentStatementBinding
 import com.amandaluz.ui.R
-import com.amandaluz.movieapplication.databinding.FragmentRatingBinding
 import com.amandaluz.ui.customView.flipper.model.posterList
 import com.amandaluz.ui.customView.gesture.GestureListener
+import com.amandaluz.network.model.movie.Result
 
-class RatingFragment : Fragment() {
-    private lateinit var binding: FragmentRatingBinding
+class StatementsFragment : Fragment() {
+    private lateinit var binding: FragmentStatementBinding
+    private lateinit var movie: Result
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentRatingBinding.inflate(inflater, container, false)
+        binding = FragmentStatementBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         setLayout()
         swipeAction()
+        getMovieByIntent()
+    }
+
+    private fun getMovieByIntent() {
+        activity?.let {
+            movie = it.intent.getParcelableExtra<Result>("MOVIE") as Result
+        }
     }
 
     private fun setLayout() {

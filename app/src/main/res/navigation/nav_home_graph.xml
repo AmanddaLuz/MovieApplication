@@ -32,11 +32,11 @@
         android:label="CategoriesFragment" >
         <action
             android:id="@+id/action_categoriesFragment_to_ratingFragment"
-            app:destination="@id/ratingFragment" />
+            app:destination="@id/statementFragment" />
     </fragment>
     <fragment
-        android:id="@+id/ratingFragment"
-        android:name="com.amandaluz.movieapplication.view.rating.RatingFragment"
-        android:label="RatingFragment" />
+        android:id="@+id/statementFragment"
+        android:name="com.amandaluz.movieapplication.view.rating.StatementsFragment"
+        android:label="StatementFragment" />
 
 </navigation>

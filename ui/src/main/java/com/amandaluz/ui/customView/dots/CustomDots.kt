@@ -2,6 +2,7 @@ package com.amandaluz.ui.customView.dots
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -68,7 +69,8 @@ class CustomDots(
             val textView = TextView(context).apply {
                 text = context.getText(R.string.dot)
                 textSize = dotSize
-                this.setPadding(0,0,20, 0)
+                this.setPadding(20,0,20, 0)
+                this.gravity = Gravity.CENTER
                 setTextColor(
                     if (position == it) colorDotSelected
                     else colorDotNotSelected

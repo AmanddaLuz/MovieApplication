@@ -6,7 +6,7 @@
     android:background="@color/background_jinkan"
     android:layout_height="match_parent">
 
-    <com.amandaluz.ui.customView.flipper.LoginFlipper
+    <com.amandaluz.ui.customView.flipper.PosterFlipper
         android:id="@+id/flipper"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -43,11 +43,11 @@
         app:layout_constraintBottom_toBottomOf="@id/flipper"
         android:contentDescription="@string/previous_button"/>
 
-    <com.amandaluz.ui.customView.dots.CustomDots
+    <com.amandaluz.ui.customView.dots.CustomDotsLine
         android:id="@+id/dots"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

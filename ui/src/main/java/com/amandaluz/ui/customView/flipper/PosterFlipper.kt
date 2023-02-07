@@ -8,7 +8,7 @@ import com.amandaluz.ui.customView.flipper.model.Poster
 import com.amandaluz.ui.databinding.ItemPosterBinding
 import com.bumptech.glide.Glide
 
-class LoginFlipper(context: Context, attrs: AttributeSet?) : ViewFlipper(context, attrs) {
+class PosterFlipper(context: Context, attrs: AttributeSet?) : ViewFlipper(context, attrs) {
 
     private var list = mutableListOf<Poster>()
 
@@ -30,6 +30,7 @@ class LoginFlipper(context: Context, attrs: AttributeSet?) : ViewFlipper(context
                 false
             )
             binding.apply {
+                titlePoster.text = it.title
                 Glide.with(context).load(it.image).into(ivPoster)
                 addView(root)
             }
