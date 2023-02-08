@@ -218,6 +218,7 @@ class CategoriesFragment : Fragment() {
             animateList()
             setHasFixedSize(true)
             adapter = myAdapter
+            layoutManager = ProminentVerticalLayoutManager(context)
             addOnScrollListener(endlessGridRecycler())
         }
     }
