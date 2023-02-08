@@ -69,11 +69,11 @@ class CategoriesFragment : Fragment() {
         setLabels()
     }
 
-    private fun setLabels(){
-        if (hasInternet(context)){
+    private fun setLabels() {
+        if (hasInternet(context)) {
             binding.labelConnection.visibility = View.GONE
             binding.labelEmptyList.visibility = View.GONE
-        }else{
+        } else {
             binding.labelConnection.visibility = View.VISIBLE
         }
     }
@@ -106,11 +106,11 @@ class CategoriesFragment : Fragment() {
         viewModel.getPopularMovies(API_KEY, language(), page)
     }
 
-    private fun getUpcoming(){
+    private fun getUpcoming() {
         viewModel.getUpComing(API_KEY, page)
     }
 
-    private fun getTopRate(){
+    private fun getTopRate() {
         viewModel.getTopRate(API_KEY, page)
     }
 
@@ -122,13 +122,20 @@ class CategoriesFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
                         if (response != categoryList) {
-                            categoryList.add(CategoryItem(getString(R.string.category_populary), response))
+                            categoryList.add(
+                                CategoryItem(
+                                    getString(R.string.category_populary),
+                                    response
+                                )
+                            )
                             addCategoriesMovies(categoryList)
                         }
                         getUpcoming()
                     }
                 }
-                Status.LOADING -> { isLoading(it.loading) }
+                Status.LOADING -> {
+                    isLoading(it.loading)
+                }
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
                 }
@@ -140,13 +147,20 @@ class CategoriesFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
                         if (response.results != categoryList) {
-                            categoryList.add(CategoryItem(getString(R.string.category_upcoming), response.results))
+                            categoryList.add(
+                                CategoryItem(
+                                    getString(R.string.category_upcoming),
+                                    response.results
+                                )
+                            )
                             addCategoriesMovies(categoryList)
                         }
                         getTopRate()
                     }
                 }
-                Status.LOADING -> { isLoading(it.loading) }
+                Status.LOADING -> {
+                    isLoading(it.loading)
+                }
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
                 }
@@ -158,13 +172,20 @@ class CategoriesFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
                         if (response.results != categoryList) {
-                            categoryList.add(CategoryItem(getString(R.string.category_top_rates), response.results))
+                            categoryList.add(
+                                CategoryItem(
+                                    getString(R.string.category_top_rates),
+                                    response.results
+                                )
+                            )
                             addCategoriesMovies(categoryList)
                             myAdapter.notifyDataSetChanged()
                         }
                     }
                 }
-                Status.LOADING -> { isLoading(it.loading) }
+                Status.LOADING -> {
+                    isLoading(it.loading)
+                }
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
                 }
@@ -242,9 +263,11 @@ class CategoriesFragment : Fragment() {
                 else toast(getString(R.string.connection_trailer))
             },
             {
-                findNavController().navigate(R.id.action_categoriesFragment_to_ratingFragment, Bundle().apply {
-                    putParcelable("MOVIE", movie)
-                })
+                findNavController().navigate(
+                    R.id.action_categoriesFragment_to_ratingFragment,
+                    Bundle().apply {
+                        putParcelable("MOVIE", movie)
+                    })
             },
             com.amandaluz.ui.R.drawable.ic_stars_rating,
             childFragmentManager,

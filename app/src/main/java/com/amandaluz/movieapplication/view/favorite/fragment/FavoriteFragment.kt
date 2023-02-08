@@ -18,14 +18,14 @@ import com.amandaluz.core.util.url.goToYoutubeUrl
 import com.amandaluz.core.util.url.language
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentFavoriteBinding
-import com.amandaluz.movieapplication.di.MovieComponent
+import com.amandaluz.movieapplication.di.FavoriteComponent
 import com.amandaluz.movieapplication.util.*
 import com.amandaluz.movieapplication.util.bottomsheet.verifyCacheImageButton
 import com.amandaluz.movieapplication.util.cache.addCacheFavorites
 import com.amandaluz.movieapplication.util.cache.getFavoritesCache
 import com.amandaluz.movieapplication.util.cache.verifyCacheFavorites
 import com.amandaluz.movieapplication.view.adapter.MovieAdapter
-import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
+import com.amandaluz.movieapplication.view.favorite.viewmodel.FavoriteViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
@@ -38,7 +38,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteBinding
     private lateinit var myAdapter: MovieAdapter
     private val bottomSheetDetail = BottomSheetDetail()
-    private val viewModel by viewModel<MovieViewModel>()
+    private val viewModel by viewModel<FavoriteViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +58,7 @@ class FavoriteFragment : Fragment() {
         setRecycler()
     }
     private fun init() {
-        MovieComponent.inject()
+        FavoriteComponent.inject()
     }
 
     override fun onStart() {
@@ -68,7 +68,7 @@ class FavoriteFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        MovieComponent.unloadTrailer()
+        FavoriteComponent.unload()
     }
 
     private fun swipeRefresh() {

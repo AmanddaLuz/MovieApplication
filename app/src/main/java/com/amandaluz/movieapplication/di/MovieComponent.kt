@@ -1,6 +1,6 @@
 package com.amandaluz.movieapplication.di
 
-import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
+import com.amandaluz.movieapplication.view.home.viewmodel.MovieViewModel
 import com.amandaluz.network.repository.movierepository.MovieRepository
 import com.amandaluz.network.repository.movierepository.MovieRepositoryImpl
 import com.amandaluz.network.repository.searchrepository.SearchRepository
@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.loadKoinModules
-import org.koin.core.context.unloadKoinModules
 import org.koin.dsl.module
 
 object MovieComponent: KoinComponent {
@@ -85,14 +84,6 @@ object MovieComponent: KoinComponent {
         getModulesHome()
     }
 
-    fun injectTrailer() = loadKoinModules(
-        favoriteModules()
-    )
-
-    fun unloadTrailer() = unloadKoinModules(
-        favoriteModules()
-    )
-
     fun getModulesHome() = listOf(
         viewModel,
         movieRepository,
@@ -101,14 +92,6 @@ object MovieComponent: KoinComponent {
         trailerUseCase,
         searchUseCase,
         searchRepository,
-        dispatcherModule,
-        serviceConnector
-    )
-
-    fun favoriteModules() = listOf(
-        viewModel,
-        trailerUseCase,
-        trailerRepository,
         dispatcherModule,
         serviceConnector
     )

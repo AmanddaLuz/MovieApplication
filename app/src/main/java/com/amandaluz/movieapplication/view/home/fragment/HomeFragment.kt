@@ -24,7 +24,7 @@ import com.amandaluz.movieapplication.util.bottomsheet.*
 import com.amandaluz.movieapplication.util.cache.*
 import com.amandaluz.movieapplication.view.adapter.MovieAdapter
 import com.amandaluz.movieapplication.view.home.activity.HomeActivity
-import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
+import com.amandaluz.movieapplication.view.home.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail

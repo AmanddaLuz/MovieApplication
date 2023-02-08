@@ -1,4 +1,4 @@
-package com.amandaluz.movieapplication.view.viewmodel
+package com.amandaluz.movieapplication.view.home.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

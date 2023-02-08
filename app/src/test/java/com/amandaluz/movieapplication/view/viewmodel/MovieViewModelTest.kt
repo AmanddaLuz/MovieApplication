@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.amandaluz.core.util.State
 import com.amandaluz.core.util.url.language
+import com.amandaluz.movieapplication.view.home.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.network.usecase.movieusecase.MovieUseCase
@@ -118,8 +119,6 @@ class MovieViewModelTest {
 
     @Test
     fun `should return movieList when searchMovie is called`() = runTest {
-        val movieList = listOf(result)
-
         //Arrange
         viewModel.search.observeForever(searchObserver)
         `when`(searchUseCase.getSearch("", "", 1, "")).thenReturn(listOf(result))

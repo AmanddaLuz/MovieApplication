@@ -94,14 +94,14 @@ object CategoryComponent: KoinComponent {
     }
 
     fun inject() = loadKoinModules(
-        getModulesHome()
+        getModulesCategories()
     )
 
     fun unload() = unloadKoinModules(
-        getModulesHome()
+        getModulesCategories()
     )
 
-    fun getModulesHome() = listOf(
+    fun getModulesCategories() = listOf(
         viewModel,
         movieRepository,
         movieUseCase,
