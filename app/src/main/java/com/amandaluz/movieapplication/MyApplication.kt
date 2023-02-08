@@ -24,7 +24,6 @@ class MyApplication: Application() {
             androidLogger(Level.DEBUG)
             androidContext(this@MyApplication)
             modules(MovieComponent.getModulesHome())
-            modules(MovieComponent.favoriteModules())
             modules(CategoryComponent.getModulesHome())
         }
     }

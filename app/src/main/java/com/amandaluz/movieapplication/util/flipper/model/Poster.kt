@@ -1,4 +1,4 @@
-package com.amandaluz.ui.customView.flipper.model
+package com.amandaluz.movieapplication.util.flipper.model
 
 import com.amandaluz.ui.R
 

@@ -8,10 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.amandaluz.movieapplication.databinding.FragmentStatementBinding
-import com.amandaluz.ui.R
-import com.amandaluz.ui.customView.flipper.model.posterList
-import com.amandaluz.ui.customView.gesture.GestureListener
+import com.amandaluz.network.model.domain.MapperResultToPoster
+import com.amandaluz.network.model.domain.poster
 import com.amandaluz.network.model.movie.Result
+import com.amandaluz.ui.R
+import com.amandaluz.ui.customView.gesture.GestureListener
 
 class StatementsFragment : Fragment() {
     private lateinit var binding: FragmentStatementBinding
@@ -28,29 +29,30 @@ class StatementsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
+        getMovieByIntent()
+        receivedMovie()
         setLayout()
         swipeAction()
-        getMovieByIntent()
     }
 
     private fun getMovieByIntent() {
-        activity?.let {
-            movie = it.intent.getParcelableExtra<Result>("MOVIE") as Result
-        }
+        movie = arguments?.getParcelable<Result>("MOVIE") as Result
     }
 
     private fun setLayout() {
         with(binding.flipper) {
-            setList(posterList())
+            setList(poster(movie))
             setLayout()
             addDots()
         }
     }
 
+    private fun receivedMovie(){
+        MapperResultToPoster.invoke(movie)
+    }
+
     private fun addDots() {
-        binding.dots.setLayout(posterList().size, binding.flipper.displayedChild)
+        binding.dots.setLayout(poster(movie).size, binding.flipper.displayedChild)
     }
 
     private fun swipeAction() {

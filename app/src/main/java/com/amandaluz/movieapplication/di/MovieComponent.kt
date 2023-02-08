@@ -30,37 +30,37 @@ object MovieComponent: KoinComponent {
     }
 
     private val movieUseCase = module {
-        single<MovieUseCase> {
+        factory<MovieUseCase> {
             MovieUseCaseImpl(get())
         }
     }
 
     private val movieRepository = module {
-        single<MovieRepository> {
+        factory<MovieRepository> {
             MovieRepositoryImpl(get())
         }
     }
 
     private val trailerUseCase = module {
-        single<TrailerUseCase> {
+        factory<TrailerUseCase> {
             TrailerUseCaseImpl(get())
         }
     }
 
     private val trailerRepository = module {
-        single<TrailerRepository> {
+        factory<TrailerRepository> {
             TrailerRepositoryImpl(get())
         }
     }
 
     private val searchUseCase = module {
-        single<SearchMoviesUseCase> {
+        factory<SearchMoviesUseCase> {
             SearchMoviesUseCaseImpl(get())
         }
     }
 
     private val searchRepository = module {
-        single<SearchRepository>() {
+        factory<SearchRepository>() {
             SearchRepositoryImpl(get())
         }
     }
@@ -85,7 +85,7 @@ object MovieComponent: KoinComponent {
         getModulesHome()
     }
 
-    fun injectTrailer() = unloadKoinModules(
+    fun injectTrailer() = loadKoinModules(
         favoriteModules()
     )
 

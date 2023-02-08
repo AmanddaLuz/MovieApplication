@@ -52,13 +52,13 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         checkLabelConnection()
+        init()
         observeVMEvents()
         setAdapter()
         setRecycler()
-        init()
     }
     private fun init() {
-        MovieComponent.injectTrailer()
+        MovieComponent.inject()
     }
 
     override fun onStart() {
