@@ -11,5 +11,8 @@
     <color name="background_jinkan">#0E224F</color>
     <color name="transparent">#000E224F</color>
     <color name="arrow">#134563</color>
+    <color name="page">#021D33</color>
+    <color name="secondary">#86CCA6</color>
+    <color name="toolbar">#1CB8D8</color>
 
 </resources>

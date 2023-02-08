@@ -27,6 +27,7 @@ import com.amandaluz.network.model.category.CategoryItem
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
+import com.amandaluz.ui.decoration.ProminentVerticalLayoutManager
 import com.amandaluz.ui.recyclerview.LinearRecycler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
