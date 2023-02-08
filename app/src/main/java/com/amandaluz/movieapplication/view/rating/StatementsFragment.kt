@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.amandaluz.movieapplication.databinding.FragmentStatementBinding
 import com.amandaluz.network.model.domain.MapperResultToPoster
 import com.amandaluz.network.model.domain.poster
@@ -32,7 +33,12 @@ class StatementsFragment : Fragment() {
         getMovieByIntent()
         receivedMovie()
         setLayout()
+        goBackCategories()
         swipeAction()
+    }
+
+    private fun goBackCategories() {
+        binding.tvClose.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun getMovieByIntent() {

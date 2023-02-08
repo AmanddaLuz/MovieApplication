@@ -34,4 +34,5 @@
     <string name="no_cache_categories_yet">Hum… que pena! Você está sem conexão no seu primeiro acesso.</string>
     <string name="next_button">seta botão próximo</string>
     <string name="previous_button">seta botão anterior</string>
+    <string name="tv_close">fechar</string>
 </resources>
