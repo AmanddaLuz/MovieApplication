@@ -26,6 +26,7 @@ import com.amandaluz.network.model.category.CategoryItem
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.BottomSheetDetail
+import com.amandaluz.ui.decoration.ProminentVerticalLayoutManager
 import com.amandaluz.ui.recyclerview.LinearRecycler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -217,6 +218,7 @@ class CategoriesFragment : Fragment() {
             animateList()
             setHasFixedSize(true)
             adapter = myAdapter
+            layoutManager = ProminentVerticalLayoutManager(context)
             addOnScrollListener(endlessGridRecycler())
         }
     }
