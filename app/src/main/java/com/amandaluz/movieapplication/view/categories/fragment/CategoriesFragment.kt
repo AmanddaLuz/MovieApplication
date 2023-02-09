@@ -53,17 +53,26 @@ class CategoriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkConnection()
+        realoadPage()
     }
 
-    private fun checkConnection(){
-        if (hasInternet(context)){
-            init()
+    private fun realoadPage() {
+        if (categoryList.size >= 3) {
+            recycler()
+        } else {
+            categoryList.clear()
+            checkConnection()
         }
-        else{
-            verifyCategoriesMovies({categoryList =
-                getCategoriesCache() as MutableList<CategoryItem>
-            }, {binding.labelEmptyList.visibility = View.VISIBLE})
+    }
+
+    private fun checkConnection() {
+        if (hasInternet(context)) {
+            init()
+        } else {
+            verifyCategoriesMovies({
+                categoryList =
+                    getCategoriesCache() as MutableList<CategoryItem>
+            }, { binding.labelEmptyList.visibility = View.VISIBLE })
             recycler()
         }
         setLabels()
@@ -97,7 +106,7 @@ class CategoriesFragment : Fragment() {
 
     private fun swipeRefresh() {
         binding.swipe.setOnRefreshListener {
-            checkConnection()
+            realoadPage()
             binding.swipe.isRefreshing = false
         }
     }
@@ -268,6 +277,7 @@ class CategoriesFragment : Fragment() {
                     Bundle().apply {
                         putParcelable("MOVIE", movie)
                     })
+                bottomSheetDetail.dismiss()
             },
             com.amandaluz.ui.R.drawable.ic_stars_rating,
             childFragmentManager,
