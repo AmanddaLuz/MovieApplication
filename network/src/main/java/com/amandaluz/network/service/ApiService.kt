@@ -1,6 +1,6 @@
 package com.amandaluz.network.service
 
-import com.amandaluz.core.util.baseUrl
+import com.amandaluz.core.BuildConfig.BASE_URL
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -16,7 +16,7 @@ object ApiService {
         val client = OkHttpClient.Builder().addInterceptor(logging).build()
 
         return Retrofit.Builder()
-            .baseUrl(baseUrl())
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()

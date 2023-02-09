@@ -3,9 +3,9 @@ package com.amandaluz.movieapplication.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.amandaluz.core.util.initPath
-import com.amandaluz.core.util.linkPathNull
-import com.amandaluz.core.util.popularity
+import com.amandaluz.core.util.dialog.popularity
+import com.amandaluz.core.util.url.initPath
+import com.amandaluz.core.util.url.linkPathNull
 import com.amandaluz.movieapplication.databinding.MovieItemBinding
 import com.amandaluz.network.model.movie.Result
 import com.bumptech.glide.Glide

@@ -2,11 +2,11 @@ package com.amandaluz.movieapplication.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.amandaluz.movieapplication.databinding.RecycleItemCategorieBinding
 import com.amandaluz.network.model.category.CategoryItem
 import com.amandaluz.network.model.movie.Result
+import com.amandaluz.ui.decoration.ProminentHorizontalLayoutManager
 
 class CategoryAdapter(
 
@@ -35,11 +35,8 @@ class CategoryAdapter(
         fun bindView(movie: CategoryItem) = with(binding){
             rvTitleCategories.text = movie.title
             rvHomeCategories.apply {
-                layoutManager = LinearLayoutManager(
-                    context,
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                )
+                animate()
+                layoutManager = ProminentHorizontalLayoutManager(context)
                 setHasFixedSize (true)
                 adapter = ItemAdapter (movie.result){
                     itemClick.invoke(it)

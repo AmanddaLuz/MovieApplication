@@ -1,4 +1,4 @@
-package com.amandaluz.ui.customView
+package com.amandaluz.ui.customView.dialog
 
 import android.app.Dialog
 import android.os.Bundle

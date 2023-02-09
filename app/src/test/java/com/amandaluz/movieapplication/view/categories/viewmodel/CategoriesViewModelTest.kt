@@ -72,12 +72,13 @@ class CategoriesViewModelTest {
         //Assert
         verify(movieObserver).onChanged(State.loading(true))
         verify(movieObserver).onChanged(State.success(result))
+        verify(movieObserver).onChanged(State.loading(false))
     }
 
     @Test(expected = MockitoException::class)
     fun `should return an exception when getPopularMovie is called`() = runTest {
         //Arrange
-
+        viewModel.response.observeForever(movieObserver)
         `when`(getMoviesUseCase.getPopularMovie("", "", 1)).thenThrow(exception)
 
         //Act
@@ -93,64 +94,65 @@ class CategoriesViewModelTest {
     fun `should return topRateList when getTopRate is called`() = runTest {
         val response = MovieResponse(1, listOf(), 1, 1)
         //Arrange
-        viewModel.response.observeForever(movieObserver)
         viewModel.rate.observeForever(rateObserver)
-        `when`(getTopRateUseCase.getTopRate(1)).thenReturn(response)
+        `when`(getTopRateUseCase.getTopRate("",1)).thenReturn(response)
 
         //Act
-        viewModel.getTopRate(1)
-        val result = getTopRateUseCase.getTopRate(1)
+        viewModel.getTopRate("",1)
+        val result = getTopRateUseCase.getTopRate("",1)
 
 
         //Assert
-        verify(movieObserver).onChanged(State.loading(false))
+        verify(rateObserver).onChanged(State.loading(true))
         verify(rateObserver).onChanged(State.success(result))
+        verify(rateObserver).onChanged(State.loading(false))
     }
 
     @Test(expected = MockitoException::class)
     fun `should throw an exception when getTopRate is called`() = runTest {
         //Arrange
-        viewModel.response.observeForever(movieObserver)
         viewModel.rate.observeForever(rateObserver)
-        `when`(getTopRateUseCase.getTopRate(1)).thenThrow(exception)
+        `when`(getTopRateUseCase.getTopRate("",1)).thenThrow(exception)
 
         //Act
-        viewModel.getTopRate(1)
+        viewModel.getTopRate("",1)
 
         //Assert
-        verify(movieObserver).onChanged(State.loading(false))
+        verify(rateObserver).onChanged(State.loading(true))
         verify(rateObserver).onChanged(State.error(exception))
+        verify(rateObserver).onChanged(State.loading(false))
     }
 
     @Test
     fun `should return upcomingList when getUpcoming is called`() = runTest {
         val response = MovieResponse(1, listOf(), 1, 1)
         //Arrange
-        viewModel.response.observeForever(movieObserver)
         viewModel.coming.observeForever(upcomingObserver)
-        `when`(getUpComingUseCase.getUpcoming(1)).thenReturn(response)
+        `when`(getUpComingUseCase.getUpcoming("",1)).thenReturn(response)
 
         //Act
-        viewModel.getUpComing(1)
-        val result = getUpComingUseCase.getUpcoming(1)
+        viewModel.getUpComing("",1)
+        val result = getUpComingUseCase.getUpcoming("",1)
 
         //Assert
+        verify(upcomingObserver).onChanged(State.loading(true))
         verify(upcomingObserver).onChanged(State.success(result))
+        verify(upcomingObserver).onChanged(State.loading(false))
     }
 
     @Test(expected = MockitoException::class)
     fun `should throw an exception when getUpcoming is called`() = runTest {
         //Arrange
-        viewModel.response.observeForever(movieObserver)
         viewModel.coming.observeForever(upcomingObserver)
-        `when`(getUpComingUseCase.getUpcoming(1)).thenThrow(exception)
+        `when`(getUpComingUseCase.getUpcoming("",1)).thenThrow(exception)
 
         //Act
-        viewModel.getUpComing(1)
+        viewModel.getUpComing("",1)
 
         //Assert
-        verify(movieObserver).onChanged(State.loading(false))
-        verify(rateObserver).onChanged(State.error(exception))
+        verify(upcomingObserver).onChanged(State.loading(true))
+        verify(upcomingObserver).onChanged(State.error(exception))
+        verify(upcomingObserver).onChanged(State.loading(false))
     }
 
     @Test
@@ -180,7 +182,9 @@ class CategoriesViewModelTest {
         viewModel.getTrailerMovies("", "", 297761)
 
         //Assert
+        verify(trailerObserver).onChanged(State.loading(true))
         verify(trailerObserver).onChanged(State.error(exception))
+        verify(trailerObserver).onChanged(State.loading(false))
     }
 
     private val result = Result(

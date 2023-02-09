@@ -10,7 +10,7 @@
     <string name="toast_indisponible_trailer">Trailer indisponíel!</string>
     <string name="toast_indisponible_movie">Lista de filmes indisponível\n por falta de rede!</string>
     <string name="toast_error">Algo deu errado, Tente novamente!</string>
-    <string name="try_again">Tentar novamente</string>
+    <string name="try_again">Você está offline. Tentar novamente</string>
     <string name="connection_trailer">Verifique sua conexão com a internet!</string>
     <string name="first_access">First_Access!</string>
     <string name="no_favorites_yet">Você ainda não possui favoritos!</string>
@@ -29,4 +29,10 @@
     <string name="search">Search</string>
     <string name="indisponible_feature">Feature em desenvolvimento!</string>
     <string name="hint_pesquisar">Pesquisar…</string>
+    <string name="popularity">\"Popularidade: \"</string>
+    <string name="list_films">lista de filmes</string>
+    <string name="no_cache_categories_yet">Hum… que pena! Você está sem conexão no seu primeiro acesso.</string>
+    <string name="next_button">seta botão próximo</string>
+    <string name="previous_button">seta botão anterior</string>
+    <string name="tv_close">fechar</string>
 </resources>

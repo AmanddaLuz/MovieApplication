@@ -1,8 +1,4 @@
-package com.amandaluz.core.util
-
-fun baseUrl() = "https://api.themoviedb.org/3/"
-
-fun apikey() = "f91338cf842f0db95450796298cb5450"
+package com.amandaluz.core.util.url
 
 fun language() = "pt-BR"
 
