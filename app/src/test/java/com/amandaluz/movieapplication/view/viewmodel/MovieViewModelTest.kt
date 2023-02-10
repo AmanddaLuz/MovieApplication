@@ -55,11 +55,9 @@ class MovieViewModelTest {
 
     @Test
     fun `should return movieList when getPopularMovie is called`() = runTest {
-        val movieList = listOf(result)
-
         //Arrange
         viewModel.response.observeForever(movieObserver)
-        `when`(getMoviesUseCase.getPopularMovie("", "", 1)).thenReturn(movieList)
+        `when`(getMoviesUseCase.getPopularMovie("", "", 1)).thenReturn(listOf(result))
 
         //Act
         viewModel.getPopularMovies("", "", 1)

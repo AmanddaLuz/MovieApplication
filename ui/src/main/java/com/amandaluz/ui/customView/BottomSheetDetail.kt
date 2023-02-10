@@ -1,4 +1,4 @@
-package com.amandaluz.ui.customView
+package com.amandaluz.ui.customView.bottomsheet
 
 import android.app.Dialog
 import android.graphics.drawable.Drawable

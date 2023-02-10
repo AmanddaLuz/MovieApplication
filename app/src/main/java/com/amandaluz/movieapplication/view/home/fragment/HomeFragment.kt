@@ -27,7 +27,7 @@ import com.amandaluz.movieapplication.view.home.activity.HomeActivity
 import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
-import com.amandaluz.ui.customView.BottomSheetDetail
+import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
 import com.amandaluz.ui.recyclerview.GridRecycler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber

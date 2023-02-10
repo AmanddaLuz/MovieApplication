@@ -1,4 +1,4 @@
-package com.amandaluz.ui.customView
+package com.amandaluz.ui.customView.loading
 
 import android.content.Context
 import android.util.AttributeSet

@@ -23,8 +23,8 @@
     <string name="average"><b>Nota:</b> </string>
     <string name="votes"><b>Votos:</b> </string>
     <string name="category_populary">Populares</string>
-    <string name="category_top_rates">Top Rates</string>
-    <string name="category_upcoming">UpComings</string>
+    <string name="category_top_rates">Top Avaliações</string>
+    <string name="category_upcoming">Lançamentos</string>
     <string name="poster_film">poster_film</string>
     <string name="search">Search</string>
     <string name="indisponible_feature">Feature em desenvolvimento!</string>
@@ -32,4 +32,7 @@
     <string name="popularity">\"Popularidade: \"</string>
     <string name="list_films">lista de filmes</string>
     <string name="no_cache_categories_yet">Hum… que pena! Você está sem conexão no seu primeiro acesso.</string>
+    <string name="next_button">seta botão próximo</string>
+    <string name="previous_button">seta botão anterior</string>
+    <string name="tv_close">fechar</string>
 </resources>

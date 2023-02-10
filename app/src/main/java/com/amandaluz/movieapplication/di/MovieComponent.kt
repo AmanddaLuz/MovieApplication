@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.loadKoinModules
-import org.koin.core.context.unloadKoinModules
 import org.koin.dsl.module
 
 object MovieComponent: KoinComponent {
@@ -30,25 +29,25 @@ object MovieComponent: KoinComponent {
     }
 
     private val movieUseCase = module {
-        single<MovieUseCase> {
+        factory<MovieUseCase> {
             MovieUseCaseImpl(get())
         }
     }
 
     private val movieRepository = module {
-        single<MovieRepository> {
+        factory<MovieRepository> {
             MovieRepositoryImpl(get())
         }
     }
 
     private val trailerUseCase = module {
-        single<TrailerUseCase> {
+        factory<TrailerUseCase> {
             TrailerUseCaseImpl(get())
         }
     }
 
     private val trailerRepository = module {
-        single<TrailerRepository> {
+        factory<TrailerRepository> {
             TrailerRepositoryImpl(get())
         }
     }
@@ -85,14 +84,6 @@ object MovieComponent: KoinComponent {
         getModulesHome()
     }
 
-    fun injectTrailer() = unloadKoinModules(
-        favoriteModules()
-    )
-
-    fun unloadTrailer() = unloadKoinModules(
-        favoriteModules()
-    )
-
     fun getModulesHome() = listOf(
         viewModel,
         movieRepository,
@@ -101,14 +92,6 @@ object MovieComponent: KoinComponent {
         trailerUseCase,
         searchUseCase,
         searchRepository,
-        dispatcherModule,
-        serviceConnector
-    )
-
-    fun favoriteModules() = listOf(
-        viewModel,
-        trailerUseCase,
-        trailerRepository,
         dispatcherModule,
         serviceConnector
     )
