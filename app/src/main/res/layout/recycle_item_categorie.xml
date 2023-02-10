@@ -15,6 +15,8 @@
         android:textSize="28sp"
         android:padding="8dp"
         android:textAllCaps="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,17 +24,27 @@
         tools:text="Categories"
         android:contentDescription="@string/poster_film"/>
 
+    <View
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/rv_title_categories"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_home_categories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:layout_marginTop="4dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_title_categories"
-        tools:itemCount="20"
-        tools:listitem="@layout/category_item" />
+        app:layout_constraintTop_toBottomOf="@id/line"
+        tools:listitem="@layout/category_item"
+        android:contentDescription="@string/list_films"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
