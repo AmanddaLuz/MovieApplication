@@ -23,8 +23,8 @@
     <string name="average"><b>Nota:</b> </string>
     <string name="votes"><b>Votos:</b> </string>
     <string name="category_populary">Populares</string>
-    <string name="category_top_rates">Top Rates</string>
-    <string name="category_upcoming">UpComings</string>
+    <string name="category_top_rates">Top Avaliações</string>
+    <string name="category_upcoming">Lançamentos</string>
     <string name="poster_film">poster_film</string>
     <string name="search">Search</string>
     <string name="indisponible_feature">Feature em desenvolvimento!</string>

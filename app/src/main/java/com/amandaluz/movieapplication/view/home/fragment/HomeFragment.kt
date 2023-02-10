@@ -213,14 +213,14 @@ class HomeFragment : Fragment() {
     private fun setResponseTrailer(response: List<ResultTrailer>) {
         if (response != trailerList && response.isNotEmpty()) {
             trailerList.addAll(response)
-            actionTrailerMovie()
+            actionCacheTrailer()
             goToYoutube()
         } else {
             toast(getString(R.string.toast_indisponible_trailer))
         }
     }
 
-    private fun actionTrailerMovie() {
+    private fun actionCacheTrailer() {
         addCacheTrailer(trailerResult = trailerList)
         trailerResponse = getTrailerCache()
     }
