@@ -1,6 +1,6 @@
 package com.amandaluz.movieapplication.di
 
-import com.amandaluz.movieapplication.view.viewmodel.MovieViewModel
+import com.amandaluz.movieapplication.view.home.viewmodel.MovieViewModel
 import com.amandaluz.network.repository.movierepository.MovieRepository
 import com.amandaluz.network.repository.movierepository.MovieRepositoryImpl
 import com.amandaluz.network.repository.searchrepository.SearchRepository
