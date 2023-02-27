@@ -23,7 +23,7 @@
                 motion:framePosition="40"
                 motion:motionTarget="@+id/appCompatImageView" />
             <KeyAttribute
-                android:scaleX="10"
+                android:scaleX="0.5"
                 motion:framePosition="100"
                 motion:motionTarget="@+id/appCompatImageView" />
             <KeyAttribute
@@ -39,7 +39,7 @@
                 motion:framePosition="40"
                 motion:motionTarget="@+id/appCompatImageView" />
             <KeyAttribute
-                android:scaleY="10"
+                android:scaleY="0.5"
                 motion:framePosition="100"
                 motion:motionTarget="@+id/appCompatImageView" />
         </KeyFrameSet>
