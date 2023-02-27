@@ -59,7 +59,7 @@ object MovieComponent: KoinComponent {
     }
 
     private val searchRepository = module {
-        factory<SearchRepository>() {
+        factory<SearchRepository> {
             SearchRepositoryImpl(get())
         }
     }
@@ -84,7 +84,7 @@ object MovieComponent: KoinComponent {
         getModulesHome()
     }
 
-    fun getModulesHome() = listOf(
+    private fun getModulesHome() = listOf(
         viewModel,
         movieRepository,
         movieUseCase,

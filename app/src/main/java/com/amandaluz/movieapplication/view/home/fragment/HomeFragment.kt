@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import com.amandaluz.core.BuildConfig.API_KEY
 import com.amandaluz.core.util.*
 import com.amandaluz.core.util.connection.hasInternet
-import com.amandaluz.core.util.dialog.*
 import com.amandaluz.core.util.extensions.toast
 import com.amandaluz.core.util.openlink.openNewTabWindow
 import com.amandaluz.core.util.recycler.animateList
@@ -28,6 +27,8 @@ import com.amandaluz.movieapplication.view.home.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
+import com.amandaluz.ui.dialog.openDialogConnection
+import com.amandaluz.ui.dialog.openDialogError
 import com.amandaluz.ui.recyclerview.GridRecycler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -180,12 +181,14 @@ class HomeFragment : Fragment() {
     }
 
     private fun setTypeError() {
-        if (count == 0) {
-            requireContext().openDialogConnection({ cacheOrResponse() }, {}, childFragmentManager)
-            count++
-        } else {
-            requireContext().openDialogError({ cacheOrResponse() }, childFragmentManager)
-            count = 0
+        if (!IS_DIALOG){
+            if (count == 0) {
+                requireContext().openDialogConnection({ cacheOrResponse() }, {}, childFragmentManager)
+                count++
+            } else {
+                requireContext().openDialogError({ cacheOrResponse() }, childFragmentManager)
+                IS_DIALOG = true
+            }
         }
     }
 
@@ -298,7 +301,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun checkOpenTrailer(movie: Result) {
-        if (hasInternet(context)) viewModel.getTrailerMovies(API_KEY, language(), movie.id)
+        if (hasInternet(context)) movie.id?.let {id ->
+            viewModel.getTrailerMovies(API_KEY, language(), id)
+        }
         else toast(getString(R.string.connection_trailer))
     }
 
@@ -394,6 +399,10 @@ class HomeFragment : Fragment() {
             }
             return@setOnCloseListener false
         }
+    }
+
+    companion object{
+        var IS_DIALOG = false
     }
 
 }

@@ -13,9 +13,9 @@ import com.amandaluz.ui.R
 class CustomAutomaticAdapter(applicationContext: Context, names: Array<String>, images: IntArray) :
     BaseAdapter() {
     var context: Context
-    var images: IntArray
-    var names: Array<String>
-    var inflater: LayoutInflater
+    private var images: IntArray
+    private var names: Array<String>
+    private var inflater: LayoutInflater
 
     init {
         context = applicationContext

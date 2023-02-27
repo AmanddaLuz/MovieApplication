@@ -27,52 +27,45 @@ import com.amandaluz.network.model.category.CategoryItem
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
-import com.amandaluz.ui.decoration.ProminentVerticalLayoutManager
-import com.amandaluz.ui.recyclerview.LinearRecycler
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoriesFragment : Fragment() {
 
-    private lateinit var binding: FragmentCategoriesBinding
-    private lateinit var myAdapter: CategoryAdapter
+    private lateinit var binding : FragmentCategoriesBinding
+    private lateinit var myAdapter : CategoryAdapter
     private val bottomSheetDetail = BottomSheetDetail()
     private var trailerList = mutableListOf<ResultTrailer>()
-    private lateinit var trailerResponse: List<ResultTrailer>
+    private var popularList = mutableListOf<Result>()
+    private var upList = mutableListOf<Result>()
+    private var topList = mutableListOf<Result>()
+    private lateinit var trailerResponse : List<ResultTrailer>
     private var categoryList = mutableListOf<CategoryItem>()
     private val viewModel by viewModel<CategoriesViewModel>()
-    private var page: Int = 1
+    private var page : Int = 1
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentCategoriesBinding.inflate(inflater, container, false)
+        inflater : LayoutInflater , container : ViewGroup? ,
+        savedInstanceState : Bundle?
+    ) : View {
+        binding = FragmentCategoriesBinding.inflate(inflater , container , false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view : View , savedInstanceState : Bundle?) {
+        super.onViewCreated(view , savedInstanceState)
 
-        realoadPage()
-    }
-
-    private fun realoadPage() {
-        if (categoryList.size >= 3) {
-            recycler()
-        } else {
-            categoryList.clear()
-            checkConnection()
-        }
+        checkConnection()
     }
 
     private fun checkConnection() {
         if (hasInternet(context)) {
             init()
+            observeVMEvents()
         } else {
-            verifyCategoriesMovies({
+            verifyCategoriesMovies {
                 categoryList =
                     getCategoriesCache() as MutableList<CategoryItem>
-            }, { binding.labelEmptyList.visibility = View.VISIBLE })
+            }
             recycler()
         }
         setLabels()
@@ -81,7 +74,6 @@ class CategoriesFragment : Fragment() {
     private fun setLabels() {
         if (hasInternet(context)) {
             binding.labelConnection.visibility = View.GONE
-            binding.labelEmptyList.visibility = View.GONE
         } else {
             binding.labelConnection.visibility = View.VISIBLE
         }
@@ -90,8 +82,6 @@ class CategoriesFragment : Fragment() {
     private fun init() {
         CategoryComponent.inject()
         getResponseMovie()
-        observeVMEvents()
-        recycler()
     }
 
     override fun onStart() {
@@ -106,39 +96,31 @@ class CategoriesFragment : Fragment() {
 
     private fun swipeRefresh() {
         binding.swipe.setOnRefreshListener {
-            realoadPage()
+            categoryList.clear()
+            checkConnection()
             binding.swipe.isRefreshing = false
         }
     }
 
     private fun getResponseMovie() {
-        viewModel.getPopularMovies(API_KEY, language(), page)
+        viewModel.getPopularMovies(API_KEY , language() , page)
     }
 
     private fun getUpcoming() {
-        viewModel.getUpComing(API_KEY, page)
+        viewModel.getUpComing(API_KEY , page)
     }
 
     private fun getTopRate() {
-        viewModel.getTopRate(API_KEY, page)
+        viewModel.getTopRate(API_KEY , page)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
-                        if (response != categoryList) {
-                            categoryList.add(
-                                CategoryItem(
-                                    getString(R.string.category_populary),
-                                    response
-                                )
-                            )
-                            addCategoriesMovies(categoryList)
-                        }
+                        popularList = response as MutableList<Result>
                         getUpcoming()
                     }
                 }
@@ -155,15 +137,7 @@ class CategoriesFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
-                        if (response.results != categoryList) {
-                            categoryList.add(
-                                CategoryItem(
-                                    getString(R.string.category_upcoming),
-                                    response.results
-                                )
-                            )
-                            addCategoriesMovies(categoryList)
-                        }
+                        upList = response.results as MutableList<Result>
                         getTopRate()
                     }
                 }
@@ -180,16 +154,9 @@ class CategoriesFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { response ->
-                        if (response.results != categoryList) {
-                            categoryList.add(
-                                CategoryItem(
-                                    getString(R.string.category_top_rates),
-                                    response.results
-                                )
-                            )
-                            addCategoriesMovies(categoryList)
-                            myAdapter.notifyDataSetChanged()
-                        }
+                        topList = response.results as MutableList<Result>
+                        categoryList.clear()
+                        recycler()
                     }
                 }
                 Status.LOADING -> {
@@ -216,7 +183,7 @@ class CategoriesFragment : Fragment() {
         }
     }
 
-    private fun setResponseTrailer(response: List<ResultTrailer>) {
+    private fun setResponseTrailer(response : List<ResultTrailer>) {
         if (response != trailerList && response.isNotEmpty()) {
             trailerList.addAll(response)
             actionTrailerMovie()
@@ -235,26 +202,29 @@ class CategoriesFragment : Fragment() {
         openNewTabWindow(
             "${goToYoutubeUrl()}${
                 getHomeTrailerKey(
-                    hasInternet(context),
-                    trailerList,
+                    hasInternet(context) ,
+                    trailerList ,
                     trailerResponse
                 )
-            }", requireContext()
+            }" , requireContext()
         )
     }
 
     private fun recycler() {
+        setAdapter()
         binding.rvHomeCategories.apply {
-            setAdapter()
             animateList()
             setHasFixedSize(true)
             adapter = myAdapter
-            layoutManager = ProminentVerticalLayoutManager(context)
-            addOnScrollListener(endlessGridRecycler())
         }
     }
 
     private fun setAdapter() {
+        categoryList.run {
+            add(CategoryItem("Pop" , popularList))
+            add(CategoryItem("Up" , upList))
+            add(CategoryItem("Top" , topList))
+        }
         myAdapter = CategoryAdapter(categoryList) { movie ->
             setLabels()
             callBottomSheet(movie)
@@ -262,39 +232,34 @@ class CategoriesFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun callBottomSheet(movie: Result) {
+    private fun callBottomSheet(movie : Result) {
         com.amandaluz.movieapplication.util.bottomsheet.callBottomSheet(
-            bottomSheetDetail,
-            movie,
-            requireContext(),
+            bottomSheetDetail ,
+            movie ,
+            requireContext() ,
             {
                 if (hasInternet(context)) getTrailer(movie)
                 else toast(getString(R.string.connection_trailer))
-            },
+            } ,
             {
                 findNavController().navigate(
-                    R.id.action_categoriesFragment_to_ratingFragment,
+                    R.id.action_categoriesFragment_to_ratingFragment ,
                     Bundle().apply {
-                        putParcelable("MOVIE", movie)
+                        putParcelable("MOVIE" , movie)
                     })
                 bottomSheetDetail.dismiss()
-            },
-            com.amandaluz.ui.R.drawable.ic_stars_rating,
-            childFragmentManager,
+            } ,
+            com.amandaluz.ui.R.drawable.ic_stars_rating ,
+            childFragmentManager ,
             getString(R.string.create_bottom_sheet)
         )
     }
 
-    private fun getTrailer(movie: Result) {
-        viewModel.getTrailerMovies(API_KEY, language(), movie.id)
+    private fun getTrailer(movie : Result) {
+        movie.id?.let { id -> viewModel.getTrailerMovies(API_KEY , language() , id) }
     }
 
-    private fun endlessGridRecycler() = LinearRecycler {
-        page += 1
-        getResponseMovie()
-    }
-
-    private fun isLoading(loading: Boolean) {
+    private fun isLoading(loading : Boolean) {
         if (loading) {
             setLoading()
         } else {

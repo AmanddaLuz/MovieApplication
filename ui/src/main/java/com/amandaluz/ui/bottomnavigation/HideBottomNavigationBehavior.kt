@@ -5,8 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
-import java.lang.Math.max
-import java.lang.Math.min
 
 class HideBottomNavigationBehavior<V: View>(context: Context, attrs: AttributeSet)
     : CoordinatorLayout.Behavior<V>(context, attrs) {
@@ -33,7 +31,9 @@ class HideBottomNavigationBehavior<V: View>(context: Context, attrs: AttributeSe
     ) {
         super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
 
-        child.translationY = max(0f, min(child.height.toFloat(), child.translationY + dy))
+        child.translationY = 0f.coerceAtLeast(
+            child.height.toFloat().coerceAtMost(child.translationY + dy)
+        )
 
         // Ajustar a transparência da barra de navegação inferior enquanto rola
         val alpha = ((child.height + child.translationY) / child.translationY)

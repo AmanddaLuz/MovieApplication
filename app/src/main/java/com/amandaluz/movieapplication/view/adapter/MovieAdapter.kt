@@ -3,9 +3,8 @@ package com.amandaluz.movieapplication.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.amandaluz.core.util.dialog.popularity
+import com.amandaluz.ui.dialog.popularity
 import com.amandaluz.core.util.url.initPath
-import com.amandaluz.core.util.url.linkPathNull
 import com.amandaluz.movieapplication.databinding.MovieItemBinding
 import com.amandaluz.network.model.movie.Result
 import com.bumptech.glide.Glide
@@ -37,8 +36,8 @@ class MovieAdapter(
         fun bindView(movie: Result) {
             binding.run {
                 val initPath = initPath()
-                val pathNull = linkPathNull()
-                val popularityRate = "${popularity()}${movie.popularity.toInt()}"
+                val pathNull = com.amandaluz.ui.R.drawable.placeholder
+                val popularityRate = "${popularity()}${movie.popularity?.toInt()}"
                 tvPopularityItem.text = popularityRate
 
                 Glide.with(itemView)
@@ -54,9 +53,9 @@ class MovieAdapter(
 
         private fun validateImagePoster(
             movie: Result,
-            pathNull: String,
+            pathNull: Int,
             initPath: String
-        ) = if (movie.poster_path.isNullOrEmpty()) pathNull
-        else initPath.plus(movie.poster_path)
+        ) = if (movie.posterPath.isNullOrEmpty()) pathNull
+        else initPath.plus(movie.posterPath)
     }
 }

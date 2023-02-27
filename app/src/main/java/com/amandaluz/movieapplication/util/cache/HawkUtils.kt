@@ -14,11 +14,8 @@ fun verifyCacheMovies(yes: () -> Unit, no: () -> Unit) {
         no.invoke()
 }
 
-fun verifyCategoriesMovies(yes: () -> Unit, no: () -> Unit) {
-    if (ModuleHawk.contains(MovieKeys.CATEGORIES)) {
-        yes.invoke()
-    } else
-        no.invoke()
+fun verifyCategoriesMovies(yes: () -> Unit) {
+    if (ModuleHawk.contains(MovieKeys.CATEGORIES)) yes.invoke()
 }
 
 fun addCacheMovies(moviesResult: List<Result>) {

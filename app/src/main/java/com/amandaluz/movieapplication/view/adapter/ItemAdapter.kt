@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.amandaluz.core.util.url.initPath
-import com.amandaluz.core.util.url.linkPathNull
 import com.amandaluz.movieapplication.databinding.CategoryItemBinding
 import com.amandaluz.network.model.movie.Result
 import com.bumptech.glide.Glide
@@ -36,7 +35,7 @@ class ItemAdapter(
         fun bindView(movie: Result) {
             binding.run {
                 val initPath = initPath()
-                val pathNull = linkPathNull()
+                val pathNull = com.amandaluz.ui.R.drawable.placeholder
                 Glide.with(itemView)
                     .load(initPath.plus(validateImagePoster(movie, pathNull, initPath)))
                     .centerCrop()
@@ -49,9 +48,9 @@ class ItemAdapter(
         }
         private fun validateImagePoster(
             movie: Result,
-            pathNull: String,
+            pathNull: Int,
             initPath: String
-        ) = if (movie.poster_path.isNullOrEmpty()) pathNull
-        else initPath.plus(movie.poster_path)
+        ) = if (movie.posterPath.isNullOrEmpty()) pathNull
+        else initPath.plus(movie.posterPath)
     }
 }

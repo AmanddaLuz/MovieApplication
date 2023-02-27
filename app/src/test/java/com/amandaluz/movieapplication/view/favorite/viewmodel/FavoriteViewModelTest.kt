@@ -77,12 +77,12 @@ internal class FavoriteViewModelTest{
 
     private val resultTrailer = ResultTrailer(
         id = "",
-        iso_639_1 = "",
-        iso_3166_1 = "",
+        iso6391 = "",
+        iso31661 = "",
         key = "",
         name = "",
         official = true,
-        published_at = "",
+        publishedAt = "",
         site = "",
         size = 1080,
         type = ""

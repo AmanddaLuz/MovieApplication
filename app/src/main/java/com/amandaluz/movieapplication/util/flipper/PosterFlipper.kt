@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ViewFlipper
 import com.amandaluz.core.util.url.initPath
-import com.amandaluz.core.util.url.linkPathNull
 import com.amandaluz.movieapplication.R
 import com.amandaluz.network.model.domain.PosterDomain
 import com.amandaluz.ui.databinding.ItemPosterBinding
