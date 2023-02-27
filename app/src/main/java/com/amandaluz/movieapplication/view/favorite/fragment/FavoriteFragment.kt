@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle
 import com.amandaluz.core.BuildConfig.API_KEY
 import com.amandaluz.core.util.*
 import com.amandaluz.core.util.connection.hasInternet
-import com.amandaluz.core.util.dialog.openDialogNoConnection
+import com.amandaluz.ui.dialog.openDialogNoConnection
 import com.amandaluz.core.util.extensions.toast
 import com.amandaluz.core.util.openlink.openNewTabWindow
 import com.amandaluz.core.util.recycler.animateList
@@ -165,7 +165,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun getTrailer(movie: Result) {
-        viewModel.getTrailerMovies(API_KEY, language(), movie.id)
+        movie.id?.let {id -> viewModel.getTrailerMovies(API_KEY, language(), id) }
     }
 
     private fun removeFavorite(movie: Result) {

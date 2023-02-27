@@ -9,4 +9,15 @@
     <string name="dot">&#8226;</string>
     <string name="btn_advance">Avançar</string>
     <string name="image_description">Image</string>
+
+    <!--Dialog-->
+    <string name="tag_connection">Connection</string>
+    <string name="cancel_dialog_button">Cancelar</string>
+    <string name="close_dialog_button">Fechar</string>
+    <string name="try_again_dialog_button">Tentar novamente</string>
+    <string name="message_dialog_button">Verifique sua internet e tente novamente!</string>
+    <string name="title_dialog">Sem conexão</string>
+    <string name="message_dialog_no_connection">Não foi possível se conectar!</string>
+    <string name="message_dialog_error">Ocorreu um erro! Tente novamente em alguns instantes</string>
+    <string name="title_dialog_error">Instabilidade</string>
 </resources>

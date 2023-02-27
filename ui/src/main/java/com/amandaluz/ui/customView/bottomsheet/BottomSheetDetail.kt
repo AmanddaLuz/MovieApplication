@@ -140,9 +140,10 @@ class BottomSheetDetail : BottomSheetDialogFragment() {
     fun viewTargetDetail(poster_path: String): ViewTarget<ImageView, Drawable>? {
         this.ivIcon = poster_path
         val initPath = "https://image.tmdb.org/t/p/w500"
+
         return activity?.baseContext?.let {
             Glide.with(it)
-                .load(initPath.plus(poster_path))
+                .load(if (poster_path.isEmpty()) R.drawable.placeholder else initPath.plus(poster_path))
                 .centerCrop()
                 .into(binding.imgDetail)
         }
@@ -153,7 +154,7 @@ class BottomSheetDetail : BottomSheetDialogFragment() {
         val initPath = "https://image.tmdb.org/t/p/w500"
         return activity?.baseContext?.let {
             Glide.with(it)
-                .load(initPath.plus(poster_path))
+                .load(if (poster_path.isEmpty()) R.drawable.placeholder else initPath.plus(poster_path))
                 .centerCrop()
                 .into(binding.imgPoster)
         }

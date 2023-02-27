@@ -2,7 +2,6 @@ package com.amandaluz.movieapplication.util.bottomsheet
 
 import android.content.Context
 import androidx.fragment.app.FragmentManager
-import com.amandaluz.core.util.url.linkPathNull
 import com.amandaluz.hawk.ModuleHawk
 import com.amandaluz.hawk.MovieKeys
 import com.amandaluz.movieapplication.R
@@ -21,18 +20,18 @@ fun callBottomSheet(
     tag: String
 ) {
     bottomSheetDetail.apply {
-        viewTargetPoster(validatePoster(movie))
-        viewTargetDetail(validatePoster(movie))
-        setTitle(validateDescription(movie.title, context))
+        viewTargetPoster(movie.posterPath ?: "")
+        viewTargetDetail(movie.posterPath ?: "")
+        setTitle(movie.title ?: "")
         setNota(buildString {
             append(context.getString(R.string.average))
-            append(movie.vote_average)
+            append(movie.voteAverage)
         })
         setDescription(buildString {
             append(context.getString(R.string.votes))
-            append(movie.vote_count)
+            append(movie.voteCount)
         })
-        setDetail(validateDescription(movie.overview, context))
+        setDetail(movie.overview ?: "")
         buttonCloseAction { it.dismiss() }
         buttonConfirmAction {
             buttonConfirm.invoke()
@@ -81,11 +80,3 @@ fun verifyImageButton(movie: Result, list: MutableList<Result>): Int {
         com.amandaluz.ui.R.drawable.ic_favorite_button_unselected
     }
 }
-
-fun validatePoster(movie: Result) =
-    if (movie.poster_path.isNullOrEmpty()) linkPathNull()
-    else movie.poster_path
-
-fun validateDescription(description: String, context: Context) =
-    if (description.isNullOrEmpty()) context.getString(R.string.label_indisponible)
-    else description

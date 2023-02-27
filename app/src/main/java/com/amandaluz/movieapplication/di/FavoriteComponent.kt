@@ -53,7 +53,7 @@ object FavoriteComponent: KoinComponent {
         getModulesFavorite()
     )
 
-    fun getModulesFavorite() = listOf(
+    private fun getModulesFavorite() = listOf(
         viewModel,
         trailerRepository,
         trailerUseCase,

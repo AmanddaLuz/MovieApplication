@@ -14,6 +14,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_connection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/label_no_connection"
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:text="@string/label_no_connection"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/includeToolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
         android:layout_width="match_parent"
@@ -21,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/includeToolbar">
+        app:layout_constraintTop_toBottomOf="@id/label_connection">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_home_fragment"
@@ -29,7 +44,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toTopOf="@id/label_connection"
+            app:layout_constraintTop_toBottomOf="@id/label_connection"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:spanCount="2"
@@ -48,25 +63,11 @@
         android:gravity="center"
         android:text="@string/no_favorites"
         android:textColor="@color/white"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/includeToolbar" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/label_connection"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/label_no_connection"
-        android:gravity="center"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:text="@string/label_no_connection"
-        android:textColor="@color/white"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/includeToolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

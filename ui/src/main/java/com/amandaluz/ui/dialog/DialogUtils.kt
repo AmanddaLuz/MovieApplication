@@ -1,8 +1,8 @@
-package com.amandaluz.core.util.dialog
+package com.amandaluz.ui.dialog
 
 import android.content.Context
 import androidx.fragment.app.FragmentManager
-import com.amandaluz.core.R
+import com.amandaluz.ui.R
 import com.amandaluz.ui.customView.dialog.ConfirmDialog
 
 fun Context.openDialogConnection(yes: () -> Unit, no: () -> Unit, manager: FragmentManager) {

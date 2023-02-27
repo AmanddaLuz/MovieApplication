@@ -56,7 +56,7 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgDetail"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="200dp"
         android:layout_margin="16dp"
         android:scaleType="centerCrop"

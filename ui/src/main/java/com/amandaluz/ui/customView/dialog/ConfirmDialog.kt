@@ -34,5 +34,4 @@ class ConfirmDialog(
                 }
             }
             .create()
-
 }

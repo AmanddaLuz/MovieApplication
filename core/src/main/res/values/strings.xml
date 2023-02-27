@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="window_youtube">new_window</string>
-    <string name="cancel_dialog_button">Cancelar</string>
-    <string name="close_dialog_button">Fechar</string>
-    <string name="try_again_dialog_button">Tentar novamente</string>
-    <string name="message_dialog_button">Verifique sua internet e tente novamente!</string>
-    <string name="title_dialog">Sem conexão</string>
 
-    <string name="tag_connection">Connection</string>
-    <string name="message_dialog_no_connection">Não foi possível se conectar!</string>
-    <string name="message_dialog_error">Ocorreu um erro! Tente novamente em alguns instantes</string>
-    <string name="title_dialog_error">Instabilidade</string>
 </resources>
