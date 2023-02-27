@@ -1,6 +1,5 @@
 package com.amandaluz.movieapplication.view.categories.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.amandaluz.core.BuildConfig.API_KEY
-import com.amandaluz.core.util.*
+import com.amandaluz.core.util.Status
 import com.amandaluz.core.util.connection.hasInternet
 import com.amandaluz.core.util.extensions.toast
 import com.amandaluz.core.util.openlink.openNewTabWindow
@@ -20,7 +19,10 @@ import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
 import com.amandaluz.movieapplication.di.CategoryComponent
 import com.amandaluz.movieapplication.util.bottomsheet.getHomeTrailerKey
-import com.amandaluz.movieapplication.util.cache.*
+import com.amandaluz.movieapplication.util.cache.addCacheTrailer
+import com.amandaluz.movieapplication.util.cache.getCategoriesCache
+import com.amandaluz.movieapplication.util.cache.getTrailerCache
+import com.amandaluz.movieapplication.util.cache.verifyCategoriesMovies
 import com.amandaluz.movieapplication.view.adapter.CategoryAdapter
 import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewModel
 import com.amandaluz.network.model.category.CategoryItem
@@ -231,7 +233,6 @@ class CategoriesFragment : Fragment() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun callBottomSheet(movie : Result) {
         com.amandaluz.movieapplication.util.bottomsheet.callBottomSheet(
             bottomSheetDetail ,

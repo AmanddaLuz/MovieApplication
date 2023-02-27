@@ -27,6 +27,7 @@ import com.amandaluz.movieapplication.view.home.viewmodel.MovieViewModel
 import com.amandaluz.network.model.movie.Result
 import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
+import com.amandaluz.ui.customView.search.SearchViewListener
 import com.amandaluz.ui.dialog.openDialogConnection
 import com.amandaluz.ui.dialog.openDialogError
 import com.amandaluz.ui.recyclerview.GridRecycler
@@ -35,32 +36,32 @@ import timber.log.Timber
 
 class HomeFragment : Fragment() {
 
-    private lateinit var binding: FragmentHomeBinding
-    private lateinit var myAdapter: MovieAdapter
+    private lateinit var binding : FragmentHomeBinding
+    private lateinit var myAdapter : MovieAdapter
     private val bottomSheetDetail = BottomSheetDetail()
     private var movieList = mutableListOf<Result>()
     private var searchList = mutableListOf<Result>()
     private var trailerList = mutableListOf<ResultTrailer>()
     private var favoriteList = mutableListOf<Result>()
-    private lateinit var movieResponse: List<Result>
-    private lateinit var trailerResponse: List<ResultTrailer>
-    private var page: Int = 1
+    private lateinit var movieResponse : List<Result>
+    private lateinit var trailerResponse : List<ResultTrailer>
+    private var page : Int = 1
     private val viewModel by viewModel<MovieViewModel>()
     private var isExists = false
     private var isSearch = false
-    private var checkItem: Boolean = false
+    private var checkItem : Boolean = false
     private var count = 0
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        inflater : LayoutInflater , container : ViewGroup? ,
+        savedInstanceState : Bundle? ,
+    ) : View {
+        binding = FragmentHomeBinding.inflate(inflater , container , false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view : View , savedInstanceState : Bundle?) {
+        super.onViewCreated(view , savedInstanceState)
 
         MovieComponent.inject()
         init()
@@ -91,11 +92,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun getPopularMovie() {
-        viewModel.getPopularMovies(API_KEY, language(), page)
+        viewModel.getPopularMovies(API_KEY , language() , page)
     }
 
     private fun verifyFavoriteCache() {
-        verifyCacheFavorites({ favoriteList = getFavoritesCache() as MutableList<Result> }, {
+        verifyCacheFavorites({ favoriteList = getFavoritesCache() as MutableList<Result> } , {
             Timber.tag(
                 getString(
                     R.string.first_access
@@ -151,7 +152,7 @@ class HomeFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun setResponseSearch(response: List<Result>) {
+    private fun setResponseSearch(response : List<Result>) {
         isSearch = true
         searchList.clear()
         searchList.addAll(response)
@@ -172,7 +173,7 @@ class HomeFragment : Fragment() {
     private fun getCache() {
         verifyCacheMovies({
             movieResponse = getMovieCache()
-        },
+        } ,
             {
                 movieResponse = listOf()
                 toast(getString(R.string.welcome))
@@ -181,12 +182,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun setTypeError() {
-        if (!IS_DIALOG){
+        if (!IS_DIALOG) {
             if (count == 0) {
-                requireContext().openDialogConnection({ cacheOrResponse() }, {}, childFragmentManager)
+                requireContext().openDialogConnection(
+                    { cacheOrResponse() } ,
+                    {} ,
+                    childFragmentManager
+                )
                 count++
             } else {
-                requireContext().openDialogError({ cacheOrResponse() }, childFragmentManager)
+                requireContext().openDialogError({ cacheOrResponse() } , childFragmentManager)
                 IS_DIALOG = true
             }
         }
@@ -213,7 +218,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setResponseTrailer(response: List<ResultTrailer>) {
+    private fun setResponseTrailer(response : List<ResultTrailer>) {
         if (response != trailerList && response.isNotEmpty()) {
             trailerList.addAll(response)
             actionCacheTrailer()
@@ -229,7 +234,7 @@ class HomeFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun setResponseMovie(responseMovie: List<Result>) {
+    private fun setResponseMovie(responseMovie : List<Result>) {
         binding.labelConnection.visibility = View.GONE
         if (isSearch) movieList.clear()
         if (responseMovie != movieList) {
@@ -248,11 +253,11 @@ class HomeFragment : Fragment() {
         openNewTabWindow(
             "${goToYoutubeUrl()}${
                 getHomeTrailerKey(
-                    hasInternet(context),
-                    trailerList,
+                    hasInternet(context) ,
+                    trailerList ,
                     trailerResponse
                 )
-            }", requireContext()
+            }" , requireContext()
         )
     }
 
@@ -278,15 +283,15 @@ class HomeFragment : Fragment() {
         isSearch = false
     }
 
-    private fun callBottomSheet(movie: Result) {
+    private fun callBottomSheet(movie : Result) {
         callBottomSheet(
-            bottomSheetDetail,
-            movie,
-            requireContext(),
-            { checkOpenTrailer(movie) },
-            { verifyAddOrRemove(movie, bottomSheetDetail) },
-            verifyImageButton(movie, favoriteList),
-            childFragmentManager,
+            bottomSheetDetail ,
+            movie ,
+            requireContext() ,
+            { checkOpenTrailer(movie) } ,
+            { verifyAddOrRemove(movie , bottomSheetDetail) } ,
+            verifyImageButton(movie , favoriteList) ,
+            childFragmentManager ,
             getString(R.string.create_bottom_sheet)
         )
     }
@@ -300,16 +305,16 @@ class HomeFragment : Fragment() {
         setReloadView()
     }
 
-    private fun checkOpenTrailer(movie: Result) {
-        if (hasInternet(context)) movie.id?.let {id ->
-            viewModel.getTrailerMovies(API_KEY, language(), id)
+    private fun checkOpenTrailer(movie : Result) {
+        if (hasInternet(context)) movie.id?.let { id ->
+            viewModel.getTrailerMovies(API_KEY , language() , id)
         }
         else toast(getString(R.string.connection_trailer))
     }
 
     private fun verifyAddOrRemove(
-        movie: Result,
-        bottomSheetDetail: BottomSheetDetail
+        movie : Result ,
+        bottomSheetDetail : BottomSheetDetail
     ) {
         checkItem = if (!checkItem) {
             favoriteList.add(movie)
@@ -324,7 +329,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun isLoading(loading: Boolean) {
+    private fun isLoading(loading : Boolean) {
         if (loading) {
             setLoading()
         } else {
@@ -340,11 +345,59 @@ class HomeFragment : Fragment() {
         binding.loadingFragment.visibility = View.VISIBLE
     }
 
-    private fun searchMovies(name: String) {
-        viewModel.searchMovie(API_KEY, name, page)
+    private fun searchMovies(name : String) {
+        viewModel.searchMovie(API_KEY , name , page)
     }
 
     private fun setupToolbar() = with(activity as HomeActivity) {
+        setSupportActionBar(binding.includeToolbar.toolbarLayout)
+        title = null
+        if (!isExists) {
+            setMenu()
+        }
+    }
+
+    private fun setMenu() {
+        activity?.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu : Menu , menuInflater : MenuInflater) {
+                menuInflater.inflate(R.menu.menu_toolbar , menu)
+                setSearchView(menu)
+                isExists = true
+            }
+
+            override fun onMenuItemSelected(menuItem : MenuItem) : Boolean {
+                return false
+            }
+        })
+    }
+
+    private fun setSearchView(menu : Menu) {
+        val search = menu.findItem(R.id.search)
+        val searchView = search.actionView as SearchView
+        searchView.queryHint = getString(R.string.hint_pesquisar)
+
+        searchView.setOnQueryTextListener(setupTextListener)
+        onCloseSearchViewAction(searchView)
+    }
+
+    private val setupTextListener = SearchViewListener(
+        searchOnSubmit = {
+            if (it.isNotEmpty()) {
+                searchMovies(it)
+            }
+        }
+    )
+
+    private fun onCloseSearchViewAction(searchView : SearchView) {
+        searchView.setOnCloseListener {
+            if (isSearch) {
+                getPopularMovie()
+            }
+            return@setOnCloseListener false
+        }
+    }
+
+/*    private fun setupToolbar() = with(activity as HomeActivity) {
         setSupportActionBar(binding.includeToolbar.toolbarLayout)
         title = null
         if (!isExists) {
@@ -399,9 +452,9 @@ class HomeFragment : Fragment() {
             }
             return@setOnCloseListener false
         }
-    }
+    }*/
 
-    companion object{
+    companion object {
         var IS_DIALOG = false
     }
 
