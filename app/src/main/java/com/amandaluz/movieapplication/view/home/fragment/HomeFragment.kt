@@ -397,63 +397,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-/*    private fun setupToolbar() = with(activity as HomeActivity) {
-        setSupportActionBar(binding.includeToolbar.toolbarLayout)
-        title = null
-        if (!isExists) {
-            setMenu()
-        }
-    }
-
-    private fun setMenu() {
-        activity?.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_toolbar, menu)
-                setSearchView(menu)
-                isExists = true
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return false
-            }
-        })
-    }
-
-    private fun setSearchView(menu: Menu) {
-        val search = menu.findItem(R.id.search)
-        val searchView = search.actionView as SearchView
-        searchView.queryHint = getString(R.string.hint_pesquisar)
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
-            override fun onQueryTextChange(newText: String): Boolean {
-                if (hasInternet(context)){
-                    when (newText) {
-                        "" -> {
-
-                        }
-                        else -> {
-                            searchMovies(newText)
-                        }
-                    }
-                }else{
-                    toast(getString(R.string.connection_trailer))
-                }
-                return false
-            }
-        })
-        onCloseSearchViewAction(searchView)
-    }
-
-    private fun onCloseSearchViewAction(searchView: SearchView) {
-        searchView.setOnCloseListener {
-            if (isSearch) {
-                getPopularMovie()
-            }
-            return@setOnCloseListener false
-        }
-    }*/
-
     companion object {
         var IS_DIALOG = false
     }
