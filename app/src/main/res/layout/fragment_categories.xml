@@ -52,6 +52,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="6dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/label_connection">
 
@@ -63,7 +64,7 @@
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="20"
-            tools:listitem="@layout/category_item" />
+            tools:listitem="@layout/recycle_item_categorie" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

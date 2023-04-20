@@ -74,6 +74,7 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun setLabels() {
+        binding.includeToolbar.tvToolbar.text = getString(R.string.categories)
         if (hasInternet(context)) {
             binding.labelConnection.visibility = View.GONE
         } else {
