@@ -20,6 +20,9 @@
             app:destination="@id/categoriesFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToSaveState="true"/>
+        <action
+            android:id="@+id/action_homeFragment_to_userActivity"
+            app:destination="@id/userActivity" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
@@ -38,5 +41,9 @@
         android:id="@+id/statementFragment"
         android:name="com.amandaluz.movieapplication.view.rating.StatementsFragment"
         android:label="StatementFragment" />
+    <activity
+        android:id="@+id/userActivity"
+        android:name="com.amandaluz.movieapplication.view.login.UserActivity"
+        android:label="UserActivity" />
 
 </navigation>

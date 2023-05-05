@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.amandaluz.movieapplication.databinding.ActivityLoginBinding
 import com.amandaluz.movieapplication.util.watcher.Watcher
-import com.amandaluz.movieapplication.view.home.activity.HomeActivity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -74,6 +73,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun goToHome() {
-        startActivity(Intent(this@LoginActivity , HomeActivity::class.java))
+        startActivity(Intent(this@LoginActivity , UserActivity::class.java))
     }
 }

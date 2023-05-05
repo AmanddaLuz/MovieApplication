@@ -19,6 +19,9 @@
         android:theme="@style/Theme.MovieApplication"
         tools:targetApi="31">
         <activity
+            android:name=".view.login.UserActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.login.RegisterActivity"
             android:exported="false" />
         <activity

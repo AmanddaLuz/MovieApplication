@@ -21,6 +21,10 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.btnBackAccount.setOnClickListener {
+            goToLogin()
+        }
+
         binding.btnConfirm.setOnClickListener {
             val name = binding.fullNameEdit.text.toString()
             val email = binding.emailEdit.text.toString()
@@ -65,13 +69,20 @@ class RegisterActivity : AppCompatActivity() {
         val user = HashMap<String, String>()
         user["name"] = name
 
+
         userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
         val documentReference = db.collection("users").document(userId)
+
         documentReference.set(user).addOnSuccessListener {
             Timber.tag("db_success").d("Dados salvos com sucesso!")
         }.addOnFailureListener {
             Timber.tag("db_error").d("Falha ao salvar os dados!")
         }
+        goToLogin()
+    }
+
+    private fun goToLogin() {
         startActivity(Intent(this , LoginActivity::class.java))
     }
 }

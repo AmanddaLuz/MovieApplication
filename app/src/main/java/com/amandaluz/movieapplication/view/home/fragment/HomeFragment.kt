@@ -51,6 +51,8 @@ class HomeFragment : Fragment() {
     private var isSearch = false
     private var checkItem : Boolean = false
     private var count = 0
+    private lateinit var userId: String
+
 
     override fun onCreateView(
         inflater : LayoutInflater , container : ViewGroup? ,
@@ -316,6 +318,7 @@ class HomeFragment : Fragment() {
         movie : Result ,
         bottomSheetDetail : BottomSheetDetail
     ) {
+
         checkItem = if (!checkItem) {
             favoriteList.add(movie)
             addCacheFavorites(favoriteList)
