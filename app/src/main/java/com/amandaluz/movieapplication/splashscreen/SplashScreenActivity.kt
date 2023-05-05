@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.amandaluz.movieapplication.R
-import com.amandaluz.movieapplication.view.login.RegisterActivity
+import com.amandaluz.movieapplication.view.login.LoginActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -28,7 +28,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun start() {
-        startActivity(Intent(this, RegisterActivity::class.java))
+        startActivity(Intent(this, LoginActivity::class.java))
     }
 
 }
