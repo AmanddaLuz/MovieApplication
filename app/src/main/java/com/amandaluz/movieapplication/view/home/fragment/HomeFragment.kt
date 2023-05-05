@@ -16,6 +16,7 @@ import com.amandaluz.core.util.recycler.animateList
 import com.amandaluz.core.util.url.goToYoutubeUrl
 import com.amandaluz.core.util.url.language
 import com.amandaluz.movieapplication.R
+import com.amandaluz.movieapplication.data.database.dao.FavoriteDAO
 import com.amandaluz.movieapplication.databinding.FragmentHomeBinding
 import com.amandaluz.movieapplication.di.MovieComponent
 import com.amandaluz.movieapplication.util.*
@@ -32,7 +33,6 @@ import com.amandaluz.ui.dialog.openDialogConnection
 import com.amandaluz.ui.dialog.openDialogError
 import com.amandaluz.ui.recyclerview.GridRecycler
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class HomeFragment : Fragment() {
 
@@ -51,8 +51,6 @@ class HomeFragment : Fragment() {
     private var isSearch = false
     private var checkItem : Boolean = false
     private var count = 0
-    private lateinit var userId: String
-
 
     override fun onCreateView(
         inflater : LayoutInflater , container : ViewGroup? ,
@@ -74,6 +72,7 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         swipeRefresh()
+        FavoriteDAO.getAllFavorites(favoriteList)
     }
 
     override fun onDestroy() {
@@ -90,22 +89,13 @@ class HomeFragment : Fragment() {
 
     private fun init() {
         observeVMEvents()
-        verifyFavoriteCache()
     }
 
     private fun getPopularMovie() {
         viewModel.getPopularMovies(API_KEY , language() , page)
     }
 
-    private fun verifyFavoriteCache() {
-        verifyCacheFavorites({ favoriteList = getFavoritesCache() as MutableList<Result> } , {
-            Timber.tag(
-                getString(
-                    R.string.first_access
-                )
-            )
-        })
-    }
+
 
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
@@ -318,15 +308,18 @@ class HomeFragment : Fragment() {
         movie : Result ,
         bottomSheetDetail : BottomSheetDetail
     ) {
-
+        val isChecked = favoriteList.any {
+            it == movie
+        }
+        checkItem = isChecked
         checkItem = if (!checkItem) {
             favoriteList.add(movie)
-            addCacheFavorites(favoriteList)
+            FavoriteDAO.myRef.setValue(favoriteList)
             bottomSheetDetail.isFavorite(true)
             true
         } else {
             favoriteList.remove(movie)
-            addCacheFavorites(favoriteList)
+            FavoriteDAO.myRef.setValue(favoriteList)
             bottomSheetDetail.isFavorite(false)
             false
         }

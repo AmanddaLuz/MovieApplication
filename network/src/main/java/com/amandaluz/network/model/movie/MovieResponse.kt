@@ -14,7 +14,6 @@ data class MovieResponse(
 
 @Parcelize
 data class Result(
-    val userUid : String? = null,
     @SerializedName("adult") val adult : Boolean? = null,
     @SerializedName("backdrop_path") val backdropPath : String? = null,
     @SerializedName("genre_ids") val genreIds : List<Int>? = null,
