@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'com.amandaluz.core'
     compileSdk 33
 
     defaultConfig {
@@ -35,7 +36,6 @@ android {
 }
 
 dependencies {
-
     implementation project(path: ':ui')
     implementation project(path: ':hawk')
 

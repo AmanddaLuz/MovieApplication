@@ -2,11 +2,11 @@ package com.amandaluz.movieapplication.splashscreen
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.amandaluz.movieapplication.R
-import com.amandaluz.movieapplication.view.home.activity.HomeActivity
+import com.amandaluz.movieapplication.view.login.RegisterActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -28,7 +28,7 @@ class SplashScreenActivity : AppCompatActivity() {
     }
 
     private fun start() {
-        startActivity(Intent(this, HomeActivity::class.java))
+        startActivity(Intent(this, RegisterActivity::class.java))
     }
 
 }

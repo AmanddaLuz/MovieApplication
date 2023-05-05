@@ -1,11 +1,13 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
 }
 
 android {
+    namespace 'com.amandaluz.movieapplication'
     compileSdk 33
 
     defaultConfig {
@@ -142,5 +144,11 @@ dependencies {
 
     //hawk
     implementation "com.orhanobut:hawk:2.0.1"
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-bom:32.0.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.6.0'
+    implementation 'com.google.firebase:firebase-common-ktx:20.3.2'
 
 }

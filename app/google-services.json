@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "913517976135",
+    "firebase_url": "https://movieapplication-83ded-default-rtdb.firebaseio.com",
+    "project_id": "movieapplication-83ded",
+    "storage_bucket": "movieapplication-83ded.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913517976135:android:d4a0ab15c17d97bd7c6f62",
+        "android_client_info": {
+          "package_name": "com.amandaluz.movieapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913517976135-c0b0lnc25knocc5ul7tjukrfg7562u1q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMxXNEg9CIcTW3vkKuyDAi-6Uonf2ltTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913517976135-c0b0lnc25knocc5ul7tjukrfg7562u1q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

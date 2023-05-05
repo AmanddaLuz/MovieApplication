@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'com.amandaluz.di'
     compileSdk 33
 
     defaultConfig {

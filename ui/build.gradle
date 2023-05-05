@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'com.amandaluz.ui'
     compileSdk 33
 
     defaultConfig {

@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace 'com.amandaluz.hawk'
     compileSdk 33
 
     defaultConfig {
