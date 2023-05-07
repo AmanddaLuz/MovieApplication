@@ -1,4 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="app_name">Movie Application</string>
+    <string name="bottom_navigation_user">User</string>
+    <string name="bottom_navigation_home">Home</string>
+    <string name="bottom_navigation_favorites">Favoritos</string>
+    <string name="bottom_navigation_categories">Categorias</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_trailer">TRAILER</string>
+    <string name="btn_empty"> </string>
+    <string name="toast_indisponible_trailer">Trailer indisponíel!</string>
+    <string name="toast_indisponible_movie">Lista de filmes indisponível\n por falta de rede!</string>
+    <string name="toast_error">Algo deu errado, Tente novamente!</string>
+    <string name="try_again">Você está offline. Tentar novamente</string>
+    <string name="connection_trailer">Verifique sua conexão com a internet!</string>
+    <string name="first_access">First_Access!</string>
+    <string name="no_favorites_yet">Você ainda não possui favoritos!</string>
+    <string name="check_connection">CONNECTION</string>
+    <string name="create_bottom_sheet">BOTTOM_SHEET_DETAIL</string>
+    <string name="label_indisponible">Indisponível</string>
+    <string name="welcome">Bem vindo ao primeiro acesso!</string>
+    <string name="label_no_connection">Sem conexão com a internet</string>
+    <string name="no_favorites">Você ainda não possui favoritos!</string>
+    <string name="average"><b>Nota:</b> </string>
+    <string name="votes"><b>Votos:</b> </string>
+    <string name="category_populary">Populares</string>
+    <string name="category_top_rates">Top Avaliações</string>
+    <string name="category_upcoming">Lançamentos</string>
+    <string name="poster_film">poster_film</string>
+    <string name="search">Search</string>
+    <string name="indisponible_feature">Feature em desenvolvimento!</string>
+    <string name="hint_pesquisar">Pesquisar…</string>
+    <string name="popularity">\"Popularidade: \"</string>
+    <string name="list_films">lista de filmes</string>
+    <string name="no_cache_categories_yet">Hum… que pena! Você está sem conexão no seu primeiro acesso.</string>
+    <string name="next_button">seta botão próximo</string>
+    <string name="previous_button">seta botão anterior</string>
+    <string name="tv_close">fechar</string>
+    <string name="vector">M26,35.259L26,24.741L35.016,30L26,35.259ZM25.504,22.136C25.195,21.957 24.813,21.954 24.502,22.133C24.191,22.312 24,22.642 24,23L24,37C24,37.359 24.191,37.689 24.502,37.867C24.656,37.956 24.828,38 25,38C25.174,38 25.349,37.954 25.504,37.864L37.504,30.864C37.812,30.685 38,30.356 38,30C38,29.645 37.812,29.316 37.504,29.136L25.504,22.136ZM55,58L50,58L50,50L58,50L58,55C58,56.655 56.654,58 55,58L55,58ZM50,48L58,48L58,42L50,42L50,48ZM50,16L58,16L58,10L50,10L50,16ZM50,40L58,40L58,34L50,34L50,40ZM50,32L58,32L58,26L50,26L50,32ZM50,24L58,24L58,18L50,18L50,24ZM55,-0L15,-0C14.447,-0 14,0.447 14,1C14,1.553 14.447,2 15,2L55,2C56.654,2 58,3.346 58,5L58,8L50,8L50,5C50,4.447 49.553,4 49,4C48.447,4 48,4.447 48,5L48,48L15,48C14.447,48 14,48.447 14,49C14,49.553 14.447,50 15,50L48,50L48,59C48,59.553 48.447,60 49,60L55,60C57.757,60 60,57.757 60,55L60,5C60,2.243 57.757,-0 55,-0L55,-0ZM5,2L10,2L10,8L2,8L2,5C2,3.346 3.346,2 5,2L5,2ZM2,16L10,16L10,10L2,10L2,16ZM2,48L10,48L10,42L2,42L2,48ZM2,24L10,24L10,18L2,18L2,24ZM2,32L10,32L10,26L2,26L2,32ZM2,40L10,40L10,34L2,34L2,40ZM45,58L5,58C3.346,58 2,56.655 2,55L2,50L10,50L10,55C10,55.553 10.447,56 11,56C11.553,56 12,55.553 12,55L12,10L45,10C45.553,10 46,9.553 46,9C46,8.447 45.553,8 45,8L12,8L12,1C12,0.447 11.553,-0 11,-0L5,-0C2.243,-0 0,2.243 0,5L0,55C0,57.757 2.243,60 5,60L45,60C45.553,60 46,59.553 46,59C46,58.447 45.553,58 45,58L45,58Z</string>
+    <string name="categories">Categorias</string>
 </resources>

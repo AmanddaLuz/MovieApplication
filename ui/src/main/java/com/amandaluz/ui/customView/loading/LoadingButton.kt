@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import com.amandaluz.ui.R
 import com.amandaluz.ui.databinding.LoadingButtonBinding
 
@@ -26,11 +27,16 @@ class LoadingButton @JvmOverloads constructor(
         attributeSet?.let { attrs ->
             val attributes = context.obtainStyledAttributes(attrs, R.styleable.LoadingButton)
             val label = attributes.getString(R.styleable.LoadingButton_text).toString()
+            val backgroundColor = attributes.getColor(
+                R.styleable.LoadingButton_customBackgroundColor,
+                ContextCompat.getColor(context, R.color.red)
+            )
 
             binding.run {
                 loadingButton.run {
                     text = label
                     isEnabled = false
+                    setBackgroundColor(backgroundColor)
                 }
                 progressBar.run {
                     visibility = View.GONE

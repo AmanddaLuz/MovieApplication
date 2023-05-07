@@ -49,6 +49,7 @@ class HomeFragment : Fragment() {
     private val viewModel by viewModel<MovieViewModel>()
     private var isExists = false
     private var isSearch = false
+    private var nameSearched: String = ""
     private var checkItem : Boolean = false
     private var count = 0
 
@@ -146,8 +147,10 @@ class HomeFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun setResponseSearch(response : List<Result>) {
         isSearch = true
-        searchList.clear()
-        searchList.addAll(response)
+        searchList.apply {
+            this.clear()
+            this.addAll(response)
+        }
         myAdapter.notifyDataSetChanged()
     }
 
@@ -272,7 +275,7 @@ class HomeFragment : Fragment() {
             setReloadView()
             callBottomSheet(movie)
         }
-        isSearch = false
+        //isSearch = false
     }
 
     private fun callBottomSheet(movie : Result) {
@@ -290,9 +293,12 @@ class HomeFragment : Fragment() {
 
     private fun endlessGridRecycler() = GridRecycler {
         page += 1
-        if (hasInternet(context)) {
+        if (hasInternet(context) && !isSearch) {
             binding.labelConnection.visibility = View.GONE
             getPopularMovie()
+        } else {
+            binding.labelConnection.visibility = View.GONE
+            searchMovies(nameSearched)
         }
         setReloadView()
     }
@@ -379,6 +385,7 @@ class HomeFragment : Fragment() {
     private val setupTextListener = SearchViewListener(
         searchOnSubmit = {
             if (it.isNotEmpty()) {
+                nameSearched = it
                 searchMovies(it)
             }
         }
