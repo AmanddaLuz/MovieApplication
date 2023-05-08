@@ -9,13 +9,10 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class FavoriteDAO {
-    companion object {
         private var userId : String = FirebaseAuth.getInstance().currentUser?.uid.toString()
         private val db = Firebase.database
         val myRef = db.getReference("favorites").child(userId)
-
-
-        fun getAllFavorites(favoriteList : MutableList<Result>, onRequestDb : OnRequestDb? = null) {
+        fun getAllFavoritesById(favoriteList : MutableList<Result> , onRequestDb : OnRequestDb? = null) {
             myRef.addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(snapshot : DataSnapshot) {
@@ -35,5 +32,4 @@ class FavoriteDAO {
                 }
             )
         }
-    }
 }

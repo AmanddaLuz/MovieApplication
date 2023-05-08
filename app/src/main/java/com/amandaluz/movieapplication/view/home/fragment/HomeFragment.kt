@@ -32,6 +32,7 @@ import com.amandaluz.ui.customView.search.SearchViewListener
 import com.amandaluz.ui.dialog.openDialogConnection
 import com.amandaluz.ui.dialog.openDialogError
 import com.amandaluz.ui.recyclerview.GridRecycler
+import com.google.firebase.auth.FirebaseAuth
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -73,7 +74,7 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         swipeRefresh()
-        FavoriteDAO.getAllFavorites(favoriteList)
+        FavoriteDAO().getAllFavoritesById(favoriteList)
     }
 
     override fun onDestroy() {
@@ -314,18 +315,16 @@ class HomeFragment : Fragment() {
         movie : Result ,
         bottomSheetDetail : BottomSheetDetail
     ) {
-        val isChecked = favoriteList.any {
-            it == movie
-        }
-        checkItem = isChecked
         checkItem = if (!checkItem) {
             favoriteList.add(movie)
-            FavoriteDAO.myRef.setValue(favoriteList)
+            FavoriteDAO().myRef.setValue(favoriteList)
+            FirebaseAuth.getInstance().currentUser?.uid.toString()
+
             bottomSheetDetail.isFavorite(true)
             true
         } else {
             favoriteList.remove(movie)
-            FavoriteDAO.myRef.setValue(favoriteList)
+            FavoriteDAO().myRef.setValue(favoriteList)
             bottomSheetDetail.isFavorite(false)
             false
         }

@@ -122,7 +122,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        FavoriteDAO.getAllFavorites(favoriteListSave , object : OnRequestDb {
+        FavoriteDAO().getAllFavoritesById(favoriteListSave , object : OnRequestDb {
             override fun onCompleted() {
                 setLabelNoFavorites()
                 myAdapter = MovieAdapter(favoriteListSave) { movie ->
@@ -166,7 +166,7 @@ class FavoriteFragment : Fragment() {
 
     private fun removeFavorite(movie : Result) {
         favoriteListSave.remove(movie)
-        FavoriteDAO.myRef.setValue(favoriteListSave)
+        FavoriteDAO().myRef.setValue(favoriteListSave)
         setLabelNoFavorites()
     }
 
