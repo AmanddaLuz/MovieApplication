@@ -96,9 +96,7 @@ class HomeFragment : Fragment() {
     private fun getPopularMovie() {
         viewModel.getPopularMovies(API_KEY , language() , page)
     }
-
-
-
+    
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe

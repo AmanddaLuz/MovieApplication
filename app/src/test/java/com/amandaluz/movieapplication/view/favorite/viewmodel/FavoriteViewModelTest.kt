@@ -26,11 +26,8 @@ internal class FavoriteViewModelTest{
 
     private val dispatcher = UnconfinedTestDispatcher()
     private val getTrailerUseCase = mock(TrailerUseCase::class.java)
-
     private val ioDispatcher = Dispatchers.IO
-
     private val viewModel = FavoriteViewModel(getTrailerUseCase, ioDispatcher)
-
     private val trailerObserver = mock(Observer::class.java) as Observer<State<List<ResultTrailer>>>
 
     @Before

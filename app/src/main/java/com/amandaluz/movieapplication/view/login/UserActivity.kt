@@ -48,7 +48,7 @@ class UserActivity : AppCompatActivity() {
 
         userId = FirebaseAuth.getInstance().currentUser?.uid.toString()
         val documentReference = db.collection("users").document(userId)
-        documentReference.addSnapshotListener { documentSnapshot , error ->
+        documentReference.addSnapshotListener { documentSnapshot , _ ->
             if (documentSnapshot != null) {
                 binding.registerName.text = documentSnapshot.getString("name")
                 binding.registerEmail.text = email
@@ -69,7 +69,7 @@ class UserActivity : AppCompatActivity() {
 
         uploadTask.addOnFailureListener {
             Toast.makeText(this , "Erro ao enviar a imagem!" , Toast.LENGTH_SHORT).show()
-        }.addOnSuccessListener { taskSnapshot ->
+        }.addOnSuccessListener {
             imageRef.downloadUrl.addOnSuccessListener { downloadUrl ->
                 imageUrl = downloadUrl.toString()
                 setImageFromGallery(uri)
@@ -92,7 +92,6 @@ class UserActivity : AppCompatActivity() {
         )
         documentReference.update(userUpdates as Map<String , Any>)
     }
-
     private fun setImageFromGallery(uri : Uri) {
         binding.registerImage.setImageURI(uri)
         uriImage = uri

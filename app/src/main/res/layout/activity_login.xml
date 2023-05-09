@@ -35,7 +35,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_user_email_edit"
                 style="@style/Theme.MovieApplication.FormatEditText"
-                android:hint="Digite seu email" />
+                android:maxLines="1"
+                android:inputType="textEmailAddress|textNoSuggestions"
+                android:hint="@string/enter_your_email" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,8 +51,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_password_edit"
                 style="@style/Theme.MovieApplication.FormatEditText"
-                android:hint="Digite sua senha"
-                android:inputType="textPassword" />
+                android:inputType="number|textNoSuggestions"
+                android:maxLines="1"
+                android:hint="@string/enter_your_password" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -59,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:text="Não tem uma conta? Registre-se"
+            android:text="@string/register"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:textAllCaps="false" />
