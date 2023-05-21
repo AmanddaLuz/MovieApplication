@@ -20,4 +20,6 @@
     <string name="message_dialog_no_connection">Não foi possível se conectar!</string>
     <string name="message_dialog_error">Ocorreu um erro! Tente novamente em alguns instantes</string>
     <string name="title_dialog_error">Instabilidade</string>
+    <string name="sent">Enviar</string>
+    <string name="arrow">arrow</string>
 </resources>
