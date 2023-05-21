@@ -145,6 +145,10 @@ dependencies {
     //hawk
     implementation "com.orhanobut:hawk:2.0.1"
 
+    //Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+
+
     //Firebase
     implementation 'com.google.firebase:firebase-bom:32.0.0'
     implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'

@@ -197,7 +197,7 @@ class HomeFragment : Fragment() {
             binding.swipe.isRefreshing = false
         } else {
             binding.labelConnection.visibility = View.VISIBLE
-            isLoading(false)
+            //isLoading(false)
             setLabelTryAgain()
         }
     }

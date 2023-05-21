@@ -40,10 +40,18 @@
     <fragment
         android:id="@+id/statementFragment"
         android:name="com.amandaluz.movieapplication.view.rating.StatementsFragment"
-        android:label="StatementFragment" />
+        android:label="StatementFragment" >
+        <action
+            android:id="@+id/action_statementFragment_to_spinnerFragment"
+            app:destination="@id/spinnerFragment" />
+    </fragment>
     <activity
         android:id="@+id/userActivity"
         android:name="com.amandaluz.movieapplication.view.login.UserActivity"
         android:label="UserActivity" />
+    <fragment
+        android:id="@+id/spinnerFragment"
+        android:name="com.amandaluz.movieapplication.view.rating.SpinnerFragment"
+        android:label="SpinnerFragment" />
 
 </navigation>

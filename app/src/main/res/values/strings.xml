@@ -59,5 +59,10 @@
     <string name="users_avatar_error_send">Erro ao enviar a imagem!</string>
     <string name="users_avatar_error">Erro ao obter a URL de download da imagem!</string>
     <string name="users_avatar_success">Imagem salva com sucesso!</string>
+    <string name="hint_spinner">Selecione uma opção</string>
+    <string name="listen_customer">Queremos te ouvir</string>
+    <string name="customer_description">Com sua colaboração podemos oferecer melhores produtos e serviços.</string>
+    <string name="customer_category">O que deseja fazer?</string>
+    <string name="custom_average">Escolha sua nota</string>
 
 </resources>

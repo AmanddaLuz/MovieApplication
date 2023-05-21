@@ -37,8 +37,8 @@ class MovieViewModel(
 
     fun getPopularMovies(apikey: String, language: String, page: Int) {
         viewModelScope.launch {
+            _response.value = loading(true)
             try {
-                _response.value = loading(true)
                 val movies = withContext(ioDispatcher) {
                     getMovies.getPopularMovie(apikey, language, page)
                 }
@@ -53,8 +53,8 @@ class MovieViewModel(
 
     fun getTrailerMovies(apikey: String, language: String, movieId: Int) {
         viewModelScope.launch {
+            _responseTrailer.value = loading(true)
             try {
-                _responseTrailer.value = loading(true)
                 val trailer = withContext(ioDispatcher) {
                     getTrailer.getTrailerMovie(apikey, language, movieId)
                 }
@@ -69,8 +69,8 @@ class MovieViewModel(
 
     fun searchMovie(apikey: String, query: String, page: Int) {
         viewModelScope.launch {
+            _search.value = loading(true)
             try {
-                _search.value = loading(true)
                 val movies = withContext(ioDispatcher) {
                     searchMovie.getSearch(apikey, language(), page, query)
                 }

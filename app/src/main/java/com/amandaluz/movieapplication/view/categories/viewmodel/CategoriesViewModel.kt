@@ -41,8 +41,8 @@ class CategoriesViewModel(
 
     fun getPopularMovies(apikey: String, language: String, page: Int) {
         viewModelScope.launch {
+            _response.value = loading(true)
             try {
-                _response.value = loading(true)
                 val movies = withContext(ioDispatcher) {
                     getMovies.getPopularMovie(apikey, language, page)
                 }
@@ -56,8 +56,8 @@ class CategoriesViewModel(
 
     fun getTopRate(apikey: String, page: Int) {
         viewModelScope.launch {
+            _rate.value = loading(true)
             try {
-                _rate.value = loading(true)
                 val movies = withContext(ioDispatcher) {
                     getTopRate.getTopRate(apikey, page)
                 }
@@ -72,8 +72,8 @@ class CategoriesViewModel(
 
     fun getUpComing(apikey: String, page: Int) {
         viewModelScope.launch {
+            _coming.value = loading(true)
             try {
-                _coming.value = loading(true)
                 val movies = withContext(ioDispatcher) {
                     getUpcoming.getUpcoming(apikey ,page)
                 }
@@ -88,8 +88,8 @@ class CategoriesViewModel(
 
     fun getTrailerMovies(apikey: String, language: String, movieId: Int) {
         viewModelScope.launch {
+            _responseTrailer.value = loading(true)
             try {
-                _responseTrailer.value = loading(true)
                 val trailer = withContext(ioDispatcher) {
                     getTrailer.getTrailerMovie(apikey, language, movieId)
                 }

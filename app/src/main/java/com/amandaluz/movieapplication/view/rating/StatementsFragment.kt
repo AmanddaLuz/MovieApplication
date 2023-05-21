@@ -35,6 +35,10 @@ class StatementsFragment : Fragment() {
         setLayout()
         goBackCategories()
         swipeAction()
+
+        binding.btnAdvance.setOnClickListener {
+            findNavController().navigate(com.amandaluz.movieapplication.R.id.spinnerFragment)
+        }
     }
 
     private fun goBackCategories() {

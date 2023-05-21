@@ -14,5 +14,8 @@
     <color name="page">#021D33</color>
     <color name="secondary">#86CCA6</color>
     <color name="toolbar">#1CB8D8</color>
+    <color name="blue_button">#0026D9</color>
+    <color name="line_gray">#E5E5E5</color>
+
 
 </resources>
