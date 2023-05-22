@@ -13,8 +13,8 @@ import com.amandaluz.core.util.connection.hasInternet
 import com.amandaluz.core.util.extensions.toast
 import com.amandaluz.core.util.openlink.openNewTabWindow
 import com.amandaluz.core.util.recycler.animateList
-import com.amandaluz.core.util.url.goToYoutubeUrl
 import com.amandaluz.core.util.url.language
+import com.amandaluz.core.util.url.openYoutube
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.data.database.dao.FavoriteDAO
 import com.amandaluz.movieapplication.databinding.FragmentHomeBinding
@@ -73,6 +73,7 @@ class HomeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        setLoading()
         swipeRefresh()
         FavoriteDAO().getAllFavoritesById(favoriteList)
     }
@@ -96,7 +97,7 @@ class HomeFragment : Fragment() {
     private fun getPopularMovie() {
         viewModel.getPopularMovies(API_KEY , language() , page)
     }
-    
+
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
             if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
@@ -146,10 +147,7 @@ class HomeFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun setResponseSearch(response : List<Result>) {
         isSearch = true
-        searchList.apply {
-            this.clear()
-            this.addAll(response)
-        }
+        searchList.addAll(response)
         myAdapter.notifyDataSetChanged()
     }
 
@@ -245,7 +243,7 @@ class HomeFragment : Fragment() {
 
     private fun goToYoutube() {
         openNewTabWindow(
-            "${goToYoutubeUrl()}${
+            "${openYoutube()}${
                 getHomeTrailerKey(
                     hasInternet(context) ,
                     trailerList ,
@@ -257,10 +255,14 @@ class HomeFragment : Fragment() {
 
     private fun recycler() {
         binding.rvHomeFragment.apply {
-            setAdapter()
-            animateList()
-            setHasFixedSize(true)
-            adapter = myAdapter
+            if (adapter == null) {
+                setAdapter()
+                animateList()
+                setHasFixedSize(true)
+                adapter = myAdapter
+            } else {
+                myAdapter.updateList(if (hasInternet(context) && isSearch) searchList else movieList)
+            }
             addOnScrollListener(endlessGridRecycler())
         }
     }
@@ -274,7 +276,6 @@ class HomeFragment : Fragment() {
             setReloadView()
             callBottomSheet(movie)
         }
-        //isSearch = false
     }
 
     private fun callBottomSheet(movie : Result) {
@@ -392,6 +393,8 @@ class HomeFragment : Fragment() {
         searchView.setOnCloseListener {
             if (isSearch) {
                 getPopularMovie()
+                isSearch = false
+                myAdapter.updateList(movieList)
             }
             return@setOnCloseListener false
         }

@@ -13,7 +13,7 @@ import com.amandaluz.core.util.connection.hasInternet
 import com.amandaluz.core.util.extensions.toast
 import com.amandaluz.core.util.openlink.openNewTabWindow
 import com.amandaluz.core.util.recycler.animateList
-import com.amandaluz.core.util.url.goToYoutubeUrl
+import com.amandaluz.core.util.url.openYoutube
 import com.amandaluz.core.util.url.language
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.data.database.dao.FavoriteDAO
@@ -110,7 +110,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun goToYoutube() {
-        openNewTabWindow("${goToYoutubeUrl()}${getTrailerKey()}" , requireContext())
+        openNewTabWindow("${openYoutube()}${getTrailerKey()}" , requireContext())
     }
 
     private fun getTrailerKey() : String? {

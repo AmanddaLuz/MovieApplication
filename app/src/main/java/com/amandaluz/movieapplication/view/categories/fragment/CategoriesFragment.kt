@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.amandaluz.core.BuildConfig.API_KEY
 import com.amandaluz.core.util.Status
@@ -13,16 +12,14 @@ import com.amandaluz.core.util.connection.hasInternet
 import com.amandaluz.core.util.extensions.toast
 import com.amandaluz.core.util.openlink.openNewTabWindow
 import com.amandaluz.core.util.recycler.animateList
-import com.amandaluz.core.util.url.goToYoutubeUrl
+import com.amandaluz.core.util.url.openYoutube
 import com.amandaluz.core.util.url.language
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
 import com.amandaluz.movieapplication.di.CategoryComponent
 import com.amandaluz.movieapplication.util.bottomsheet.getHomeTrailerKey
 import com.amandaluz.movieapplication.util.cache.addCacheTrailer
-import com.amandaluz.movieapplication.util.cache.getCategoriesCache
 import com.amandaluz.movieapplication.util.cache.getTrailerCache
-import com.amandaluz.movieapplication.util.cache.verifyCategoriesMovies
 import com.amandaluz.movieapplication.view.adapter.CategoryAdapter
 import com.amandaluz.movieapplication.view.categories.viewmodel.CategoriesViewModel
 import com.amandaluz.network.model.category.CategoryItem
@@ -31,19 +28,20 @@ import com.amandaluz.network.model.trailer.ResultTrailer
 import com.amandaluz.ui.customView.bottomsheet.BottomSheetDetail
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CategoriesFragment : Fragment() {
+class CategoriesFragment : Fragment(R.layout.fragment_categories) {
 
-    private lateinit var binding : FragmentCategoriesBinding
-    private lateinit var myAdapter : CategoryAdapter
+    private lateinit var myAdapter: CategoryAdapter
+    private lateinit var binding: FragmentCategoriesBinding
     private val bottomSheetDetail = BottomSheetDetail()
-    private var trailerList = mutableListOf<ResultTrailer>()
-    private var popularList = mutableListOf<Result>()
-    private var upList = mutableListOf<Result>()
-    private var topList = mutableListOf<Result>()
-    private lateinit var trailerResponse : List<ResultTrailer>
-    private var categoryList = mutableListOf<CategoryItem>()
+    private val popularList = mutableListOf<Result>()
+
     private val viewModel by viewModel<CategoriesViewModel>()
-    private var page : Int = 1
+    private val topList = mutableListOf<Result>()
+    private val upList = mutableListOf<Result>()
+    private val categoryList = mutableListOf<CategoryItem>()
+
+    private val trailerList = mutableListOf<ResultTrailer>()
+    private var trailerResponse: List<ResultTrailer>? = null
 
     override fun onCreateView(
         inflater : LayoutInflater , container : ViewGroup? ,
@@ -53,144 +51,111 @@ class CategoriesFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view : View , savedInstanceState : Bundle?) {
-        super.onViewCreated(view , savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        CategoryComponent.inject()
 
-        checkConnection()
-    }
+        setObservers()
 
-    private fun checkConnection() {
-        if (hasInternet(context)) {
-            init()
-            observeVMEvents()
-        } else {
-            verifyCategoriesMovies {
-                categoryList =
-                    getCategoriesCache() as MutableList<CategoryItem>
-            }
-            recycler()
-        }
-        setLabels()
-    }
-
-    private fun setLabels() {
-        binding.includeToolbar.tvToolbar.text = getString(R.string.categories)
-        if (hasInternet(context)) {
+        if (hasInternet(requireContext())) {
+            setupListeners()
             binding.labelConnection.visibility = View.GONE
         } else {
+            toast(getString(R.string.connection_trailer))
             binding.labelConnection.visibility = View.VISIBLE
         }
     }
 
-    private fun init() {
-        CategoryComponent.inject()
-        getResponseMovie()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        swipeRefresh()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        CategoryComponent.unload()
-    }
-
-    private fun swipeRefresh() {
-        binding.swipe.setOnRefreshListener {
-            categoryList.clear()
-            checkConnection()
-            binding.swipe.isRefreshing = false
-        }
-    }
-
-    private fun getResponseMovie() {
-        viewModel.getPopularMovies(API_KEY , language() , page)
-    }
-
-    private fun getUpcoming() {
-        viewModel.getUpComing(API_KEY , page)
-    }
-
-    private fun getTopRate() {
-        viewModel.getTopRate(API_KEY , page)
-    }
-
-    private fun observeVMEvents() {
-        viewModel.response.observe(viewLifecycleOwner) {
-            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
-            when (it.status) {
+    private fun setObservers() {
+        viewModel.response.observe(viewLifecycleOwner) { result ->
+            when (result.status) {
                 Status.SUCCESS -> {
-                    it.data?.let { response ->
-                        popularList = response as MutableList<Result>
-                        getUpcoming()
+                    val list = result.data
+                    popularList.clear()
+                    if (list != null) {
+                        popularList.addAll(list)
                     }
-                }
-                Status.LOADING -> {
-                    isLoading(it.loading)
+                    recycler()
                 }
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
                 }
+                Status.LOADING -> {
+                    isLoading(result.loading)
+                }
             }
         }
-        viewModel.coming.observe(viewLifecycleOwner) {
-            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
-            when (it.status) {
+
+        viewModel.rate.observe(viewLifecycleOwner) { result ->
+            when (result.status) {
                 Status.SUCCESS -> {
-                    it.data?.let { response ->
-                        upList = response.results as MutableList<Result>
-                        getTopRate()
-                    }
-                }
-                Status.LOADING -> {
-                    isLoading(it.loading)
+                    val list = result.data
+                    topList.clear()
+                    list?.results?.let { topList.addAll(it) }
+                    recycler()
                 }
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
                 }
+                Status.LOADING -> {
+                    isLoading(result.loading)
+                }
             }
         }
-        viewModel.rate.observe(viewLifecycleOwner) {
-            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
-            when (it.status) {
+
+        viewModel.coming.observe(viewLifecycleOwner) { result ->
+            when (result.status) {
                 Status.SUCCESS -> {
-                    it.data?.let { response ->
-                        topList = response.results as MutableList<Result>
-                        categoryList.clear()
-                        recycler()
-                    }
-                }
-                Status.LOADING -> {
-                    isLoading(it.loading)
+                    val list = result.data
+                    upList.clear()
+                    list?.results?.let { upList.addAll(it) }
+                    recycler()
                 }
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
                 }
+                Status.LOADING -> {
+                    isLoading(result.loading)
+                }
             }
         }
-        viewModel.responseTrailer.observe(viewLifecycleOwner) {
-            if (viewLifecycleOwner.lifecycle.currentState != Lifecycle.State.RESUMED) return@observe
-            when (it.status) {
+
+        viewModel.responseTrailer.observe(viewLifecycleOwner) { result ->
+            when (result.status) {
                 Status.SUCCESS -> {
-                    it.data?.let { response ->
+                    val response = result.data
+                    if (response != null) {
                         setResponseTrailer(response)
                     }
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
+                }
+                Status.LOADING -> {
+                    isLoading(result.loading)
                 }
             }
         }
     }
 
-    private fun setResponseTrailer(response : List<ResultTrailer>) {
+    private fun setupListeners() {
+        binding.swipe.setOnRefreshListener { refreshData() }
+    }
+
+    private fun refreshData() {
+        viewModel.apply {
+            getPopularMovies(API_KEY, language(), page = 1)
+            getTopRate(API_KEY, page = 1)
+            getUpComing(API_KEY, page = 1)
+        }
+        binding.swipe.isRefreshing = false
+    }
+
+    private fun setResponseTrailer(response: List<ResultTrailer>) {
         if (response != trailerList && response.isNotEmpty()) {
             trailerList.addAll(response)
             actionTrailerMovie()
-            goToYoutube()
+            openYoutubeLink()
         } else {
             toast(getString(R.string.toast_indisponible_trailer))
         }
@@ -201,16 +166,13 @@ class CategoriesFragment : Fragment() {
         trailerResponse = getTrailerCache()
     }
 
-    private fun goToYoutube() {
-        openNewTabWindow(
-            "${goToYoutubeUrl()}${
-                getHomeTrailerKey(
-                    hasInternet(context) ,
-                    trailerList ,
-                    trailerResponse
-                )
-            }" , requireContext()
-        )
+    private fun openYoutubeLink() {
+        val youtubeUrl = "${openYoutube()}${trailerResponse?.let {
+            getHomeTrailerKey(hasInternet(context), trailerList,
+                it
+            )
+        }}"
+        openNewTabWindow(youtubeUrl, requireContext())
     }
 
     private fun recycler() {
@@ -223,13 +185,19 @@ class CategoriesFragment : Fragment() {
     }
 
     private fun setAdapter() {
-        categoryList.run {
-            add(CategoryItem("Pop" , popularList))
-            add(CategoryItem("Up" , upList))
-            add(CategoryItem("Top" , topList))
+        categoryList.clear()
+
+        val categoryNames = categoryList.map { it.title }
+        if (!categoryNames.contains("Populares")) {
+            categoryList.add(CategoryItem("Populares", popularList))
+        }
+        if (!categoryNames.contains("Lançamentos em breve")) {
+            categoryList.add(CategoryItem("Lançamentos em breve", upList))
+        }
+        if (!categoryNames.contains("Top Classificados")) {
+            categoryList.add(CategoryItem("Top Classificados", topList))
         }
         myAdapter = CategoryAdapter(categoryList) { movie ->
-            setLabels()
             callBottomSheet(movie)
         }
     }
@@ -261,20 +229,12 @@ class CategoriesFragment : Fragment() {
         movie.id?.let { id -> viewModel.getTrailerMovies(API_KEY , language() , id) }
     }
 
-    private fun isLoading(loading : Boolean) {
-        if (loading) {
-            setLoading()
-        } else {
-            closeLoading()
-        }
+    private fun isLoading(loading: Boolean) {
+        binding.loadingFragment.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
-    private fun closeLoading() {
-        binding.loadingFragment.visibility = View.GONE
+    override fun onDestroy() {
+        super.onDestroy()
+        CategoryComponent.unload()
     }
-
-    private fun setLoading() {
-        binding.loadingFragment.visibility = View.VISIBLE
-    }
-
 }

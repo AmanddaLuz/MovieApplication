@@ -11,9 +11,14 @@ import com.bumptech.glide.Glide
 
 class MovieAdapter(
 
-    private val moviesList: List<Result>,
+    private var moviesList: List<Result> ,
     private val itemClick: ((item: Result) -> Unit)
 ) : RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
+
+    fun updateList(newList: List<Result>) {
+        moviesList = newList
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context)
