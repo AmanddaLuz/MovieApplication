@@ -101,7 +101,7 @@ object CategoryComponent: KoinComponent {
         getModulesCategories()
     )
 
-    private fun getModulesCategories() = listOf(
+    fun getModulesCategories() = listOf(
         viewModel,
         movieRepository,
         movieUseCase,

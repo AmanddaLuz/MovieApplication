@@ -47,6 +47,7 @@ class HomeFragment : Fragment() {
     private lateinit var movieResponse : List<Result>
     private lateinit var trailerResponse : List<ResultTrailer>
     private var page : Int = 1
+    private var isFetchingPage = false
     private val viewModel by viewModel<MovieViewModel>()
     private var isExists = false
     private var isSearch = false
@@ -75,6 +76,7 @@ class HomeFragment : Fragment() {
         super.onStart()
         setLoading()
         swipeRefresh()
+        refreshPopularMovies()
         FavoriteDAO().getAllFavoritesById(favoriteList)
     }
 
@@ -95,8 +97,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun getPopularMovie() {
+        isFetchingPage = true
         viewModel.getPopularMovies(API_KEY , language() , page)
     }
+
+    private fun refreshPopularMovies() {
+        page = 1
+        movieList.clear()
+        searchList.clear()
+        getPopularMovie()
+    }
+
 
     private fun observeVMEvents() {
         viewModel.response.observe(viewLifecycleOwner) {
@@ -106,12 +117,14 @@ class HomeFragment : Fragment() {
                     it.data?.let { response ->
                         setResponseMovie(response)
                     }
+                    isFetchingPage = false
                 }
                 Status.LOADING -> {
                     isLoading(it.loading)
                 }
                 Status.ERROR -> {
                     toast(getString(R.string.toast_error))
+                    isFetchingPage = false
                 }
             }
         }
@@ -137,9 +150,12 @@ class HomeFragment : Fragment() {
                         setResponseSearch(response)
                         recycler()
                     }
+                    isFetchingPage = false
                 }
                 Status.LOADING -> {}
-                Status.ERROR -> {}
+                Status.ERROR -> {
+                    isFetchingPage = false
+                }
             }
         }
     }
@@ -153,7 +169,7 @@ class HomeFragment : Fragment() {
 
     private fun cacheOrResponse() {
         if (hasInternet(context)) {
-            getPopularMovie()
+            refreshPopularMovies()
         } else {
             getCache()
             setTypeError()
@@ -195,7 +211,6 @@ class HomeFragment : Fragment() {
             binding.swipe.isRefreshing = false
         } else {
             binding.labelConnection.visibility = View.VISIBLE
-            //isLoading(false)
             setLabelTryAgain()
         }
     }
@@ -292,6 +307,9 @@ class HomeFragment : Fragment() {
     }
 
     private fun endlessGridRecycler() = GridRecycler {
+        if (isFetchingPage) {
+            return@GridRecycler
+        }
         page += 1
         if (hasInternet(context) && !isSearch) {
             binding.labelConnection.visibility = View.GONE
@@ -346,6 +364,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun searchMovies(name : String) {
+        isFetchingPage = true
         viewModel.searchMovie(API_KEY , name , page)
     }
 
@@ -384,6 +403,7 @@ class HomeFragment : Fragment() {
         searchOnSubmit = {
             if (it.isNotEmpty()) {
                 nameSearched = it
+                page = 1
                 searchMovies(it)
             }
         }
@@ -392,7 +412,7 @@ class HomeFragment : Fragment() {
     private fun onCloseSearchViewAction(searchView : SearchView) {
         searchView.setOnCloseListener {
             if (isSearch) {
-                getPopularMovie()
+                refreshPopularMovies()
                 isSearch = false
                 myAdapter.updateList(movieList)
             }

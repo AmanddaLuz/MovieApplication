@@ -12,8 +12,8 @@ import com.amandaluz.core.util.connection.hasInternet
 import com.amandaluz.core.util.extensions.toast
 import com.amandaluz.core.util.openlink.openNewTabWindow
 import com.amandaluz.core.util.recycler.animateList
-import com.amandaluz.core.util.url.openYoutube
 import com.amandaluz.core.util.url.language
+import com.amandaluz.core.util.url.openYoutube
 import com.amandaluz.movieapplication.R
 import com.amandaluz.movieapplication.databinding.FragmentCategoriesBinding
 import com.amandaluz.movieapplication.di.CategoryComponent
@@ -55,15 +55,16 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
         super.onViewCreated(view, savedInstanceState)
         CategoryComponent.inject()
 
-        setObservers()
-
         if (hasInternet(requireContext())) {
             setupListeners()
+            refreshData()
             binding.labelConnection.visibility = View.GONE
         } else {
             toast(getString(R.string.connection_trailer))
             binding.labelConnection.visibility = View.VISIBLE
         }
+
+        setObservers()
     }
 
     private fun setObservers() {
@@ -188,14 +189,14 @@ class CategoriesFragment : Fragment(R.layout.fragment_categories) {
         categoryList.clear()
 
         val categoryNames = categoryList.map { it.title }
+        if (!categoryNames.contains("Lançamentos")) {
+            categoryList.add(CategoryItem("Lançamentos", upList))
+        }
+        if (!categoryNames.contains("Melhor Classificados")) {
+            categoryList.add(CategoryItem("Melhor Classificados", topList))
+        }
         if (!categoryNames.contains("Populares")) {
             categoryList.add(CategoryItem("Populares", popularList))
-        }
-        if (!categoryNames.contains("Lançamentos em breve")) {
-            categoryList.add(CategoryItem("Lançamentos em breve", upList))
-        }
-        if (!categoryNames.contains("Top Classificados")) {
-            categoryList.add(CategoryItem("Top Classificados", topList))
         }
         myAdapter = CategoryAdapter(categoryList) { movie ->
             callBottomSheet(movie)

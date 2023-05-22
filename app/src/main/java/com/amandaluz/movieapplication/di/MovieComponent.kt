@@ -85,7 +85,7 @@ object MovieComponent: KoinComponent {
         getModulesHome()
     )
 
-    private fun getModulesHome() = listOf(
+    fun getModulesHome() = listOf(
         viewModel,
         movieRepository,
         movieUseCase,
